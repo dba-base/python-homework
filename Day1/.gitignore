@@ -1,0 +1,6 @@
+private
+
+config-dev.txt
+
+*.db
+*.pyc
