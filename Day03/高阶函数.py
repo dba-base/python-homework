@@ -4,4 +4,3 @@ def fun(a,b,f):
 
 result = fun(-1,3,abs)
 print(result)
-
