@@ -25,10 +25,11 @@ frontend oldboy.org
         acl www hdr_reg(host) -i www.oldboy.org
         use_backend www.oldboy.org if www
 
-backend www.oldboy.org
-        server 100.1.7.9 weight 20 maxconn 3000
-        server 100.1.7.9 weight 20 maxconn 3000
 
 backend www.tesla.org
         server 1.1.7.9 weight 20 maxconn 3000
         server 1.1.7.9 weight 20 maxconn 3000
+
+backend www.haoxy.cn
+        server 23 weight 23 maxconn 23
+
