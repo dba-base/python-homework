@@ -118,7 +118,7 @@ def delete(backend):
 
 
 def main():
-    msg = '''
+    msg = ''' 
     1. search
     2. add
     3. delete
@@ -149,3 +149,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+

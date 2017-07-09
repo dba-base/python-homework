@@ -72,7 +72,7 @@ print(f.name)   #打印文件名字
 print(f.flush())  #刷新到磁盘,例子进度条
 '''
 
-f = open("yesterday2",'wb') #文件句柄  二进制文件
+f = open("yesterday2",'wb')  #文件句柄  二进制文件
 f.write("hello binary\n".encode())    #使用encode() 字符串转换成byte类型
 
 f.close()
