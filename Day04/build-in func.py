@@ -61,16 +61,16 @@ print(calc(2))
 res = map(lambda n:n*2,range(10))
 res = [ lambda i:i*2 for i in range(10)]
 import functools
-res = functools.reduce( lambda x,y:x*y,range(1,10 ))
+res = functools.reduce( lambda x,y:x*y,range(1,10 )) # 依次相乘（阶乘） 1 + 2 + 3 + ... + 10 = 45
 print(res )
 
-a = frozenset([1,4,333,212,33,33,12,4])
+a = frozenset([1,4,333,212,33,33,12,4]) #不可修改的列表
 #print(globals())
 
 def test():
     local_var =333
-    print(locals())
-    print(globals())
+    print(locals())     #取到局部变量
+    print(globals())   # 取到所有的全局变量，生成一个字典
 test()
 print(globals())
 print(globals().get('local_var'))
@@ -85,9 +85,28 @@ print(a )
 a = [1,2,3,4,5,6]
 b = ['a','b','c','d']
 
-for i in zip(a,b):
+for i in zip(a,b):   #两个列表组合成字典
     print(i)
 
-mport 'decorator'
-__import__('decorator')
+#import 'decorator'
+print("__import__:")
+__import__('decorator01')  #通过字符串类型导入模块
+
+print('hash_value:',hash('郝晓宇'))
+
+
+#转八进制
+oc=oct(8)
+print(oc)
+
+#转二进制
+
+rep = repr('c')
+print(rep)
+
+
+a = { 1:12,8:323,9:3,-2:5 }
+print(sorted(a.items()))   #按key排序
+print(sorted(a.items(),key=lambda x:x[1]))   #按值排序
+#print(a)
 
