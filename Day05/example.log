@@ -1,0 +1,20 @@
+INFO:root:So should this
+WARNING:root:And this, too
+07/25/2017 03:25:48 PM So should this
+07/25/2017 03:25:48 PM And this, too
+07/25/2017 03:27:00 PM INFO:So should this
+07/25/2017 03:27:00 PM WARNING:And this, too
+07/25/2017 03:27:52 PM F:/github/python_homework/Day05/logging模块1.py INFO:So should this
+07/25/2017 03:27:52 PM F:/github/python_homework/Day05/logging模块1.py WARNING:And this, too
+07/25/2017 03:28:15 PM logging模块1.py INFO:So should this
+07/25/2017 03:28:15 PM logging模块1.py WARNING:And this, too
+07/25/2017 03:28:59 PM logging模块1.py logging模块1 11 INFO:So should this
+07/25/2017 03:28:59 PM logging模块1.py logging模块1 12 WARNING:And this, too
+07/25/2017 03:30:21 PM logging模块1.py logging模块1 11 INFO:So should this
+07/25/2017 03:30:21 PM logging模块1.py logging模块1 12 WARNING:And this, too
+
+
+07/25/2017 03:31:00 PM logging模块1.py logging模块1 11 - INFO:So should this
+07/25/2017 03:31:00 PM logging模块1.py logging模块1 12 - WARNING:And this, too
+07/25/2017 03:36:30 PM logging模块1.py logging模块1 11 - INFO:So should this
+07/25/2017 03:36:30 PM logging模块1.py logging模块1 12 - WARNING:And this, too
