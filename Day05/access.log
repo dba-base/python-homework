@@ -1,2 +1,4 @@
 2017-07-25 17:34:15,188 logging多输出.py 32 - ERROR:error message
 2017-07-25 17:34:15,189 logging多输出.py 33 - CRITICAL:critical message
+2017-07-27 17:24:07,877 logging多输出.py 33 - ERROR:error message
+2017-07-27 17:24:07,878 logging多输出.py 34 - CRITICAL:critical message

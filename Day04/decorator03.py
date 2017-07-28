@@ -3,7 +3,7 @@ __author__ = "xiaoyu hao"
 user,passwd = 'alex','123'
 
 def auth(auth_type):
-    #print("auth func:", auth_type)
+    #print("auth.py func:", auth_type)
     def outer_wrapper(func):
         def wrapper(*args,**kwargs):
             if auth_type == "local":
