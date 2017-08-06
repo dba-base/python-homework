@@ -29,6 +29,10 @@ def make_transaction(log_obj,account_data,trans_type,amount,**otherss):
                 return
 
         account_data['balance'] = new_balance
+        accounts.dump_account(account_data)  # save the new balance back to file
+        log_obj.info("account:%s   action:%s    amount:%s   interest:%s" %
+                     (account_data['id'], trans_type, amount, interest))
+        return account_data
 
     else:
         print("\033[31;1mTransaction type [%s] is not exist!\033[0m" % trans_type)

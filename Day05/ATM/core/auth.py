@@ -30,6 +30,28 @@ def acc_auth(account,password):
     else:
         print("\033[031;1mAccount [%s] dose not exist!\033[0m" % account)
 
+def auth_check(account):
+    '''
+    检查用户是否存在，并且是否过期
+    :param account: 用户ID
+    :return: 返回用户信息
+    '''
+    db_path = db_handler.db_handler(settings.DATABASE)
+    account_file = "%s/%s.json" % (db_path, account)
+
+    if os.path.isfile(account_file):
+        with open(account_file, 'r') as f:
+            account_data = json.load(f)
+            exp_time_stamp = time.mktime(time.strptime(account_data['expire_date'], "%Y-%m-%d"))  # 把字符串转换成时间戳
+            if time.time() > exp_time_stamp:
+                print("\033[031;1mAccount [%s] has expired!\033[0m " % account)
+                return False
+            else:
+                return account_data
+    else:
+        print("\033[031;1mAccount [%s] dose not exist!\033[0m" % account)
+        return False
+
 
 def acc_login(user_data,log_obj):
     '''

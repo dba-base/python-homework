@@ -2,6 +2,8 @@ __author__ = "xiaoyu hao"
 
 from core import auth
 from core import logger
+from core import accounts
+from core import transaction
 
 #交易日志
 trans_logger = logger.logger('transaction')
@@ -24,26 +26,106 @@ def account_info(acc_data):
     for info in acc_data:
         print("%s : %s" % (info,acc_data[info]))
 
-def repay():
+def repay(acc_data):
     '''
     还款
     :return:
     '''
-    pass
+    '''
+        print current balance and let user do the withdraw action
+        :param acc_data:
+        :return:
+        '''
+    account_data = accounts.load_current_balance(acc_data['account_id'])
+    current_balance = ''' --------- BALANCE INFO --------
+            Credit :    %s
+            Balance:    %s''' % (account_data['credit'], account_data['balance'])
+    print(current_balance)
+    back_flag = False
+    while not back_flag:
+        withdraw_amount = input("\033[33;1mInput withdraw amount:\033[0m").strip()
+        if len(withdraw_amount) > 0 and withdraw_amount.isdigit():
+            new_balance = transaction.make_transaction(trans_logger, account_data, 'withdraw', withdraw_amount)
+            if new_balance:
+                print('''\033[42;1mNew Balance:%s\033[0m''' % (new_balance['balance']))
 
-def withdraw():
+        else:
+            print('\033[31;1m[%s] is not a valid amount, only accept integer!\033[0m' % withdraw_amount)
+
+        if withdraw_amount == 'b':
+            back_flag = True
+
+
+def withdraw(acc_data):
     '''
     取款
     :return:
     '''
-    pass
+    '''
+        print current balance and let user do the withdraw action
+        :param acc_data:
+        :return:
+        '''
+    account_data = accounts.load_current_balance(acc_data['account_id'])
+    current_balance = ''' --------- BALANCE INFO --------
+            Credit :    %s
+            Balance:    %s''' % (account_data['credit'], account_data['balance'])
+    print(current_balance)
+    back_flag = False
+    while not back_flag:
+        withdraw_amount = input("\033[33;1mInput withdraw amount:\033[0m").strip()
+        if len(withdraw_amount) > 0 and withdraw_amount.isdigit():
+            new_balance = transaction.make_transaction(trans_logger, account_data, 'withdraw', withdraw_amount)
+            if new_balance:
+                print('''\033[42;1mNew Balance:%s\033[0m''' % (new_balance['balance']))
 
-def transfer():
+        else:
+            print('\033[31;1m[%s] is not a valid amount, only accept integer!\033[0m' % withdraw_amount)
+
+        if withdraw_amount == 'b':
+            back_flag = True
+
+
+def transfer(acc_data):
     '''
     转账
     :return:
     '''
-    pass
+    account_data = accounts.load_current_balance(acc_data['account_id'])
+    current_balance = ''' --------- BALANCE INFO --------
+                Credit :    %s
+                Balance:    %s''' % (account_data['credit'], account_data['balance'])
+    print(current_balance)
+    back_flag = False
+    while not back_flag:
+        receiver = input("\033[33;1mInput receiver:\033[0m").strip()
+        if receiver == acc_data["account_id"]:
+            print("\033[33; receiver is yourself ... \033[0m")
+        elif receiver == "b":
+            back_flag = True
+        else:
+            #判断收款人是否存在,存在返回用户信息，不存在返回False
+            receiver_account_data = auth.auth_check(receiver)
+            if receiver_account_data:
+                if receiver_account_data["status"] == 0:  #检查收款人的状态是否正常
+                    transfer_amount = input("\033[33;1mInput transfer amount:\033[0m").strip()
+                    if len(transfer_amount) > 0 and transfer_amount.isdigit():
+                        new_balance = transaction.make_transaction(trans_logger, account_data, 'transfer', transfer_amount)
+                        transaction.make_transaction(trans_logger, receiver_account_data, 'repay',transfer_amount)
+                        if new_balance :
+                            print('''\033[42;1mNew Balance:%s\033[0m''' % (new_balance['balance']))
+                            back_flag = True
+
+                    else:
+                        print('\033[31;1m[%s] is not a valid amount, only accept integer!\033[0m' % transfer_amount)
+
+                    if transfer_amount == 'b':
+                        back_flag = True
+            else:
+                continue
+
+
+
 
 def pay_check():
     '''
@@ -52,8 +134,8 @@ def pay_check():
     '''
     pass
 
-def logout():
-    pass
+def logout(acc_data):
+    exit("Bye,thanks! [%s],welcome to next login".center(50, "#") %acc_data["account_id"])
 
 def interaction(acc_data):
     '''
@@ -96,4 +178,4 @@ def run():
     if user_data['is_authenticated']:
         user_data['account_data'] = acc_data
         print(user_data)
-        interaction(acc_data)
+        interaction(user_data)
