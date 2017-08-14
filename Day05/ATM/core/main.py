@@ -1,9 +1,14 @@
 __author__ = "xiaoyu hao"
 
+import datetime
+import time
+import os
 from core import auth
 from core import logger
 from core import accounts
 from core import transaction
+from conf import settings
+from core import db_handler
 
 #交易日志
 trans_logger = logger.logger('transaction')
@@ -125,14 +130,58 @@ def transfer(acc_data):
                 continue
 
 
-
-
-def pay_check():
+def get_bill(user_data):
     '''
-    账单查询
+    用户生产账单
+    :param account_id:
     :return:
     '''
-    pass
+    i = datetime.datetime.now()    #当前时间
+    year_month = "%s-%s" %(i.year,i.month)
+    account_id = user_data["account_id"]
+    account_data = accounts.load_current_balance(account_id)
+    balance = account_data["balance"] #可用额度
+    credit = account_data["credit"]   #信用额度
+    if i.day != settings.BILL_DAY:
+        print("\033[31;1maccountant bill date is 25 by the month.\033[0m")
+
+    if balance >= credit:
+        repay_amount = 0
+        bill_info = "Account [\033[32;1m%s\033[0m] needn't to repay." % account_id
+    else:
+        repay_amount = credit - balance
+        bill_info =  "Account [\033[32;1m%s\033[0m] need to repay [\033[33;1m%s\033[0m]" \
+                    % (account_id, repay_amount)
+
+    print(bill_info)
+
+    bill_path = db_handler.db_handler(settings.LOG_DATABASE)
+    bill_log = "%s/log/%s.bills" %(bill_path,account_id)
+    with open(bill_log,"a+") as f:
+        f.write("bill_date: %s account_id: %s need_repay: %d\n" %(year_month,account_id,repay_amount))
+
+def pay_check(acc_data):
+    '''
+    账单查询,通过读取bill日志获取
+    :return:
+    '''
+    bill_date = input("Please input the date you will query "
+                      "like [\033[32;1m2016-12\033[0m]>>>").strip()
+    bill_path = db_handler.db_handler(settings.LOG_DATABASE)
+    bill_log = "%s/log/%s.bills" %(bill_path,acc_data["account_id"])
+    print(bill_path)
+    print(bill_log)
+    if not os.path.exists(bill_log):
+        print("Account [\033[32;1m%s\033[0m] has not bills." %acc_data["account_id"])
+        return
+    print("Account [\033[32;1m%s\033[0m] bills:" % acc_data["account_id"])
+    print("-".center(50,"-"))
+    with open(bill_log,"r") as f:
+        for bill in f:
+            b_date = bill.split(" ")[1]
+            if bill_date == b_date:
+                print("\033[33;1m%s\033[0m" % bill.strip())
+
 
 def logout(acc_data):
     exit("Bye,thanks! [%s],welcome to next login".center(50, "#") %acc_data["account_id"])
@@ -148,7 +197,8 @@ def interaction(acc_data):
     3. 取款
     4. 转账
     5. 账单查询
-    6. 退出\033[0m
+    6. 生成账单
+    7. 退出\033[0m
     '''
     menu_dict = {
         '1': account_info,
@@ -156,7 +206,8 @@ def interaction(acc_data):
         '3': withdraw,
         '4': transfer,
         '5': pay_check,
-        '6': logout
+        '6': get_bill,
+        '7': logout
     }
 
     exit_flag = False

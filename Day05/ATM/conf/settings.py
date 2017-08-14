@@ -7,6 +7,8 @@ import os
 import sys
 import logging
 
+BILL_DAY = 25
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 #print(BASE_DIR)
 
@@ -14,6 +16,12 @@ DATABASE = {
     'engine':'file_storage',  #support mysql,postgresql in the future
     'name':'accounts',
     'path':'%s/db' % BASE_DIR
+}
+
+LOG_DATABASE = {
+    'engine': 'file_storage',  # support mysql,postgresql in the future
+    'name': 'accounts',
+    'path': "%s/db" % BASE_DIR
 }
 
 LOG_LEVEL = logging.INFO
