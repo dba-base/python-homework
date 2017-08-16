@@ -1,5 +1,7 @@
 __author__ = "xiaoyu hao"
 
+import time
+import datetime
 from core import auth
 from core import logger
 from core import accounts
@@ -132,6 +134,9 @@ def pay_check():
     账单查询
     :return:
     '''
+    pass
+
+def get_bill():
     pass
 
 def logout(acc_data):
