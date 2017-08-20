@@ -1,13 +1,11 @@
 __author__ = "xiaoyu hao"
 
-<<<<<<< HEAD
 import time
 import datetime
-=======
 import datetime
 import time
 import os
->>>>>>> b7e67b6869f43de17a3c8fb9cab6d19bdb8f585b
+
 from core import auth
 from core import logger
 from core import accounts
