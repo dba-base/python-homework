@@ -1,8 +1,11 @@
 __author__ = "xiaoyu hao"
 
+import time
+import datetime
 import datetime
 import time
 import os
+
 from core import auth
 from core import logger
 from core import accounts
@@ -182,6 +185,9 @@ def pay_check(acc_data):
             if bill_date == b_date:
                 print("\033[33;1m%s\033[0m" % bill.strip())
 
+
+def get_bill():
+    pass
 
 def logout(acc_data):
     exit("Bye,thanks! [%s],welcome to next login".center(50, "#") %acc_data["account_id"])
