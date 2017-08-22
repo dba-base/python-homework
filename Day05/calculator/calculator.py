@@ -1,19 +1,15 @@
-
 '''
 实现加减乘除及拓号优先级解析
 用户输入 1 - 2 * ( (60-30 +(-40/5) * (9-2*5/3 + 7 /3*99/4*2998 +10 * 568/14 )) - (-4*3)/ (16-3*2) )等类似公式后，
 必须自己解析里面的(),+,-,*,/符号和公式
 '''
 
-
 # 小bug,无法计算类似 1 - 2 * ( (60-30 +(-4) )) 单独的-4 这种运算
 # 缺少指数运算
-
 
 import re
 import os
 import sys
-
 
 def compute_Add_subtract(expression):
     '''
@@ -84,16 +80,26 @@ def compute_multiply_divide(expression):
             Flag = True
     return expression
 
-
-
-
 def compute_expon(expression):
     '''
     指数运算
     :param expression:
     :return:计算结果
     '''
-    pass
+    Flag = False
+    pattern = re.compile(r'\d+\.?\d*[\*]{2}[\+\-]?\d+\.?\d*')
+    while not Flag:
+        match = pattern.search(expression)
+        if match:
+            match_content = match.group()
+            n1,n2 = match_content.split("**")
+            value = float(n1) ** float(n2)
+
+            before,after = pattern.split(expression,1)
+            expression = '%s%s%s' % (before, value, after)
+        else:
+            Flag = True
+    return expression
 
 def compute(expression):
     '''
@@ -101,19 +107,19 @@ def compute(expression):
     :param expression:
     :return:计算结果
     '''
-    #先乘除后加减
+    #先指数再乘除后加减
     #以-40.0/5+23*2 为例
-
+    #匹配指数运算
+    expression = compute_expon(expression)
     # 匹配乘除取余
-    expression = compute_multiply_divide(expression)
+    expression1 = compute_multiply_divide(expression)
     #print("乘除运算后返回值：",expression)
     
     #进行加减运算
     #匹配加减运算
-    expression1 = compute_Add_subtract(expression)
+    expression2 = compute_Add_subtract(expression1)
     #print("加减运算后返回值",expression)
-    return expression1
-
+    return expression2
 
 def deal_bracket(expression):
     '''
@@ -154,7 +160,8 @@ def main():
 
     flag = True
 
-    os.system('clear')   # 清屏
+    #os.system('clear')   # mac,linux清屏
+    cls = os.system('cls')  # windows清屏
 
 
     print('\n================================================================')
@@ -180,3 +187,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
