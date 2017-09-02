@@ -1,5 +1,6 @@
 __author__ = "xiaoyu hao"
 
+装饰器带参数
 user,passwd = 'alex','123'
 
 def auth(auth_type):

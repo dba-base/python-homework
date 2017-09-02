@@ -1,0 +1,113 @@
+笔记网址：http://www.cnblogs.com/alex3714/articles/5161349.html
+|subprocess模块
+|os.system 输出命令结果到屏幕，返回命令状态，可以判断命令是否执行成功
+
+|-os.popen("dir").read()  #  保存命令的执行输出结果，没有保存命令执行状态
+|-
+|-py 2.7中
+|-
+|-commands
+|-res = commands.getstatusoutput("dir")
+|-
+|-res[0] 保存执行状态
+|-
+|-subprocess.run('df -h | grep sda1',shell=True)  用shell方式执行
+|-
+|-常用subprocess方法示例
+|-
+|-#执行命令，返回命令执行状态 ， 0 or 非0
+|->>> retcode = subprocess.call(["ls", "-l"])
+|-
+|-#执行命令，如果命令结果为0，就正常返回，否则抛异常
+|->>> subprocess.check_call(["ls", "-l"])
+|-0
+|-
+|-#接收字符串格式命令，返回元组形式，第1个元素是执行状态，第2个是命令结果
+|->>> subprocess.getstatusoutput('ls /bin/ls')
+|-(0, '/bin/ls')
+|-
+|-#接收字符串格式命令，并返回结果
+|->>> subprocess.getoutput('ls /bin/ls')
+|-'/bin/ls'
+|-
+|-#执行命令，并返回结果，注意是返回结果，不是打印，下例结果返回给res
+|->>> res=subprocess.check_output(['ls','-l'])
+|->>> res
+|-b'total 0\ndrwxr-xr-x 12 alex staff 408 Nov 2 11:05 OldBoyCRM\n'
+|-
+|-#上面那些方法，底层都是封装的subprocess.Popen
+|-poll()
+|-Check if child process has terminated. Returns returncode  检查命令是否执行完成，执行完返回0，未执行完返回none
+|-
+|-wait()
+|-Wait for child process to terminate. Returns returncode attribute.  等待命令执行完成返回0
+|-
+|-terminate() 杀掉所启动进程
+|-communicate() 等待任务结束
+|-
+|-  stdin 标准输入
+|-
+|-  stdout 标准输出
+|-
+|-  stderr 标准错误
+|-
+|-pid
+|-The process ID of the child process.
+|-
+|-  #例子
+|-  >>> p = subprocess.Popen("df -h|grep disk",stdin=subprocess.PIPE,stdout=subprocess.PIPE,shell=True)
+|-  >>> p.stdout.read()
+|-  b'/dev/disk1 465Gi 64Gi 400Gi 14% 16901472 104938142 14% /\n'
+|-  可以把正确的输出和错误的输出分别输出
+|-   p = subprocess.Popen("df -h|grep disk",stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,shell=True)
+|-   p.stderr.read()
+
+subprocess,Popen("echo '123' | sudo apt-get install vim",shell=Trye)  自动输入密码
+
+
+笔记：http://www.cnblogs.com/alex3714/articles/5188179.html
+
+面向过程式编程
+面向对象式编程
+
+面向对象三大特性：
+
+继承
+  ---1. 通过父类 -》 子类的方式以最小代码量的方式实现不同角色的特点
+
+封装
+  ---1. 防止数据被意外串改
+  ---2. 使外部程序不需要关注对象内部的构造，只需要通过对此对象对外提供的接口进行访问
+
+多态
+  --- 一个接口，多种表现   指一个基类派生出不同的子类   且每个子类在继承了同样的方法名的同时又对父类方法做了不同的实现
+
+代码原则：可读性好，易扩展
+
+面向对象的作用：比函数更容易的实现函数的扩展
+
+类的定义
+
+类的私有属性
+
+类的公有属性 类的所有对象都能访问的属性，在类里定义的属性即为公有属性
+
+析构方法
+
+类的实例继承
+
+新式类 与 经典类
+
+self 就是调用当前方法的对象
+
+
+
+
+
+
+
+
+
+
+
+
