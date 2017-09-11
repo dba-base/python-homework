@@ -160,8 +160,8 @@ def main():
 
     flag = True
 
-    #os.system('clear')   # mac,linux清屏
-    cls = os.system('cls')  # windows清屏
+    os.system('clear')   # mac,linux清屏
+    #cls = os.system('cls')  # windows清屏
 
 
     print('\n================================================================')

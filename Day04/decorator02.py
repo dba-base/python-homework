@@ -24,7 +24,7 @@ def test1():
     time.sleep(3)
     print("in the test1")
 
-@timer
+@timer   # test2 = timer(test2) => deco   后面调用test2("haoxy")  相当于调用 deco("haoxy")
 def test2(name):   # 函数加上参数   test2 = timer(test2) => deco test2() => deco()
     time.sleep(3)
     print("in the test2",name)
