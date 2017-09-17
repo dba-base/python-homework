@@ -52,3 +52,15 @@ items = [1, 2, 3, 4, 5, 6, 7]
 print(items)  # [1, 2, 3, 4, 5, 6, 7]
 random.shuffle(items)
 print(items)  # [1, 4, 7, 2, 5, 3, 6]
+
+
+
+把fib函数变成generator：
+def fib(max):
+    n,a,b = 0,0,1
+    while n < max:
+        #print(b)
+        yield  b
+        a,b = b,a+b
+        n += 1
+    return 'done'
