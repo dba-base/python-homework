@@ -60,6 +60,17 @@ class School(object):
                   %(teach_obj.teach_name,teach_obj.teach_sex,teach_obj.teach_age,teach_obj.teach_salary,classroom_list))
 
     #创建学生
+    def create_student(self,stu_name,stu_sex,stu_age,classroom_name):
+        student_obj = Student(stu_name,stu_sex,stu_age)   #实例化学生
+        self.sch_student[stu_name] = student_obj          #学生对象存放到字典里
+        #学生加入到班级
+        classroom_obj = self.sch_classroom[classroom_name]
+        classroom_obj.class_student[stu_name] = student_obj  
+        self.sch_classroom[classroom_name] = classroom_obj   #更新班级字典
+
+
+
+
 
 
 
