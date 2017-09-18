@@ -19,10 +19,19 @@ d['date'] = datetime.datetime.now()
 d.close()
 '''
 
+
+d.update({"name":{'age':22,"job":'it'}})
+d.update({"school_name":"chinatelecom"})
+d.update({"school":"chinatelecom1"})
+
 #读取
-print(d.get('name'))
-print(d.get('info'))
-print(d.get('date'))
+print("name:",d.get('name'))
+#print(d.get('info'))
+#print(d.get('date'))
+
+print(d["name"])
+print(d["school_name"])
+print(d["school"])
 
 '''
 输出：

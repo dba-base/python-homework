@@ -8,7 +8,6 @@ class SchoolMember(object):
         self.name = name
         self.age = age
         self.sex = sex
-
         self.enroll()
 
     def enroll(self):
