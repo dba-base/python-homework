@@ -4,7 +4,6 @@ __author__ = "xiaoyu hao"
 存放配置信息
 '''
 import os
-import sys
 import logging
 
 BILL_DAY = 25

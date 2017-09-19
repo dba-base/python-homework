@@ -1,10 +1,10 @@
 '''
 学校类
 '''
-import ClassRoom
-import Course
-import Student
-import Teacher
+from src import ClassRoom
+from src import Course
+from src import Student
+from src import Teacher
 class School(object):
 
     #初始化学校名称 学校地址 班级字典 课程字典 学生字典 讲师字典
@@ -65,10 +65,30 @@ class School(object):
         self.sch_student[stu_name] = student_obj          #学生对象存放到字典里
         #学生加入到班级
         classroom_obj = self.sch_classroom[classroom_name]
-        classroom_obj.class_student[stu_name] = student_obj  
+        classroom_obj.class_student[stu_name] = student_obj
         self.sch_classroom[classroom_name] = classroom_obj   #更新班级字典
 
+    #查询学生和讲师的信息，讲师 -- 班级 -- 学生
+    def show_teacher_student_info(self,teach_name):
+        teacher_obj = self.sch_teacher[teach_name]
+        for i in teacher_obj.teach_classroom:
+            classroom_obj = self.sch_classroom[i]
+            student_list = []
+            for j in classroom_obj.class_student:
+                student_list.append(j)
+            print("班级名称： [%s]\t课程：[%s]\t 学生：[%s]\t"
+                  %(classroom_obj.class_name,classroom_obj.class_course.course_name,student_list))
 
+    #更改学生的成绩
+    def modify_stu_score(self,tech_name,student_name,new_score):
+        teacher_obj = self.sch_teacher[tech_name]
+        for i in self.sch_classroom:     #i为班级名
+            classroom_obj = teacher_obj.teach_classroom[i]
+            for j in classroom_obj.class_student: #j为学生名
+                stu_obj = classroom_obj.class_student[j]
+                if stu_obj.stu_name == student_name:
+                    stu_obj.modify_score(new_score)
+            print("学生[%s]的成绩已经从：[%s]修改为：[%s]" %(student_name,stu_obj.stu_score,new_score))
 
 
 
