@@ -2,7 +2,7 @@
 学校类
 '''
 from src import ClassRoom
-from src import Course
+from src.Course import Course
 from src import Student
 from src import Teacher
 class School(object):
@@ -25,7 +25,8 @@ class School(object):
     def show_course_info(self):
         for course_name in self.sch_course:
             course_obj = self.sch_course[course_name]
-            print("课程名称：[%s]\t 课程价格：[%s]\t 课程周期:[%s]\t" %(course_obj.course_name,course_obj.course_price,course_obj.course_cycle))
+            print("课程名称：[%s]\t 课程价格：[%s]\t 课程周期:[%s]\t"
+                  %(course_obj.course_name,course_obj.course_price,course_obj.course_cycle))
 
     # 创建班级
     def create_classroom(self,class_name,course_obj):
@@ -75,10 +76,10 @@ class School(object):
             classroom_obj = self.sch_classroom[i]
             student_list = []
             for j in classroom_obj.class_student:
-                student_list.append(j)
-            print("班级名称： [%s]\t课程：[%s]\t 学生：[%s]\t"
-                  %(classroom_obj.class_name,classroom_obj.class_course.course_name,student_list))
+                print("班级名称： [%s]\t课程：[%s]\t 学生：[%s]\t"
+                      %(classroom_obj.class_name,classroom_obj.class_course.course_name,student_list))
 
+        student_list.append(j)
     #更改学生的成绩
     def modify_stu_score(self,tech_name,student_name,new_score):
         teacher_obj = self.sch_teacher[tech_name]
