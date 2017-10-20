@@ -3,6 +3,9 @@ __author__ = "xiaoyu hao"
 
 
 import socket
+import sys
+import os
+import hashlib
 
 class MyClient(object):
     '''
@@ -69,7 +72,6 @@ class MyClient(object):
         else:
             print('[%s] Error!' %status_code)
 
-
     def __universal_method_data(self,command):
         '''
         通用方法，有输出显示，例如：dir，pwd等命令
@@ -88,11 +90,20 @@ class MyClient(object):
     def __progress(self,trans_size, file_size,mode):
         '''
         进度条方法
-        :param trans_size: 已传输得数据大小
-        :param file_size: 文件的总大小
+        :param trans_size: 已传输得数据大小(字节)
+        :param file_size: 文件的总大小（字节）
         :param mode: 传输方式
         :return:
         '''
+        UNIT_SIZE = 1048576
+        bar_lengh = 100   # 进度条的长度
+        percent = float(trans_size)/float(file_size)  #已经传输的大小百分比
+        hashes = '=' * int(percent*bar_lengh)         #进度条显示的数量
+        spaces = ' ' * (bar_lengh - len(hashes))      #剩余部分通过空格补充，空格数量 = 总长度 - “=”显示的长度
+        # /r表示重新回到当前行输出
+        r = "\r%s:%.2fM/%.2fM %d%% [%s]"%(mode,trans_size/UNIT_SIZE,file_size/UNIT_SIZE,percent*100,hashes+spaces)
+        sys.stdout.write(r)
+        sys.stdout.flush()  #清空缓存
 
     def dir(self,command):
         '''
@@ -135,9 +146,99 @@ class MyClient(object):
         :param command:
         :return:
         '''
+        self.client.sendall(command.encode())
+        status_code = self.client.recv(1024).decode()
 
-    def put(self):
+        #命令正确
+        if status_code == "201":
+            filename = os.path.basename(command.split()[1])
+            #判断文件是否存在
+            if os.path.isfile(filename):
+                revice_size = os.stat(filename).st_size #接收文件的大小
+                self.client.sendall("403".encode())     #告诉客户端文件存在
+                responce = self.client.recv(1024)
+                self.client.sendall(str(revice_size).encode()) #把文件大小发给服务端进行大小比较
+                status_code = self.client.recv(1024).decode()
+                #文件大小不一致，续传
+                if status_code == "205":
+                    print("继续上次位置进行传输")
+                    self.client.sendall("000".encode())
+                elif status_code == "405":
+                    print("文件一致！")
+                    return
+            #文件不存在，正常下载
+            else:
+                self.client.sendall("402".encode())
+                revice_size = 0
+
+            file_size = self.client.recv(1024).decode() #接收需要传送文件的大小
+            file_size = int(file_size)
+            self.client.sendall("000".encode())
+
+            #开始接收文件
+            with open(filename,"ab") as f:
+                file_size += revice_size  # 接收文件的总大小
+                m = hashlib.md5()
+                while revice_size < file_size:
+                    if file_size - revice_size > 1024:
+                        size = 1024
+                    else:
+                        size = file_size - revice_size
+                    data = self.client.recv(size)
+                    revice_size += len(data)
+                    m.update(data)
+                    f.write(data)
+                    self.__progress(revice_size,file_size,"下载中...")
+                new_file_md5 = m.hexdigest()
+                server_file_md5 = self.client.recv(1024).decode()
+                print("\n 下载完成！")
+                if new_file_md5 == server_file_md5:
+                    print("\n 文件一致")
+        else:
+            print("[%s] Error！" % (status_code))
+
+    def put(self,command):
         '''
         上传文件
         :return:
         '''
+        if len(command.split()) == 2:
+            filename = os.path.basename(command.split()[1])
+            if os.path.isfile(filename):
+                self.client.sendall(command.encode())
+                self.client.recv(1024)
+
+                file_size = os.stat(filename).st_size
+                self.client.sendall(str(file_size).encode())  #发送文件大小
+                status_code = self.client.recv(1024).decode()
+
+                if status_code == "202":
+                    with open(filename,"rb") as f:
+                        m = hashlib.md5()
+                        for line in f:
+                            m.update(line)
+                            send_size = f.tell()  #tell()返回文件当前的位置，字节，也就是发送文件的大小
+                            self.client.sendall(line)
+                            self.__progress(send_size,file_size,'上传中')
+                    print("\n上传完成！")
+                    self.client.sendall(m.hexdigest().encode())
+                    status_code = self.client.recv(1024).decode()   #返回状态码
+                    if status_code == "203":
+                        print("\n文件一致")
+                else:
+                    print("[%s]" %status_code)
+            else:
+                print("402 文件不存在")
+        else:
+            print("401 命令不正确")
+
+
+if __name__ == "__main__":
+    # ip = input("IP:")
+    # port = int(input("PORT:"))
+    ip = "localhost"
+    port = 9999
+    IP_PORT = (ip,port)
+    print(IP_PORT)
+    client = MyClient(IP_PORT)
+    client.start()

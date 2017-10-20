@@ -19,6 +19,7 @@ if __name__ == "__main__":
     host = "localhost"
     port = 1234
     ADDR = (host, port)
+    print(ADDR)
     # Create the server, binding to localhost on port 1234
     server = socketserver.ThreadingTCPServer(ADDR, MyTCPHandler)
     #Activate the server;
