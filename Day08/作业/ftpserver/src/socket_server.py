@@ -3,6 +3,7 @@ __author__ = "xiaoyu hao"
 import socketserver
 import os
 import hashlib
+import platform
 from src import auth_user
 from conf import settings
 
@@ -11,13 +12,22 @@ class MyServer(socketserver.BaseRequestHandler):
     def handle(self):
         try:
             self.conn = self.request
+            self.os_platform = platform.system()
+            self.clinet = self.client_address[0]   #取得客户端地址
+
             while True:
                 login_info = self.conn.recv(1024).decode()
+                if not login_info:
+                    continue
                 result = self.authenticat(login_info)
                 status_code = result[0]
                 self.conn.sendall(status_code.encode())
                 if status_code == "400":
                     continue
+                #验证成功后，服务端后台显示连接的客户端
+                print('客户端【%s】连接...' % self.clinet)
+                print('等待客户端输入命令...')
+
                 self.user_msg = result[1]
                 self.current_path = self.user_msg['homepath']    #初始化为当前家目录，后续随着cd会改变
                 self.home_path = self.user_msg['homepath']
@@ -25,6 +35,9 @@ class MyServer(socketserver.BaseRequestHandler):
                 #接收从客户端发送过来的命令
                 while True:
                     command = self.conn.recv(1024).decode()
+                    if not command:
+                        print("客户端[%s]已断开！"%self.clinet)
+                        break
                     command_str = command.split()[0]
                     if hasattr(self,command_str):
                         func = getattr(self,command_str)
@@ -57,7 +70,7 @@ class MyServer(socketserver.BaseRequestHandler):
         '''
         if len(command.split()) == 2:
             filename = os.path.basename(command.split()[1])
-            file_path = self.current_path + r"\%s"%filename
+            file_path = self.current_path + r"/%s"%filename
             #判断文件在服务器端是否存在
             if os.path.isfile(file_path):
                 self.conn.sendall("201".encode())   #命令可以执行
@@ -133,10 +146,23 @@ class MyServer(socketserver.BaseRequestHandler):
         查看windows目录下的文件
         :return:
         '''
+
+        #判断操作系统类型
+        if self.os_platform == "Darwin":
+            cmd = "ls"
+        elif self.os_platform == "Linux":
+            cmd = "ls"
+        elif self.os_platform == "Windows":
+            cmd = "dir"
+        else:
+            self.conn.sendall("401 命令错误！")
+
         if len(command.split()) == 1:
             self.conn.sendall("201".encode())
             response = self.conn.recv(1024)
-            send_data = os.popen("dir %s" %self.current_path)
+            send_data = os.popen(cmd + " %s" %self.current_path)
+            print("OS type: %s" %self.os_platform)
+            print("执行：%s" %(cmd + " %s" %self.current_path))
             self.conn.sendall(send_data.read().encode())
         else:
             self.conn.sendall("401".encode())

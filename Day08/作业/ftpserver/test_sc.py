@@ -29,6 +29,7 @@ import os
 #     trans_size += 1
 
 #str = "get C:/progrem/test.mp4"
+'''
 str = "get test.mp4"
 cmd = str.split()[0]
 filename = str.split()[1]
@@ -38,6 +39,26 @@ print(filename)
 
 a = os.path.basename(filename)
 print(a)
+
+'''
+
+import platform
+print(platform.architecture())
+print(platform.platform())
+print(platform.system())
+print(platform.python_version())
+def UsePlatform():
+  sysstr = platform.system()
+  if(sysstr =="Windows"):
+    print ("Call Windows tasks")
+  elif(sysstr == "Linux"):
+    print ("Call Linux tasks")
+  elif(sysstr == "Darwin"):   #苹果mac操作系统
+    print("Call MACOS tasks")
+  else:
+    print ("Other System tasks")
+
+UsePlatform()
 
 
 

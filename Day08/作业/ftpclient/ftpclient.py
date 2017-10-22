@@ -40,7 +40,6 @@ class MyClient(object):
                 continue
             else:
                 print("[%s] 用户验证成功！" % status_code)
-
             self.interactive()
 
     def interactive(self):
@@ -58,6 +57,31 @@ class MyClient(object):
                 func(command)
             else:
                 print("[%s] 非法命令..." %401)
+                self.help()
+
+    def help(self):
+        msg ="""
+usage:
+    ls
+    dir
+    pwd
+    cd dirname
+    cd ..
+    get filename
+    put filename
+"""
+        print(msg)
+
+    def bye(self,command):
+        '''退出方法'''
+        command_str = command.split()
+        print(command_str[0])
+        #self.client.sendall(command.encode())
+        if len(command_str) == 1 and command_str[0] == "bye":
+            print("11111111111111111")
+            self.client.shutdown(2)
+            self.client.close()
+            sys.exit(0)
 
     def __universal_method_none(self, command):
         '''
@@ -70,7 +94,7 @@ class MyClient(object):
         if status_code == '201':  #命令可执行
             self.client.sendall('000'.encode())   #给服务器返回确认信息，让服务器继续执行
         else:
-            print('[%s] Error!' %status_code)
+            print('[%s] error!' %status_code)
 
     def __universal_method_data(self,command):
         '''
@@ -85,7 +109,7 @@ class MyClient(object):
             data = self.client.recv(1024).decode()   #接收服务端返回的结果并打印
             print(data)
         else:
-            print('[%s] Error!' % status_code)
+            print('[%s] error!' % status_code)
 
     def __progress(self,trans_size, file_size,mode):
         '''
@@ -95,13 +119,13 @@ class MyClient(object):
         :param mode: 传输方式
         :return:
         '''
-        UNIT_SIZE = 1048576
+        unit_size = 1048576
         bar_lengh = 100   # 进度条的长度
         percent = float(trans_size)/float(file_size)  #已经传输的大小百分比
         hashes = '=' * int(percent*bar_lengh)         #进度条显示的数量
         spaces = ' ' * (bar_lengh - len(hashes))      #剩余部分通过空格补充，空格数量 = 总长度 - “=”显示的长度
         # /r表示重新回到当前行输出
-        r = "\r%s:%.2fM/%.2fM %d%% [%s]"%(mode,trans_size/UNIT_SIZE,file_size/UNIT_SIZE,percent*100,hashes+spaces)
+        r = "\r%s:%.2fm/%.2fm %d%% [%s]"%(mode,trans_size/unit_size,file_size/unit_size,percent*100,hashes+spaces)
         sys.stdout.write(r)
         sys.stdout.flush()  #清空缓存
 
@@ -195,7 +219,7 @@ class MyClient(object):
                 if new_file_md5 == server_file_md5:
                     print("\n 文件一致")
         else:
-            print("[%s] Error！" % (status_code))
+            print("[%s] error！" % (status_code))
 
     def put(self,command):
         '''

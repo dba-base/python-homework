@@ -23,8 +23,9 @@ def create_db():
     for k,v in settings.USERS_PWD.items():
         username = k
         password = auth.hash(v)
-        user_db_path = settings.DATABASE + r"\%s.db"%username
-        user_home_path = settings.HOME_PATH + r"\%s"%username
+        user_db_path = settings.DATABASE + r"/%s.db"%username
+        user_home_path = settings.HOME_PATH + r"/%s"%username
+        print(user_home_path)
         user_database["username"] = username
         user_database["password"] = password
         user_database["limitsize"] = limitsize
