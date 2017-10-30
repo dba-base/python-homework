@@ -8,9 +8,9 @@ ssh = paramiko.SSHClient()
 # 允许连接不在know_hosts文件中的主机
 ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 # 连接服务器
-ssh.connect(hostname='192.168.2.110', port=22, username='root', password='oracle')
+ssh.connect(hostname='10.10.0.2', port=22, username='root', password='oracle')
 # 执行命令
-stdin, stdout, stderr = ssh.exec_command('df -h')
+stdin, stdout, stderr = ssh.exec_command('df -h;ifconfig')
 # 获取命令结果
 res,err = stdout.read(),stderr.read()
 result = res if res else err

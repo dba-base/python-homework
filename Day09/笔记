@@ -13,11 +13,23 @@ scp -rp -P32113 oldgrild.txt root@10.0.0.2:/tmp
 
 进行远程执行命令、上传/下载文件
 
+密钥生成：
 通过ssh-keygen命令生成公钥，把公钥传送到需要连接的机器上，实现免密登陆
 
 ssh-copy-id 命令，直接把公钥拷贝到相应服务器
 
 ssh-copy-id "-p端口号 用户名@IP地址"
+
+将公钥考到对方机器的用户目录下 ，并将其复制到~/.ssh/authorized_keys中（操作命令：#cat id_dsa.pub >> ~/.ssh/authorized_keys ）。
+
+注意：
+设置文件和目录权限：
+设置authorized_keys权限
+$ chmod 600 authorized_keys
+设置.ssh目录权限
+$ chmod 700 -R .ssh
+
+要保证.ssh和authorized_keys都只有用户自己有写权限。否则验证无效。（今天就是遇到这个问题，找了好久问题所在），其实仔细想想，这样做是为了不会出现系统漏洞。
 
 CRT 传输文件
 sz
