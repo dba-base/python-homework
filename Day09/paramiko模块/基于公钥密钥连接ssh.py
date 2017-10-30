@@ -1,14 +1,13 @@
 __author__ = "xiaoyu hao"
 
 '''
-linux需要通过ssh-keygen生成公钥文件
+linux需要通过ssh-keygen生成公钥文件,把公钥存放到authticated_key文件中
 '''
 
 import paramiko
 
-private_key = paramiko.RSAKey.from_private_key_file('Identity110.pub')
+private_key = paramiko.RSAKey.from_private_key_file('id_rsa')
 #private_key = paramiko.RSAKey(file_obj=StringIO(key_str))
-
 # 创建SSH对象
 ssh = paramiko.SSHClient()
 # 允许连接不在know_hosts文件中的主机
