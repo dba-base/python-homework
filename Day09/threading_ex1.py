@@ -1,18 +1,12 @@
-<<<<<<< HEAD
 __author__ = "xiaoyu hao"
-
-=======
-__author__ = "Alex Li"
 
 '''
 直接调用
 '''
->>>>>>> 4395f80d72236fb740714254855a34a72a8cf664
 import threading
 import time
 
 def run(n):
-<<<<<<< HEAD
     print("task:",n,threading.current_thread())
     time.sleep(2)
 
@@ -33,8 +27,7 @@ for t in t_objs:
 
 print("-----------all threads has finished....",threading.current_thread())   #主进程执行
 print("cost:",time.time() - start_time)
-=======
-    print("task ",n )
+    print("task ",n)
     time.sleep(2)
     print("task done",n)
 
@@ -53,4 +46,4 @@ print("----------all threads has finished...")
 print("cost:",time.time() - start_time)
 # run("t1")
 # run("t2")
->>>>>>> 4395f80d72236fb740714254855a34a72a8cf664
+
