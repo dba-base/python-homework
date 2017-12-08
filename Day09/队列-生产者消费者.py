@@ -10,7 +10,7 @@ def Producer(name):
     count = 1
     while True:
         q.put("骨头%s" % count)
-        print("生产了骨头",count)
+        print(name,"生产了骨头",count)
         count +=1
         time.sleep(0.1)
 

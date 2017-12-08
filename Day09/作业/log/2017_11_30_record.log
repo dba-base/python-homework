@@ -1,0 +1,4 @@
+Time:2017_11_30 10:57:49 | Type:cmd core | Detial:df | Server:192.168.2.110 | Result:failed
+Time:2017_11_30 14:07:49 | Type:cmd core | Detial:df | Server:192.168.2.110 | Result:success
+Time:2017_11_30 14:07:53 | Type:cmd core | Detial:ifconfig | Server:192.168.2.110 | Result:success
+Time:2017_11_30 14:07:57 | Type:cmd core | Detial:ls -l | Server:192.168.2.110 | Result:success

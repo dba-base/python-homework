@@ -25,12 +25,6 @@ for i in range(50):
 for t in t_objs:
     t.join()
 
-print("-----------all threads has finished....",threading.current_thread())   #主进程执行
-print("cost:",time.time() - start_time)
-    print("task ",n)
-    time.sleep(2)
-    print("task done",n)
-
 start_time = time.time()
 t_objs = [] #存线程实例
 for i in range(50):

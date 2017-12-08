@@ -33,7 +33,7 @@ class MysqlConnect(object):
 
     def return_server(self):
         '''
-        返回主机列表
+        返回所有的主机列表
         :return:元组
         '''
         sql = "select * from host_info"
@@ -41,8 +41,19 @@ class MysqlConnect(object):
         qur_result = self.cur.fetchall()
         return qur_result
 
+    def return_sigle_server(self,ip):
+        '''
+        返回指定的主机列表
+        :return:元组
+        '''
+        sql = "select id,ip,username,decode(password,'abcd'),port,server_type from host_info2 where ip = '%s'" %ip
+        self.cur.execute(sql)
+        qur_result = self.cur.fetchall()
+        return qur_result
+
 # db = MysqlConnect("root")
-# result = db.return_server()
 #
+# result = db.return_sigle_server("192.168.2.110")
+# print(result)
 # for i in result:
 #     print(i[1])
