@@ -1,0 +1,195 @@
+web开发基础
+
+
+-----------------  http://www.cnblogs.com/wupeiqi/articles/4938499.html ----------------------------
+
+HTML
+    - 一套浏览器认识的规则
+    - 开发者:
+        - 写html文件(充当模板作用)
+        - 数据库获取数据,然后替换到html的指定位置(web框架)
+    - 本地测试
+        - 找到html文件浏览器直接打开
+        - pycharm 打开测试
+    - 编写html文件
+        - doctype 对应关系
+        - html标签，标签属性，一个页面只能有一个html标签
+        - 注释 <!-- -->
+    - 标签分类
+        - 自闭合标签
+        - 主动闭合标签
+    - 20个标签
+
+    - head标签
+        - <meta > -> 编码、跳转、刷新、关键字、描述，IE兼容
+            <meta http-equiv="X-UA-Compatible" content="IE=IE9;IE=IE8;" />
+            <meta name="description" content="免费在线教程">
+            <meta name="keywords" content="HTML,CSS,XML,JavaScript">
+            <meta name="author" content="runoob">
+            <meta charset="UTF-8">
+        -title
+        -link 图标
+        -style
+        - script
+
+    - body标签
+        - &nbsp; &lt; &gt;
+        - <p> 段落
+          <br> 换行
+          <h1>
+          <h1>
+
+        ++++++   小总结  ++++++
+            标签分类：
+                块级标签(占一行)：div（白板），H系列（加大加粗），p标签（段落和段落之间有间距）
+                行内标签： span（无特性，白板）
+            标签之间可以嵌套
+            标签存在的意义，css定位布局容易，js操作容易
+            chorme 审查元素的使用（检查）
+                - 定位
+                - 查看样式
+        - <input /> 标签
+            <input type="text" name="user" />    字典：{user:" "}
+            <input type="password" name="pwd" />
+            <input type="button" value = "登陆"/>   按钮
+            <input type="submit" value = "登陆"/>   提交
+            <input type="redio" name = "gender" value = "1" checked="checked"/>   单选框  默认被选中
+            <input type="redio" name = "gender" value = "2"/>   提交
+            <input type="redio" name = "gender" value = "3"/>   提交
+
+            <input type="checkbox" name="favor" value =1 /> 复选框
+            <input type="checkbox" name="favor" value =2 /> 复选框
+            <input type="checkbox" name="favor" value =3 /> 复选框
+
+            上传文件
+            <input type="file" name="fname" />  依赖form表单的一个属性enctype,逐步上传的服务器
+
+            <input type="reset" value = "重置"/>   重置
+
+        - <textarea name="memo">默认值</textarea>  --可以把数据提交到后台
+
+        - <select name="city" size=3 multiple="multiple">      下拉菜单  size 显示个数，multiple 多选
+             <option value="1" selected="selected">北京</option>
+             <option value="2">上海</option>
+             <option value="3">成都</option>
+          </select>
+
+
+        - <form> 向后台提交数据
+          <form action="" method="GET"/>  GET方法：通过url传递数据，执行get方法
+          <form action="" method="POST"/> POST方法：放在内部类提交 ，执行post方法
+
+
+        - a标签
+            - 跳转
+            - 锚点  当前页面跳转   href="#某个锚点的id"   id不能重复
+        - img标签
+            src
+            alt
+            title
+        - ol   s8
+        - ul   s8
+        - dl   s8
+        -table标签
+            thead
+                tr
+                    th
+            tbody
+                tr
+                    td
+        - label 标签
+            用户点击文字获取光标焦点：
+            <label for="username">用户名：</label>
+            <input id="username" type="text" name="user" />
+
+CSS
+CSS
+
+    在标签上设置style属性：
+        background-color: #2459a2;
+        height: 48px;
+        ...
+
+    编写css样式：
+        1. 标签的style属性
+        2. 写在head里面 style标签中写样式
+            - id选择区
+                  #i1{
+                    background-color: #2459a2;
+                    height: 48px;
+                  }
+
+            - class选择器 ******
+
+                  .名称{
+                    ...
+                  }
+
+                  <标签 class='名称'> </标签>
+
+            - 标签选择器
+                    div{
+                        ...
+                    }
+
+
+                    所有div设置上此样式
+
+            - 层级选择器（空格） ******
+                   .c1 .c2 div{
+
+                   }
+            - 组合选择器（逗号） ******
+                    #c1,.c2,div{
+
+                   }
+
+            - 属性选择器 ******
+                   对选择到的标签再通过属性再进行一次筛选
+                   .c1[n='alex']{ width:100px; height:200px; }
+
+            PS:
+                - 优先级，标签上style优先，编写顺序，就近原则
+
+        2.5 css样式也可以写在单独文件中
+            <link rel="stylesheet" href="commons.css" />
+
+        3、注释
+            /*   */
+
+        4、边框
+             - 宽度，样式，颜色  (border: 4px dotted red;)
+             - border-left
+
+        5、
+            height，         高度 百分比
+            width，          宽度 像素，百分比
+            text-align:ceter, 水平方向居中
+            line-height，垂直方向根据标签高度
+            color、     字体颜色
+            font-size、 字体大小
+            font-weight 字体加粗
+
+        6、float
+            让标签浪起来，块级标签也可以堆叠
+            老子管不住：
+                <div style="clear: both;"></div>
+
+        7、display
+            display: none; -- 让标签消失
+            display: inline;
+            display: block;
+            display: inline-block;
+                     具有inline,默认自己有多少占多少
+                     具有block，可以设置无法设置高度，宽度，padding  margin
+            ******
+            行内标签：无法设置高度，宽度，padding  margin
+            块级标签：设置高度，宽度，padding  margin
+
+
+        8、padding  margin(0,auto)
+
+
+Crlt + ？ 注释
+Crlt + d 未选中时，复制当前行到下一行，选中时复制粘贴选中部分
+
