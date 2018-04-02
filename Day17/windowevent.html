@@ -1,0 +1,120 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title></title>
+    <style type="text/css">
+    #aa{ border:1px solid #000; width:100px; height:40px; margin-top:50px;}
+    #bb{ border:1px solid #000; width:500px; height:40px; margin-top:50px;}
+    #cc{ border:1px solid #000; width:500px; height:40px;}
+    </style>
+</head>
+<body>
+    <div id="aa"></div>
+    <div id="bb">dfdfddfsd</div>
+    <div id="cc">gregreger</div>
+
+    <script type="text/javascript">
+
+        document.getElementById("aa").onclick = function (e) {
+            if (e) alert(e.toString()); // IE6/7/8 e为undefined  IE9中e为W3标准事件对象。
+            //e = window.event;
+            alert(e.srcElement.tagName || e.currentTarget.tagName);
+        }
+        /*  element.onXXX方式（比较古老，不推荐使用）
+
+        这种方式添加事件IE6/7/8只支持window.event不支持参数传入，
+        Firefox只支持参数传入不支持其它方式。
+        IE9/Opera/Safari/Chrome 两种方式都支持。
+        */
+
+
+        var d4 = document.getElementById('bb');
+        function clk(e) {
+            alert(e);  // 所有浏览器弹出的信息框显示都是事件对象。
+            alert(e.srcElement.tagName || e.currentTarget.tagName);
+            e = e || window.event;
+            alert(e);  // IE6/7/8中和上个e弹出相同的对象。
+        }
+        if (d4.addEventListener) {
+            d4.addEventListener('click', clk, false);
+            alert("addEventListener");
+        }
+        if (d4.attachEvent) {
+            d4.attachEvent('onclick', clk);
+            alert("attachEvent");
+        }
+        /*  addEventListener、attachEvent方式（推荐使用）
+
+        结论：
+        通常事件句柄里有这句话：e = e || window.event;
+        但是在这种调用方式（addEventListener、attachEvent方式）中没什么作用，
+        这是什么原因呢？上边参考文章的总结里指出了原因，即：
+        “IE6/7/8支持通过window.event获取对象，
+        通过attachEvent方式添加事件时也支持事件对象作为句柄第一个参数传入”
+        因为IE6/7/8在attachEvent方式添加事件时同时支持两种方式，所以事件句柄中的参数e在
+        IE6/7/8中会自动转换为window.event。
+        这么以来，这句e = e || window.event;在此处就不需要了（个人结论）。
+
+        */
+
+
+        /*
+        在编写跨浏览器的函数库时，IE和标准事件对象的属性的差异的问题需要解决。
+        下边抽出相关代码，讨论这个问题在这里的体现。
+        */
+        var _E = {
+            BindEvent: function (object, fun) {
+                if (arguments.length == 1) {
+                    fun = arguments[0];
+                    object = null;
+                }
+                var args = Array.prototype.slice.call(arguments, 2);
+                return function (event) {
+                    return fun.apply(object, [fixEvent(event)].concat(args));
+                }
+            }
+        };
+        function fixEvent(event) {  // 统一不同浏览器的event对象
+            if (event) return event;
+            event = window.event;
+            event.pageX = event.clientX + getScrollLeft(event.srcElement);
+            event.pageY = event.clientY + getScrollTop(event.srcElement);
+            event.target = event.srcElement;
+            event.stopPropagation = stopPropagation;
+            event.preventDefault = preventDefault;
+            var relatedTarget = {
+                "mouseout": event.toElement, "mouseover": event.fromElement
+            }[event.type];
+            if (relatedTarget) { event.relatedTarget = relatedTarget; }
+
+            return event;
+        };
+        function stopPropagation() { this.cancelBubble = true; };
+        function preventDefault() { this.returnValue = false; };
+
+        // 测试代码如下
+        function get(ev) {
+            alert(ev.pageX);
+        }
+        var cc = document.getElementById("cc");
+        var clickHandler = _E.BindEvent(get);
+        cc.attachEvent('onclick', clickHandler);  // IE6/7/8下测试
+        /*
+        结果点击id为cc的div元素后，弹出undefined。说明ev.pageX根本不存在。
+        可是我们在fixEvent()里已经做了事件对象的统一工作。
+        调试会发现：fixEvent()里if (event) return event;这句是执行后就直接return了，
+        这里的event按照道理说应该是undefined，但是事实并不是。
+
+        //
+        至于原因个人觉得就是这里：因为IE6/7/8在attachEvent方式添加事件时同时支持两种方式，
+        所以事件句柄中的参数会自动转换为window.event。也就是说参数不是undefined
+
+        //
+        所以在这里用if (event) return event;判断事件对象不妥。
+        （说明：fixEvent()这段代码参考自博客园里cloudgamer的函数库，
+         他里边就是这种写法，个人觉得有错误，希望有兴趣的朋友也做做验证）
+        */
+
+    </script>
+</body>
+</html>

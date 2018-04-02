@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+
+</style>
+<body>
+
+<table id="i1" border="1" width="300px">
+    <tr><td>1</td><td>2</td><td>2</td></tr>
+    <tr><td>1</td><td>2</td><td>2</td></tr>
+    <tr><td>1</td><td>2</td><td>2</td></tr>
+</table>
+
+<table id='i2' border="1" width="300px">
+    <tr><td>1</td><td>2</td><td>2</td></tr>
+    <tr><td>1</td><td>2</td><td>2</td></tr>
+    <tr><td>1</td><td>2</td><td>2</td></tr>
+</table>
+    <script>
+        var myTrs = document.getElementsByTagName("tr");
+        var len = myTrs.length;
+        for(var i=0;i<len;i++){
+            // i=0,i=1,i=2
+            myTrs[i].onmouseover = function(){
+                 this.style.backgroundColor = "red";
+            };
+//
+//            myTrs[i].onmouseout = function(){
+//                this.style.backgroundColor = "";
+//            }
+        }
+//        function t1(n){
+//            var myTrs = document.getElementsByTagName("tr")[n];
+////            console.log(myTrs);
+//            myTrs.style.backgroundColor = "red";
+//        }
+//
+//        function t2(n){
+//            var myTrs = document.getElementsByTagName("tr")[n];
+//            myTrs.style.backgroundColor = "";
+//        }
+
+    </script>
+
+
+</body>
+</html>

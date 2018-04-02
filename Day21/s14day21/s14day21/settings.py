@@ -55,8 +55,12 @@ ROOT_URLCONF = 's14day21.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+<<<<<<< HEAD
         'DIRS': [os.path.join(BASE_DIR, 'templates')]
         ,
+=======
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+>>>>>>> 65010c062e9afcb398a4b4834131664892577dfb
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

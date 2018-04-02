@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {% extends 'master.html' %}
 
 {% block title %}用户管理{% endblock %}
@@ -26,4 +27,35 @@
 
 {% block js %}
     <script></script>
+=======
+{% extends 'master.html' %}
+
+{% block title %}用户管理{% endblock %}
+
+{% block content %}
+    <div class="pg-header"><h1>用户管理</h1></div>
+{% endblock %}
+<ul>
+    {% for i in u %}
+        <li>{{ i }}</li>
+    {% endfor %}
+</ul>
+
+{% for i in u %}
+    {% include 'tag.html' %}
+{% endfor %}
+
+
+
+{% block css %}
+    <style>
+        body{
+            background-color: red;
+        }
+    </style>
+{% endblock %}
+
+{% block js %}
+    <script></script>
+>>>>>>> 65010c062e9afcb398a4b4834131664892577dfb
 {% endblock %}

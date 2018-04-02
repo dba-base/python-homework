@@ -5,7 +5,11 @@
       <configuration>
         <option name="rootFolder" value="$MODULE_DIR$" />
         <option name="settingsModule" value="s14day21/settings.py" />
+<<<<<<< HEAD
         <option name="manageScript" value="manage.py" />
+=======
+        <option name="manageScript" value="$MODULE_DIR$/manage.py" />
+>>>>>>> 65010c062e9afcb398a4b4834131664892577dfb
         <option name="environment" value="&lt;map/&gt;" />
       </configuration>
     </facet>

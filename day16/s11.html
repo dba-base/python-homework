@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+
+</style>
+<body>
+
+<table border="1" width="300px">
+    <tr onmouseover="t1(0);" onmouseout="t2(0);"><td>1</td><td>2</td><td>2</td></tr>
+    <tr onmouseover="t1(1);" onmouseout="t2(1);"><td>1</td><td>2</td><td>2</td></tr>
+    <tr onmouseover="t1(2);" onmouseout="t2(2);"><td>1</td><td>2</td><td>2</td></tr>
+</table>
+    <script>
+        function t1(n){
+            var myTrs = document.getElementsByTagName("tr")[n];
+//            console.log(myTrs);
+            myTrs.style.backgroundColor = "red";
+        }
+
+        function t2(n){
+            var myTrs = document.getElementsByTagName("tr")[n];
+            myTrs.style.backgroundColor = "";
+        }
+    </script>
+
+
+</body>
+</html>

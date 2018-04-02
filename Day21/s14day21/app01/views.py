@@ -2,6 +2,7 @@ from django.shortcuts import render, HttpResponse,redirect
 from django.urls import reverse
 
 
+<<<<<<< HEAD
 # Create your views here.
 
 # def index(request):
@@ -21,6 +22,8 @@ from django.urls import reverse
 #     return HttpResponse('OK')
 
 
+=======
+>>>>>>> 65010c062e9afcb398a4b4834131664892577dfb
 def tpl1(request):
     user_list = [1, 2, 3, 43]
     return render(request, 'tpl1.html', {'u': user_list})
@@ -50,7 +53,11 @@ def user_list(request):
     current_page = int(current_page)
 
     val = request.COOKIES.get('per_page_count',10)
+<<<<<<< HEAD
     val = int(val)
+=======
+    val = int(str(val))
+>>>>>>> 65010c062e9afcb398a4b4834131664892577dfb
     page_obj = pagination.Page(current_page,len(LIST),val)
 
     data = LIST[page_obj.start:page_obj.end]
@@ -77,7 +84,11 @@ def login(request):
         if not dic:
             return render(request,'login.html')
         if dic['pwd'] == p:
+<<<<<<< HEAD
             res = redirect('/index/')
+=======
+            res = redirect('/index/')   #跳转
+>>>>>>> 65010c062e9afcb398a4b4834131664892577dfb
             # res.set_cookie('username111',u,max_age=10)
             # import datetime
             # current_date = datetime.datetime.utcnow()

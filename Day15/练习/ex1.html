@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .hide {
+            display: none;
+        }
+
+        .item .header {
+            height: 35px;
+            background-color: #9bccf7;
+            color: #f7ebf6;
+            line-height: 35px;
+
+        }
+    </style>
+</head>
+<body>
+<div style="height: 50px;"></div>
+<div class="item">
+    <div style="width: 300px;">
+        <div id="i1" class="header" onclick="CheckMenu('i1');">目录1</div>
+        <div class="content hide">
+            <div>内容1</div>
+            <div>内容1</div>
+            <div>内容1</div>
+            <div>内容1</div>
+        </div>
+    </div>
+    <div style="width: 300px;">
+        <div id="i2" class="header" onclick="CheckMenu('i2');">目录2</div>
+        <div class="content hide">
+            <div style="color: red">内容1</div>
+            <div>内容1</div>
+            <div>内容1</div>
+            <div>内容1</div>
+        </div>
+    </div>
+    <div style="width: 300px;">
+        <div id="i3" class="header" onclick="CheckMenu('i3');">目录3</div>
+        <div class="content hide">
+            <div>内容1</div>
+            <div>内容1</div>
+            <div>内容1</div>
+            <div>内容1</div>
+        </div>
+    </div>
+    <div style="width: 300px;">
+        <div id="i4" class="header" onclick="CheckMenu('i4');">目录4</div>
+        <div class="content hide">
+            <div>内容1</div>
+            <div>内容1</div>
+            <div>内容1</div>
+            <div>内容1</div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<script>
+    function CheckMenu(nid) {
+        var current_header = document.getElementById(nid);
+        var item_list = current_header.parentElement.parentElement.children;
+
+        for (var i=0; i < item_list.length; i++) {
+            var current_item = item_list[i];
+            current_item.children[1].classList.add('hide');
+        }
+
+        current_header.nextElementSibling.classList.remove('hide');
+
+
+    }
+</script>
+
+</body>
+</html>

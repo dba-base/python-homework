@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,4 +23,30 @@
     </ul>
     <script src="/static/jquery.js"></script>
 </body>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="/static/commons.css" />
+    <style>
+        .pg-header{
+            height: 48px;
+            background-color: seashell;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <div class="pg-header">小男孩管理</div>
+    <h1>用户管理</h1>
+    <ul>
+        {% for i in u %}
+            <li>{{ i }}</li>
+        {% endfor %}
+    </ul>
+    <script src="/static/jquery.js"></script>
+</body>
+>>>>>>> 65010c062e9afcb398a4b4834131664892577dfb
 </html>
