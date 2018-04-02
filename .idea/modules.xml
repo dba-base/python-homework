@@ -2,7 +2,13 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/Day20/.idea/Day20.iml" filepath="$PROJECT_DIR$/Day20/.idea/Day20.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Day18/mydjango1/.idea/mydjango1.iml" filepath="$PROJECT_DIR$/Day18/mydjango1/.idea/mydjango1.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/python-homework.iml" filepath="$PROJECT_DIR$/.idea/python-homework.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Day19/s14day19_2/.idea/s14day19_2.iml" filepath="$PROJECT_DIR$/Day19/s14day19_2/.idea/s14day19_2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Day20/s14day20/.idea/s14day20.iml" filepath="$PROJECT_DIR$/Day20/s14day20/.idea/s14day20.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Day21/s14day21/.idea/s14day21.iml" filepath="$PROJECT_DIR$/Day21/s14day21/.idea/s14day21.iml" />
+      <module fileurl="file://$PROJECT_DIR$/s14day21/.idea/s14day21_1.iml" filepath="$PROJECT_DIR$/s14day21/.idea/s14day21_1.iml" />
     </modules>
   </component>
 </project>

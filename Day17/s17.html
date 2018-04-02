@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .error{
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+    <form id="f1" action="s5.html" method="POST">
+        <div><input name="n1" tex = "用户名" type="text" /></div>
+        <div><input name="n2" tex = "密码" type="password" /></div>
+        <div><input name="n3" tex = "邮箱" type="text" /></div>
+        <div><input name="n4" tex = "端口" type="text" /></div>
+        <div><input name="n5" tex = "IP" type="text" /></div>
+
+        <input type="submit" value="提交" />
+        <img src="...">
+    </form>
+    <script src="jquery-1.12.4.js"></script>
+    <script>
+        // 当页面框架加载完毕后，自动执行
+//        $(function(){
+//            $.Login('#f1')
+//        });
+
+
+
+        $(function(){
+            // 当页面所有元素完全加载完毕后，执行
+            $(':submit').click(function () {
+                $('.error').remove();
+                var flag = true;
+                $('#f1').find('input[type="text"],input[type="password"]').each(function () {
+                    var v = $(this).val();
+                    var n = $(this).attr('tex');
+                    if(v.length <= 0){
+                        flag = false;
+                        var tag = document.createElement('span');
+                        tag.className = "error";
+                        tag.innerHTML = n + "必填";
+                        $(this).after(tag);
+                         return false;
+                    }
+                });
+                return flag;
+
+        });
+
+
+        });
+
+
+
+//        $(':submit').click(function () {
+//            var v = $(this).prev().val();
+//            if(v.length > 0){
+//                return true;
+//            }else{
+//                alert('请输入内容');
+//                return false
+//            }
+//        })
+
+    </script>
+</body>
+</html>

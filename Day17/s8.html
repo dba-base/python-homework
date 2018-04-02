@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .hide{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <input type='checkbox' id='i2'  />
+
+    <input id="i1" type="button" value="开关" />
+    <div class="c1 hide">asdfasdf</div>
+
+    <script src="jquery-1.12.4.js"></script>
+    <script>
+        $('#i1').click(function(){
+//            if($('.c1').hasClass('hide')){
+//                $('.c1').removeClass('hide');
+//            }else{
+//                $('.c1').addClass('hide');
+//            }
+            $('.c1').toggleClass('hide');
+        })
+    </script>
+</body>
+</html>

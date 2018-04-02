@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %} {% endblock %}</title>
+    <link rel="stylesheet" href="/static/commons.css" />
+    <style>
+        .pg-header{
+            height: 50px;
+            background-color: seashell;
+            color: green;
+        }
+    </style>
+    {% block css %} {% endblock %}
+</head>
+<body>
+{#    <div class="pg-header">小男孩管理</div>#}
+    {% block content %} {% endblock %}
+    <div>
+        <a>asdf</a>
+        <a id="">asdf</a>
+        <a>asdf</a>
+        <a>asdf</a>
+        <a>asdf</a>
+    </div>
+    <iframe src="/"></iframe>
+</body>
+</html>

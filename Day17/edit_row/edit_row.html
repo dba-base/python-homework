@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        .edit-mode{
+            background-color: #b3b3b3;
+            padding: 8px;
+            text-decoration: none;
+            color: white;
+        }
+        .editing{
+            background-color: #f0ad4e;
+        }
+    </style>
+</head>
+<body>
+
+    <div style="padding: 20px">
+        <input type="button" onclick="CheckAll('#edit_mode', '#tb1');" value="全选" />
+        <input type="button" onclick="CheckReverse('#edit_mode', '#tb1');" value="反选" />
+        <input type="button" onclick="CheckCancel('#edit_mode', '#tb1');" value="取消" />
+
+        <a id="edit_mode" class="edit-mode" href="javascript:void(0);"  onclick="EditMode(this, '#tb1');">进入编辑模式</a>
+
+    </div>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>选择</th>
+            <th>主机名</th>
+            <th>端口</th>
+            <th>状态</th>
+        </tr>
+        </thead>
+        <tbody id="tb1">
+            <tr>
+                <td><input type="checkbox" /></td>
+                <td edit="true">v1</td>
+                <td>v11</td>
+                <td edit="true" edit-type="select" sel-val="1" global-key="STATUS">在线</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" /></td>
+                <td edit="true">v1</td>
+                <td>v11</td>
+                <td edit="true" edit-type="select" sel-val="2" global-key="STATUS">下线</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" /></td>
+                <td edit="true">v1</td>
+                <td>v11</td>
+                <td edit="true" edit-type="select" sel-val="1" global-key="STATUS">在线</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="js/edit_row.js"></script>
+
+    <script>
+        /*
+         监听是否已经按下control键
+         */
+        window.globalCtrlKeyPress = false;
+
+        window.onkeydown = function(event){
+            if(event && event.keyCode == 17){
+                window.globalCtrlKeyPress = true;
+            }
+        };
+
+        /*
+         按下Control，联动表格中正在编辑的select
+         */
+        function MultiSelect(ths){
+            if(window.globalCtrlKeyPress){
+                var index = $(ths).parent().index();
+                var value = $(ths).val();
+                $(ths).parent().parent().nextAll().find("td input[type='checkbox']:checked").each(function(){
+                    $(this).parent().parent().children().eq(index).children().val(value);
+                });
+            }
+        }
+    </script>
+
+</body>
+</html>

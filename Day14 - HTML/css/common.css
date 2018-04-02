@@ -1,0 +1,27 @@
+/*公共开始*/
+body{
+    margin: auto;
+    font-family: Arial;
+    font-size: 12px;
+}
+
+body, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, button, textarea, p, blockquote, th, td, figure, div {
+    margin: 0;
+    padding: 0;
+}
+
+ol, ul, li {
+    list-style: none;
+}
+
+
+a{
+    cursor:pointer;
+    text-decoration:none;
+}
+
+.container{
+    width: 1190px;
+    margin-left:auto;
+    margin-right:auto;
+}
