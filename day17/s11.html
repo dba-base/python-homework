@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <input id="t1" type="text" />
+    <input id="a1" type="button" value="添加" />
+    <input id="a2" type="button" value="删除" />
+    <input id="a3" type="button" value="复制" />
+
+    <ul id="u1">
+
+        <li>1</li>
+        <li>2</li>
+
+    </ul>
+    <script src="jquery-1.12.4.js"></script>
+    <script>
+        $('#a1').click(function () {
+            var v = $('#t1').val();
+
+            var temp = "<li>" + v + "</li>";
+            // $('#u1').append(temp);
+            $('#u1').prepend(temp);
+            // $('#u1').after(temp)
+            // $('#u1').before(temp)
+        });
+
+        $('#a2').click(function () {
+            var index = $('#t1').val();
+            //$('#u1 li').eq(index).remove();
+            //$('#u1 li').eq(index).empty();
+        });
+        $('#a3').click(function () {
+            var index = $('#t1').val();
+            var v = $('#u1 li').eq(index).clone();
+            $('#u1').append(v);
+
+
+            //$('#u1 li').eq(index).remove();
+            //$('#u1 li').eq(index).empty();
+        })
+    </script>
+</body>
+</html>

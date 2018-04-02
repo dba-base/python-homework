@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <input type="button" value="全选" onclick="checkAll();" />
+    <input type="button" value="反选" onclick="reverseAll();" />
+    <input type="button" value="取消"  onclick="cancleAll();"/>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>选项</th>
+                <th>IP</th>
+                <th>PORT</th>
+            </tr>
+        </thead>
+        <tbody id="tb">
+
+            <tr>
+                <td><input type="checkbox" /></td>
+                <td>1.1.1.1</td>
+                <td>80</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" /></td>
+                <td>1.1.1.1</td>
+                <td>80</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" /></td>
+                <td>1.1.1.1</td>
+                <td>80</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script src="jquery-1.12.4.js"></script>
+    <script>
+        function checkAll() {
+            $('#tb :checkbox').prop('checked',true);
+        }
+        function cancleAll() {
+            $('#tb :checkbox').prop('checked',false);
+        }
+        function reverseAll() {
+            $(':checkbox').each(function(k){
+                // this,代指当前循环的每一个元素
+                // Dom
+                /*
+                if(this.checked){
+                    this.checked = false;
+                }else{
+                    this.checked = true;
+                }
+                */
+                /*
+                if($(this).prop('checked')){
+                    $(this).prop('checked', false);
+                }else{
+                    $(this).prop('checked', true);
+                }
+                */
+              // 三元运算var v = 条件? 真值：假值
+                var v = $(this).prop('checked')?false:true;
+                $(this).prop('checked',v);
+            })
+        }
+    </script>
+</body>
+</html>

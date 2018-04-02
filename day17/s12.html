@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .container{
+            padding: 50px;
+            border: 1px solid #dddddd;
+        }
+        .item{
+            position: relative;
+            width: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="item">
+            <span>赞</span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="item">
+            <span>赞</span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="item">
+            <span>赞</span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="item">
+            <span>赞</span>
+        </div>
+    </div>
+
+    <script src="jquery-1.12.4.js"></script>
+    <script>
+        $('.item').click(function () {
+            AddFavor(this);
+        });
+
+        function AddFavor(self) {
+            // DOM对象
+            var fontSize = 15;
+            var top = 0;
+            var right = 0;
+            var opacity = 1;
+
+            var tag = document.createElement('span');
+            $(tag).text('+1');
+            $(tag).css('color','green');
+            $(tag).css('position','absolute');
+            $(tag).css('fontSize',fontSize + "px");
+            $(tag).css('right',right + "px");
+            $(tag).css('top',top + 'px');
+            $(tag).css('opacity',opacity);
+            $(self).append(tag);
+
+            var obj = setInterval(function () {
+                fontSize = fontSize + 10;
+                top = top - 10;
+                right = right - 10;
+                opacity = opacity - 0.1;
+
+                $(tag).css('fontSize',fontSize + "px");
+                $(tag).css('right',right + "px");
+                $(tag).css('top',top + 'px');
+                $(tag).css('opacity',opacity);
+                if(opacity < 0){
+                    clearInterval(obj);
+                    $(tag).remove();
+                }
+            }, 40);
+
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div id="status"></div>
+
+    <input type="button" value="删除" onclick="DeleteEle();" />
+
+    <script>
+        function  DeleteEle(){
+            document.getElementById('status').innerText = "已删除";
+            setTimeout(function () {
+                    document.getElementById('status').innerText = "";
+            }, 50000);
+        }
+    </script>
+</body>
+</html>

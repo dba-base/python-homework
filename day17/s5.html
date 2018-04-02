@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .hide{
+            display: none;
+        }
+        .modal{
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 500px;
+            height: 400px;
+            margin-left: -250px;
+            margin-top: -250px;
+            background-color: #eeeeee;
+            z-index: 10;
+        }
+        .shadow{
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.6;
+            background-color: black;
+            z-index: 9;
+        }
+    </style>
+</head>
+<body>
+    <a onclick="addElement();">添加</a>
+
+    <table border="1" id="tb">
+        <tr>
+            <td target="hostname">1.1.1.11</td>
+            <td target="port">80</td>
+            <td target="ip">80</td>
+            <td>
+                <a class="edit">编辑</a> | <a class="del">删除</a>
+            </td>
+        </tr>
+        <tr>
+            <td target="hostname">1.1.1.12</td>
+            <td target="port">80</td>
+            <td target="ip">80</td>
+            <td>
+                <a class="edit">编辑</a> | <a class="del">删除</a>
+            </td>
+        </tr>
+        <tr>
+            <td target="hostname">1.1.1.13</td>
+            <td target="port">80</td>
+            <td target="ip">80</td>
+            <td>
+                <a class="edit">编辑</a> | <a class="del">删除</a>
+            </td>
+        </tr>
+        <tr>
+            <td target="hostname">1.1.1.14</td>
+            <td target="port">80</td>
+            <td target="ip">80</td>
+            <td>
+                <a class="edit">编辑</a> | <a class="del">删除</a>
+            </td>
+
+        </tr>
+    </table>
+
+    <div class="modal hide">
+        <div>
+            <input name="hostname" type="text"  />
+            <input name="port" type="text" />
+            <input name="ip" type="text" />
+        </div>
+
+        <div>
+            <input type="button" value="取消" onclick="cancelModal();" />
+            <input type="button" value="确定" onclick="confirmModal();" />
+        </div>
+    </div>
+
+    <div class="shadow hide"></div>
+
+    <script src="jquery-1.12.4.js"></script>
+    <script>
+
+        $('.del').click(function () {
+            $(this).parent().parent().remove();
+        });
+        
+        function  confirmModal() {
+
+            var tr = document.createElement('tr');
+            var td1 = document.createElement('td');
+            td1.innerHTML = "11.11.11.11";
+            var td2 = document.createElement('td');
+            td2.innerHTML = "8001";
+
+            $(tr).append(td1);
+            $(tr).append(td2);
+
+            $('#tb').append(tr);
+
+            $(".modal,.shadow").addClass('hide');
+//            $('.modal input[type="text"]').each(function () {
+//                // var temp = "<td>..."
+//
+//
+//
+//            })
+        }
+
+        function  addElement() {
+            $(".modal,.shadow").removeClass('hide');
+        }
+        function cancelModal() {
+            $(".modal,.shadow").addClass('hide');
+            $('.modal input[type="text"]').val("");
+        }
+
+        $('.edit').click(function(){
+            $(".modal,.shadow").removeClass('hide');
+            // this
+            var tds = $(this).parent().prevAll();
+            tds.each(function () {
+                // 获取td的target属性值
+                var n = $(this).attr('target');
+                // 获取td中的内容
+                var text = $(this).text();
+                var a1 = '.modal input[name="';
+                var a2 = '"]';
+                var temp = a1 + n + a2;
+                $(temp).val(text);
+            });
+
+
+//            var port = $(tds[0]).text();
+//            var host = $(tds[1]).text();
+//
+//            $('.modal input[name="hostname"]').val(host);
+//            $('.modal input[name="port"]').val(port);
+            // 循环获取tds中内容
+            // 获取 <td>内容</td> 获取中间的内容
+            // 赋值给input标签中的value
+
+        });
+    </script>
+</body>
+</html>

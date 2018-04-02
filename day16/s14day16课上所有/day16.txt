@@ -1,0 +1,448 @@
+作业问题：
+    1. 写页面是觉得丑
+        float,clear:both,margin,padding
+        position:
+            left：
+        
+        网上找模板
+        HTML模板，BootStrap
+    2. 背景图片
+        
+HTML
+    一大堆的标签：块级、行内
+    
+CSS
+    position
+    background
+    text-align
+    margin
+    padding
+    font-size
+    z-index
+    over-flow
+    :hover
+    opacity
+    float (clear:both)
+    line-height
+    border
+    color
+    display
+    
+    补充：页面布局
+          主站—
+                <div class='pg-header'>
+                       <div style='width:980px;margin:0 auto;'>
+                           内容自动居中
+                       </div>
+                
+                </div>
+                <div  class='pg-content'></div>
+                <div  class='pg-footer'></div>
+          后台管理布局：
+            position:
+                fiexd    -- 永远固定在窗口的某个位置
+                relative -- 单独无意义
+                absolute -- 第一次定位，可以在指定位置，滚轮滚动时，不在了。。。。
+                
+            a. 
+                左侧菜单跟随滚动条
+            b. 
+                左侧以及上不不动   ******
+
+
+JavaScript
+
+
+    6、for循环
+    
+        for(var item in [11,22,33]){
+            console.log(item);
+            continue;
+        }
+        
+        var arra = [11,22,32,3]
+        for(var i=0;i<arra.lenght;i=i+1){
+            break;
+        }
+        
+        while(条件){
+        
+        
+        }
+    7、条件语句
+    
+        if(){
+        
+        }else if(){
+        
+        }else{
+        
+        }
+        
+        ==
+        ===
+        
+        name='3';
+        
+   
+        switch(name){
+            case '1':
+                age = 123;
+                break;
+            case '2':
+                age = 456;
+                break;
+            default :
+                age = 777;
+        }
+        
+    8. 函数
+        function func(arg){
+        
+            return arg+1
+        }
+        var result = func(1)
+        console.log(result);
+        
+        普通函数：
+            function func(){
+                
+            }
+        匿名函数：
+            
+            function func(arg){
+            
+                return arg+1
+            }
+            
+            setInterval("func()", 5000);
+            
+            setInterval(function(){
+                console.log(123);
+            
+            },5000)
+            
+        自执行函数(创建函数并且自动执行)：
+            function func(arg){
+                console.log(arg);
+            }
+            // func(1)
+            
+            (function(arg){
+                console.log(arg);
+            })(1)
+    9、序列化
+        JSON.stringify()   将对象转换为字符串
+        JSON.parse()       将字符串转换为对象类型
+        
+    10、转义
+        客户端（cookie）   =》 服务器端
+        将数据经过转义后，保存在cookie
+        
+    11、eval
+        python:
+            val = eval(表达式)
+                  exec(执行代码)
+        JavaScript:
+            eval
+    12、时间
+        Date类
+        
+        var d = new Date()
+        
+        d.getXXX  获取
+        d.setXXX  设置
+        
+    13、作用域
+        ================================ 1. 以函数作为作用域 （let）================================
+        
+        其他语言： 以代码块作为作用域
+                    public void Func(){
+                        if(1==1){
+                            string name = 'Java';
+                            
+                        }
+                        console.writeline(name);
+                        
+                    }
+                    Func()
+                    // 报错
+                    
+        Python：   以函数作为作用域
+                    情况一：
+                        def func():
+                            if 1==1:
+                                name = 'alex'
+                            print(name)
+                            
+                        func()
+                        // 成功
+                    情况二：
+                        def func():
+                            if 1==1:
+                                name = 'alex'
+                            print(name)
+                            
+                        func()
+                        print(name)
+                        // 报错
+                
+        JavaScript:  以函数作为作用域
+        
+                    function func(){
+                        if(1==1){
+                            var name = 'alex';
+                        }
+                        console.log(name);
+                    }
+                    func()
+        
+        ================================ 2. 函数的作用域在函数未被调用之前，已经创建 ================================
+        
+        function func(){
+            if(1==1){
+                var name = 'alex';
+            }
+            console.log(name);
+        }
+        
+        ================= 3. 函数的作用域存在作用域链，并且也是在被调用之前创建 ==================
+        示例一：
+            xo = "alex";
+            
+            function func(){
+                // var xo = 'eric';
+                function inner(){
+                    // var xo = 'tony';
+                    console.log(xo);
+                }
+                
+                inner()
+            }
+            
+            func()
+        
+        示例二：
+            xo = "alex";
+            
+            function func(){
+                var xo = 'eric';
+                function inner(){
+                    
+                    console.log(xo);
+                }
+                
+                return inner;
+            }
+            
+            var ret = func()
+            ret()
+        
+        
+        
+        示例三：
+            xo = "alex";
+            
+            function func(){
+                var xo = 'eric';
+                function inner(){
+                    
+                    console.log(xo);
+                }
+                var xo = 'tony';
+                
+                return inner;
+            }
+            
+            var ret = func()
+            ret()
+        
+        ================= 4. 函数内局部变量 声明提前 ==================
+        
+        function func(){
+            console.log(xxoo);
+        }
+        
+        func();
+        // 程序直接报错
+        
+        function func(){
+            console.log(xxoo);
+            var xxoo = 'alex';
+        }
+        解释过程中：var xxoo;
+        
+        func();
+        // undefined
+        
+    14、JavaScript面向对象
+        
+        JavaScript面向对象
+            function foo(){
+                var xo = 'alex';
+            }
+            
+            foo()
+            
+            
+            
+            function Foo(n){
+                this.name = n;
+                this.sayName = function(){
+                    console.log(this.name);
+                }
+            }
+            
+            var obj1 = new Foo('we');
+            obj1.name
+            obj1.sayName()
+            
+            
+            var obj2 = new Foo('wee');
+            obj2.name
+            obj2.sayName()
+            ==============》
+                a. this代指对象(python self)
+                b. 创建对象时, new 函数()
+        
+        
+        Python的面向对象：
+            class Foo:
+                def __init__(self,name):
+                    self.name = name
+                    
+                def sayName(self):
+                    print(self.name)
+                    
+            obj1 = Foo('we')
+
+            obj2 = Foo('wee')
+        
+       
+        原型：
+        
+            function Foo(n){
+                this.name = n;
+            }
+            # Foo的原型
+            Foo.prototype = {
+                'sayName': function(){
+                    console.log(this.name)
+                }
+            }
+            
+        
+            obj1 = new Foo('we');
+            obj1.sayName()
+            
+            obj2 = new Foo('wee');
+
+
+DOM
+    查找
+        直接查找
+            var obj = document.getElementById('i1')
+        间接查找
+            文件内容操作：
+                innerText    仅文本
+                innerHTML    全内容
+                value
+                    input    value获取当前标签中的值
+                    select   获取选中的value值（selectedIndex）
+                    textarea value获取当前标签中的值
+                
+                搜索框的示例
+    操作：      
+            样式操作：
+                className
+                classList
+                    classList.add
+                    classList.remove
+                   
+                   
+                obj.style.fontSize = '16px';
+                obj.style.backgroundColor = 'red';
+                obj.style.color = "red"
+                
+                
+            属性操作：
+                attributes
+                getAttribute
+                removeAttribute
+                
+            创建标签，并添加到HTML中：
+                a. 字符串形式
+                
+                b. 对象的方式
+                    document.createElement('div')
+                
+                
+            提交表单
+                任何标签通过DOM都可提交表单
+                
+                document.geElementById('form').submit()
+            
+            其他：
+                console.log()
+                alert
+                var v = confirm(信息)  v:true false
+                
+                location.href
+                location.href = ""  # 重定向，跳转
+                location.reload()   # 页面刷新
+                location.href = location.href   < === > location.reload()
+                
+                
+                var o1 = setInterval(function(){}, 5000)
+                clearInterval(o1);
+                
+                var o2 = setTimeout(function(){}, 50000);
+                clearTimeout(o2);
+                
+                var obj = setInterval(function(){
+                    
+                }, 5000)
+                
+                clearInterval(obj);
+        
+    事件：
+        onclick，onblur，onfocus
+        
+        行为  样式  结构 相分离的页面？
+        js    css   html  
+        
+        绑定事件两种方式：
+            a. 直接标签绑定 onclick='xxx()'  onfocus
+            b. 先获取Dom对象，然后进行绑定
+                document.getElementById('xx').onclick
+                document.getElementById('xx').onfocus
+                
+        this，当前触发事件的标签
+            a. 第一种绑定方式
+                <input id='i1' type='button' onclick='ClickOn(this)'>
+                
+                function ClickOn(self){
+                    // self 当前点击的标签
+                    
+                }
+            b. 第二种绑定方式
+                <input id='i1' type='button' >
+                document.getElementById('i1').onclick = function(){
+                
+                    // this 代指当前点击的标签
+                }
+            
+                
+        作用域示例：
+                var myTrs = document.getElementsByTagName("tr");
+                var len = myTrs.length;
+                for(var i=0;i<len;i++){
+                    // i=0,i=1,i=2
+                    myTrs[i].onmouseover = function(){
+                         this.style.backgroundColor = "red";
+                    };
+
+                }
+            
+        
+jQuery        
