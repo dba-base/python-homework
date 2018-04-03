@@ -6,9 +6,35 @@
 </head>
 <body>
     <form action="/login/" method="POST">
-        <input type="text" name="user">
-        <input type="text" name="pwd">
-        <input type="submit" name="提交">
+        {%  csrf_token %}
+        <input type="text" name="user" />
+        <input type="text" name="pwd" />
+        <input type="checkbox" name="rmb" value="1" /> 10秒免登录
+        <input type="submit" value="提交" />
+        <input id="btn1" type="button" value="按钮1">
+        <input id="btn2" type="button" value="按钮2">
     </form>
+    <script src="/static/jquery-1.12.4.js"></script>
+    <script src="/static/jquery.cookie.js"></script>
+    <script>
+        $(function () {
+            $.ajaxSetup({
+                beforeSend:function (xhr,settings) {
+                    xhr.setRequestHeader('X-CSRFtoken',$.cookie('csrftoken'));
+
+                }
+            });
+            $('#btn1').click(function () {
+                $.ajax({
+                    url:'/login/',
+                    type:'POST',
+                    data:{'user':'root','pwd':'123'},
+                    success:function (arg) {
+
+                    }
+                })
+            })
+        })
+    </script>
 </body>
 </html>
