@@ -21,6 +21,7 @@
     <orderEntry type="module" module-name="s14day21" />
     <orderEntry type="module" module-name="s14day21" />
     <orderEntry type="module" module-name="s14day22" />
+    <orderEntry type="module" module-name="AutoOps" />
   </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_CONFIGURATION" value="Django" />

@@ -1,13 +1,15 @@
 from django.shortcuts import render,redirect,HttpResponse
-
+from django.conf import settings
 # Create your views here.
 
 def login(request):
     if request.method == "GET":
         return render(request,'login.html')
     elif request.method == "POST":
+        print(settings.CSRF_HEADER_NAME)
         user = request.POST.get('user')
         pwd = request.POST.get('pwd')
+        print(user,pwd)
         if user == 'root' and pwd == '123':
             #session中设置值
             request.session['username'] = user

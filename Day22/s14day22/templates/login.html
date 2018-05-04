@@ -6,7 +6,7 @@
 </head>
 <body>
     <form action="/login/" method="POST">
-        {%  csrf_token %}
+{#        {%  csrf_token %}#}
         <input type="text" name="user" />
         <input type="text" name="pwd" />
         <input type="checkbox" name="rmb" value="1" /> 10秒免登录
@@ -29,6 +29,7 @@
                     url:'/login/',
                     type:'POST',
                     data:{'user':'root','pwd':'123'},
+                    headers:{ "X-CSRFtoken":$.cookie("csrftoken")},
                     success:function (arg) {
 
                     }
