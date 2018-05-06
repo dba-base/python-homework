@@ -21,5 +21,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', views.login),
     path('index/', views.index),
+<<<<<<< HEAD
     path('fm/', views.fm),
+=======
+    path('logout/', views.logout),
+>>>>>>> 60b0239ea35daa7a919c8e221a922a9c17116c8b
 ]
