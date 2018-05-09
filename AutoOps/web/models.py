@@ -23,7 +23,7 @@ class Host(models.Model):
     enabled = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.ip_addr,self.port
+        return self.ip_addr
 
 class HostGroup(models.Model):
     """主机组"""
@@ -33,19 +33,17 @@ class HostGroup(models.Model):
         return self.name
 
 class RemoteUser(models.Model):
-    """存储远程用户名密码"""
+    """存储远程用户名密码（主机的密码）"""
     username = models.CharField(max_length=64)
     auth_type_choices = ((0,'ssh/password'),(1,'ssh/key'))
     auth_type = models.SmallIntegerField(choices=auth_type_choices,default=0)
     password = models.CharField(max_length=128,blank=True,null=True)
 
-    #hosts = models.ManyToManyField("Host")
-
     def __str__(self):
         return "%s(%s)%s" %( self.username,self.get_auth_type_display(),self.password)
 
     class Meta:
-        unique_together = ('username','auth_type','password')
+        unique_together = ('username','auth_type','password')   #联合唯一
 
 class BindHost(models.Model):
     """绑定远程主机和远程用户的对应关系"""
@@ -55,7 +53,7 @@ class BindHost(models.Model):
     def __str__(self):
         return "%s -> %s" %(self.host,self.remote_user)
     class Meta:
-        unique_together = ("host","remote_user")
+        unique_together = ("host","remote_user")     #联合唯一
 
 class UserProfileManager(BaseUserManager):
     def create_user(self, email, name, password=None):

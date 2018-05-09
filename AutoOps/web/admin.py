@@ -98,9 +98,19 @@ class RemoteUserAdmin(admin.ModelAdmin):
     list_display = ('username','auth_type','password')
 
 
+class TaskAdmin(admin.ModelAdmin):
+    list_display = ['id','user','task_type','content','date']
+
+
+class TaskLogDetailAdmin(admin.ModelAdmin):
+    list_display = ['id','task','bind_host','result','status','start_date','end_date']
+
+
 admin.site.register(models.Host)
 admin.site.register(models.HostGroup)
 admin.site.register(models.BindHost)
 admin.site.register(models.RemoteUser,RemoteUserAdmin)
 admin.site.register(models.IDC)
 admin.site.register(models.Session)
+admin.site.register(models.Task,TaskAdmin)
+admin.site.register(models.TaskLogDetail,TaskLogDetailAdmin)
