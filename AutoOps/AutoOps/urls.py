@@ -17,9 +17,20 @@ from django.conf.urls import url
 from django.contrib import admin
 from web import views
 
-urlpatterns = [
+rlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.dashboard),
+    url(r'^user_audit/$', views.user_audit,name="user_audit"),
+    url(r'^audit_log/(\w+-\w+-\w+)/$', views.audit_log_date,name="audit_log_date"),
+    url(r'^audit_log/(\w+-\w+-\w+)/(\d+)/$', views.audit_log_detail,name="audit_log_detail"),
+    url(r'^webssh/$', views.webssh,name="webssh"),
+    url(r'^multitask/cmd/$', views.multitask_cmd,name="multitask_cmd"),
+    url(r'^multitask/file_transfer/$', views.multitask_file_transfer,name="multitask_file_transfer"),
+    url(r'^multitask/$', views.multitask,name="multitask"),
+    url(r'^multitask/result/$', views.multitask_result,name="task_result"),
+
+
+
     url(r'^login/$', views.acc_login),
     url(r'^logout/$', views.acc_logout,name="logout"),
 
