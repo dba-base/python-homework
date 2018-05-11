@@ -1,0 +1,38 @@
+{% extends 'index.html' %}
+
+
+{% block page-title %}主机管理|批量命令{% endblock %}
+
+{% block page-content %}
+    {% csrf_token %}
+
+<div class="row">
+
+    {% include 'multitask_host_list_component.html' %}
+
+    <div class="col-lg-8">
+        <div class="panel">
+            <div class="panel-heading">
+                <h3 class="panel-title">命令操作</h3>
+            </div>
+            <div class="panel-body">
+                <textarea id="cmd_text" class="form-control"></textarea>
+                <input type="button" id='post_task_btn'  onclick="PostTask(this,'cmd')" class="btn btn-success pull-right" value="执行命令">
+            </div>
+        </div>
+        <div class="panel">
+            <div class="panel-heading">
+                <h3 class="panel-title">任务结果</h3>
+            </div>
+            <div class="panel-body">
+                <ul id="task_result_container"></ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+{% include 'multitask_js_component.html' %}
+
+{% endblock %}

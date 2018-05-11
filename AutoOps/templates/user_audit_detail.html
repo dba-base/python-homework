@@ -1,0 +1,38 @@
+{% extends 'index.html' %}
+
+
+{% block page-title %}用户审计{% endblock %}
+
+{% block page-content %}
+<div class="panel">
+    <div class="panel-heading">
+        <h3 class="panel-title">审计详情   主机:</h3>
+    </div>
+    <div class="panel-body">
+
+        <table class="table ">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>日期</th>
+                    <th>命令</th>
+
+
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for cmd in cmd_list %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ cmd.0 }}</td>
+                        <td>{{ cmd.1 }}</td>
+
+                    </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+</div>
+{% endblock %}

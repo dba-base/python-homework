@@ -1,0 +1,50 @@
+{% extends 'index.html' %}
+
+
+{% block page-title %}主机管理|批量文件分发{% endblock %}
+
+{% block page-content %}
+    {% csrf_token %}
+
+<div class="row">
+    {% include 'multitask_host_list_component.html' %}
+    <div class="col-lg-8">
+
+        <div class="panel">
+            <div class="panel-heading">
+                <h3 class="panel-title">文件分发</h3>
+            </div>
+            <div class="panel-body">
+                <select onchange="SelectFileTransferType(this)" class="form-control" name="file_transfer_type">
+                    <option value="send">发送文件到远程</option>
+                    <option value="get">从远程下载文件</option>
+
+                </select>
+
+                <input class="form-control" type="text"  id="local_file_path" placeholder="本地文件路径">
+                <input class="form-control"  type="text"  id="remote_file_path" placeholder="远程文件路径">
+                <input type="button" id='post_task_btn'  onclick="PostTask(this,'file_transfer')" class="btn btn-success pull-right" value="执行">
+
+            </div>
+        </div>
+
+
+        <div class="panel">
+            <div class="panel-heading">
+                <h3 class="panel-title">任务结果</h3>
+            </div>
+            <div class="panel-body">
+                <ul id="task_result_container"></ul>
+            </div>
+        </div>
+
+    </div>
+
+
+
+</div>
+
+{% include 'multitask_js_component.html' %}
+
+
+{% endblock %}
