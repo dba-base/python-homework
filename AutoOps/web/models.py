@@ -176,9 +176,4 @@ class TaskLogDetail(models.Model):
 
 
     def __str__(self):
-<<<<<<< HEAD
         return "%s %s" %(self.bind_host,self.status)
-
-=======
-        return "%s %s" %(self.bind_host,self.status)
->>>>>>> 1ea39e2d0653ca7086a91d994628b203210deb7f

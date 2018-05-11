@@ -22,7 +22,7 @@ class AuditLogHandler(object):
             line = line.split()
             try:
                 pid,time_clock,io_call,char = line[0:4]
-                if io_call.startswith('read(4'):
+                if io_call.startswith('read(5'):
                     if char == '"\\177",':#回退
                         char = '[1<-del]'
                     if char == '"\\33OB",': #vim中下箭头

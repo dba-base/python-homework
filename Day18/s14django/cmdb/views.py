@@ -20,7 +20,7 @@ def login(request):
         else:
             # 用户密码不配
             error_msg = "用户名或密码错误"
-    return render(request,'login.html', {'error_msg': error_msg})
+    return render(request,'login_bak.html', {'error_msg': error_msg})
 
 USER_LIST = [
     {'id': 1, 'username': 'alex', 'email': 'asdfasdf', "gender": '男'},
@@ -50,11 +50,11 @@ def home(request):
 #     # </form>
 #     #
 #     # """
-#     # f = open('templates/login.html', 'r', encoding='utf-8')
+#     # f = open('templates/login_bak.html', 'r', encoding='utf-8')
 #     # data = f.read()
 #     # f.close()
 #     # return HttpResponse(data)
-#     return render(request,'login.html')
+#     return render(request,'login_bak.html')
 
 # def home(request):
 #     return HttpResponse('<h1>CMDB</h1>')

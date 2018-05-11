@@ -4,7 +4,7 @@ def login(request):
     #models.UserGroup.objects.create(caption='DBA')
     print(request.method)
     if request.method == "GET":
-        return render(request, 'login.html')
+        return render(request, 'login_bak.html')
     elif request.method == "POST":
         # 数据库中执行 select * from user where usernam='x' and password='x'
         u = request.POST.get('user')
@@ -17,7 +17,7 @@ def login(request):
         if obj:
             return redirect('/cmdb/index/')
         else:
-            return render(request, 'login.html')
+            return render(request, 'login_bak.html')
     else:
         # PUT,DELETE,HEAD,OPTION...
 

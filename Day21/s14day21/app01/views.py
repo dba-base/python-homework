@@ -76,13 +76,13 @@ user_info = {
 }
 def login(request):
     if request.method == "GET":
-        return render(request,'login.html')
+        return render(request,'login_bak.html')
     if request.method == "POST":
         u = request.POST.get('username')
         p = request.POST.get('pwd')
         dic = user_info.get(u)
         if not dic:
-            return render(request,'login.html')
+            return render(request,'login_bak.html')
         if dic['pwd'] == p:
 <<<<<<< HEAD
             res = redirect('/index/')
@@ -98,7 +98,7 @@ def login(request):
             res.set_cookie('user_type',"asdfjalskdjf",httponly=True)
             return res
         else:
-            return render(request,'login.html')
+            return render(request,'login_bak.html')
 
 def auth(func):
     def inner(reqeust,*args,**kwargs):

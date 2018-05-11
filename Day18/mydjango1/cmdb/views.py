@@ -23,7 +23,7 @@ def login(request):
             #用户名和密码不匹配
             error_msg = '用户名或密码错误'
 
-    return render(request,'login.html',{'error_msg':error_msg})   # 传递到login.html并替换error_msg
+    return render(request,'login_bak.html',{'error_msg':error_msg})   # 传递到login.html并替换error_msg
 
 USER_LIST = [
     {'username':'hxy','email':'1234567','gender':'男'},
