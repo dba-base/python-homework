@@ -149,3 +149,32 @@ class Session(models.Model):
         verbose_name = '审计日志'
         verbose_name_plural = '审计日志'
 
+
+class Task(models.Model):
+    """批量任务记录表"""
+    user = models.ForeignKey("UserProfile",on_delete=models.CASCADE)
+    task_type_choices = ((0,'cmd'),(1,'file_transfer'))
+    task_type = models.SmallIntegerField(choices=task_type_choices)
+    content = models.TextField(verbose_name="任务内容")
+    #hosts = models.ManyToManyField("BindHost")
+    date  = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return "%s %s" %(self.task_type,self.content)
+
+
+class TaskLogDetail(models.Model):
+    task = models.ForeignKey("Task",on_delete=models.CASCADE)
+    bind_host = models.ForeignKey("BindHost",on_delete=models.CASCADE)
+    result = models.TextField()
+
+    status_choices = ((0,'success'),(1,'failed'),(2,'init'))
+    status = models.SmallIntegerField(choices=status_choices)
+
+    start_date = models.DateTimeField(auto_now_add=True)
+    end_date = models.DateTimeField(blank=True,null=True)
+
+
+    def __str__(self):
+        return "%s %s" %(self.bind_host,self.status)
+
