@@ -1,7 +1,7 @@
 
 import sys ,os
 import time,json
-from concurrent.futures  import  
+from concurrent.futures  import  ThreadPoolExecutor
 
 import paramiko
 
@@ -21,8 +21,8 @@ def  ssh_cmd(task_log_obj):
         stderr_res = stderr.read()
 
         result = stdout_res + stderr_res
-        print(result)
-        task_log_obj.result = result
+        print('result:',result)
+        task_log_obj.result = result.decode('utf-8')
 
         task_log_obj.status = 0
         ssh.close()

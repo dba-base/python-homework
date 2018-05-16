@@ -131,4 +131,4 @@ MULTITASK_SCRIPT= os.path.join(BASE_DIR,'backend/task_runner.py')
 DOWNLOAD_DIR = os.path.join(BASE_DIR,'downloads')
 
 
-LOGIN_URL = "/login/"
+LOGIN_URL = "/login/"    #如果没有登陆，就跳转的此url
