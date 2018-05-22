@@ -96,6 +96,7 @@ admin.site.unregister(Group)
 
 class RemoteUserAdmin(admin.ModelAdmin):
     list_display = ('username','auth_type','password')
+    search_fields = ('username',)
 
 
 class TaskAdmin(admin.ModelAdmin):
@@ -106,6 +107,7 @@ class TaskLogDetailAdmin(admin.ModelAdmin):
     list_display = ['id','task','bind_host','result','status','start_date','end_date']
 
 
+# 注册模型到admin中，让admin管理models
 admin.site.register(models.Host)
 admin.site.register(models.HostGroup)
 admin.site.register(models.BindHost)
