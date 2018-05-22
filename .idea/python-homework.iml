@@ -22,9 +22,16 @@
     <orderEntry type="module" module-name="s14day21" />
     <orderEntry type="module" module-name="s14day22" />
     <orderEntry type="module" module-name="AutoOps" />
+    <orderEntry type="module" module-name="CrazyEye-master" />
+    <orderEntry type="module" module-name="CrazyMonitor" />
   </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_CONFIGURATION" value="Django" />
+    <option name="TEMPLATE_FOLDERS">
+      <list>
+        <option value="$MODULE_DIR$/AutoOps/templates" />
+      </list>
+    </option>
   </component>
   <component name="TestRunnerService">
     <option name="PROJECT_TEST_RUNNER" value="Unittests" />

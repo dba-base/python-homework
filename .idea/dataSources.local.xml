@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="dataSourceStorageLocal">
-    <data-source name="db.sqlite3" uuid="b9b63fc9-9294-4568-b032-19d6e1e93acf">
+    <data-source name="crazyeye_db" uuid="0de20a62-c56f-4ea5-97dc-238f10184109">
       <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" />
       <secret-storage>master_key</secret-storage>
       <auth-required>false</auth-required>

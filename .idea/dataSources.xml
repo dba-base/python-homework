@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="db.sqlite3" uuid="b9b63fc9-9294-4568-b032-19d6e1e93acf">
+    <data-source source="LOCAL" name="crazyeye_db" uuid="0de20a62-c56f-4ea5-97dc-238f10184109">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/AutoOps/db.sqlite3</jdbc-url>
+      <jdbc-url>jdbc:sqlite:G:/1.学习资料/1.程序设计/1.python/python-51cto课程资料/Python14期课上代码按模块划分-全部/项目/CrazyEye-master/crazyeye_db</jdbc-url>
       <driver-properties>
         <property name="enable_load_extension" value="true" />
       </driver-properties>

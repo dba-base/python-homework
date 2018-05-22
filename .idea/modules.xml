@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AutoOps/.idea/AutoOps.iml" filepath="$PROJECT_DIR$/AutoOps/.idea/AutoOps.iml" />
+      <module fileurl="file://G:/1.学习资料/1.程序设计/1.python/python-51cto课程资料/Python14期课上代码按模块划分-全部/项目/CrazyEye-master/.idea/CrazyEye-master.iml" filepath="G:/1.学习资料/1.程序设计/1.python/python-51cto课程资料/Python14期课上代码按模块划分-全部/项目/CrazyEye-master/.idea/CrazyEye-master.iml" />
+      <module fileurl="file://$PROJECT_DIR$/CrazyMonitor/.idea/CrazyMonitor.iml" filepath="$PROJECT_DIR$/CrazyMonitor/.idea/CrazyMonitor.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/python-homework.iml" filepath="$PROJECT_DIR$/.idea/python-homework.iml" />
       <module fileurl="file://$PROJECT_DIR$/Day22/s14day22/.idea/s14day22.iml" filepath="$PROJECT_DIR$/Day22/s14day22/.idea/s14day22.iml" />
     </modules>
