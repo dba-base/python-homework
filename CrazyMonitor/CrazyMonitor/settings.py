@@ -120,3 +120,17 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+REDIS_CONN = {
+    'HOST':'192.168.2.128',
+    'PORT':6379,
+    'DB':0,
+}
+
+STATUS_DATA_OPTIMIZATION = {
+    'latest':[0,20], #0 存储真实数据,600个点
+    '10mins':[600,4320], #1m, 每600s进行一次优化，存最大4320个点
+    '30mins':[1800,4320], #3m
+    '60mins':[3600,8760],  #365days
+}

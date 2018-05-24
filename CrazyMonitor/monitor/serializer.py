@@ -18,10 +18,9 @@ class ClientHandler(object):
         try:
             host_obj = models.Host.objects.get(id=self.client_id)
             template_list= list(host_obj.templates.select_related())
-
             for host_group in host_obj.host_groups.select_related():
                 template_list.extend( host_group.templates.select_related() )
-            print(template_list)
+            print(template_list)    #[<Template: LInuxGenericServices>, <Template: Database>, <Template: LInuxGenericServices>, <Template: Database>]
             for template in template_list:
                 #print(template.services.select_related())
 

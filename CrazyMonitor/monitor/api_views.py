@@ -48,6 +48,6 @@ def service_report(request):
             print('----->err:',e)
 
 
-    return HttpResponse(json.dumps("---report success---"))
+    return HttpResponse(json.dumps(data))
 
 
