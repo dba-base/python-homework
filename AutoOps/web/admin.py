@@ -71,7 +71,7 @@ class UserProfileAdmin(BaseUserAdmin):
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
         ('Personal info', {'fields': ('name',)}),
-        ('堡垒机主机授权', {'fields': ('bind_hosts','host_groups')}),
+        # ('堡垒机主机授权', {'fields': ('bind_hosts','host_groups')}),
         ('Permissions', {'fields': ('is_admin','is_staff','user_permissions','groups')}),
     )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
@@ -84,7 +84,7 @@ class UserProfileAdmin(BaseUserAdmin):
     )
     search_fields = ('email',)
     ordering = ('email',)
-    filter_horizontal = ('user_permissions','groups','bind_hosts','host_groups')
+    # filter_horizontal = ('user_permissions','groups','bind_hosts','host_groups')
 
 # Now register the new UserAdmin...
 admin.site.register(models.UserProfile, UserProfileAdmin)
@@ -104,14 +104,13 @@ class TaskAdmin(admin.ModelAdmin):
 
 
 class TaskLogDetailAdmin(admin.ModelAdmin):
-    list_display = ['id','task','bind_host','result','status','start_date','end_date']
+    list_display = ['id','task','result','status','start_date','end_date']
 
 
 # 注册模型到admin中，让admin管理models
 admin.site.register(models.Host)
-admin.site.register(models.HostGroup)
-admin.site.register(models.BindHost)
-admin.site.register(models.RemoteUser,RemoteUserAdmin)
+admin.site.register(models.Business)
+admin.site.register(models.AppCompany)
 admin.site.register(models.IDC)
 admin.site.register(models.Session)
 admin.site.register(models.Task,TaskAdmin)

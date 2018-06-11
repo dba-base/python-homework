@@ -8,54 +8,73 @@ from django.contrib.auth.models import (
 # Create your models here.
 
 class IDC(models.Model):
+    '''机房表'''
     name = models.CharField(max_length=64,unique=True)
 
     def __str__(self):
         return self.name
-class business(models.Model):
+
+class Business(models.Model):
+    '''应用厂商表'''
     name = models.CharField(max_length=64,unique=True)
 
+    def __str__(self):
+        return self.name
+
+class AppCompany(models.Model):
+    """应用厂商表"""
+    name = models.CharField(max_length=64, unique=True)
+
+    def __str__(self):
+        return self.name
+
 class Host(models.Model):
-    """存储所有主机"""
+    """主机列表"""
     hostname = models.CharField(max_length=64)
+    instance_name = models.CharField(max_length=64)
     ip_addr = models.GenericIPAddressField(unique=True)
     port = models.PositiveSmallIntegerField(default=22)
+    username = models.CharField(max_length=64)
+    db_username = models.CharField(max_length=64)
+    password = models.CharField(max_length=128, blank=True, null=True)
+    db_password = models.CharField(max_length=128, blank=True, null=True)
+    database_type_choices = ((0, 'oracle 10g'), (1, 'oracle 11g'), (2, 'oracle 12c'), (3, 'mysql'))
+    database_type = models.SmallIntegerField(choices=database_type_choices,default=0)
+    os_type_choices = ((0,'Linux'),(1,'windows'),(2,'AIX'))
+    os_type = models.SmallIntegerField(choices=os_type_choices,default=0)
+    opatch_version = models.CharField(max_length=64)
     idc = models.ForeignKey("IDC",on_delete=models.CASCADE)
+    business = models.ForeignKey("Business",on_delete=models.CASCADE)
+    appcompany = models.ForeignKey("AppCompany",on_delete=models.CASCADE)
 
     enabled = models.BooleanField(default=True)
 
     def __str__(self):
         return self.ip_addr
 
-class HostGroup(models.Model):
-    """主机组"""
-    name = models.CharField(max_length=64, unique=True)
-    bind_hosts  = models.ManyToManyField("BindHost")
-    def __str__(self):
-        return self.name
 
-class RemoteUser(models.Model):
-    """存储远程用户名密码（主机的密码）"""
-    username = models.CharField(max_length=64)
-    auth_type_choices = ((0,'ssh/password'),(1,'ssh/key'))
-    auth_type = models.SmallIntegerField(choices=auth_type_choices,default=0)
-    password = models.CharField(max_length=128,blank=True,null=True)
+# class RemoteUser(models.Model):
+#     """存储远程用户名密码（主机的密码）"""
+#     username = models.CharField(max_length=64)
+#     auth_type_choices = ((0,'ssh/password'),(1,'ssh/key'))
+#     auth_type = models.SmallIntegerField(choices=auth_type_choices,default=0)
+#     password = models.CharField(max_length=128,blank=True,null=True)
+#
+#     def __str__(self):
+#         return "%s(%s)%s" %( self.username,self.get_auth_type_display(),self.password)
+#
+#     class Meta:
+#         unique_together = ('username','auth_type','password')   #联合唯一
 
-    def __str__(self):
-        return "%s(%s)%s" %( self.username,self.get_auth_type_display(),self.password)
-
-    class Meta:
-        unique_together = ('username','auth_type','password')   #联合唯一
-
-class BindHost(models.Model):
-    """绑定远程主机和远程用户的对应关系"""
-    host = models.ForeignKey("Host",on_delete=models.CASCADE)
-    remote_user = models.ForeignKey("RemoteUser",on_delete=models.CASCADE)
-
-    def __str__(self):
-        return "%s -> %s" %(self.host,self.remote_user)
-    class Meta:
-        unique_together = ("host","remote_user")     #联合唯一
+# class BindHost(models.Model):
+#     """绑定远程主机和远程用户的对应关系"""
+#     host = models.ForeignKey("Host",on_delete=models.CASCADE)
+#     remote_user = models.ForeignKey("RemoteUser",on_delete=models.CASCADE)
+#
+#     def __str__(self):
+#         return "%s -> %s" %(self.host,self.remote_user)
+#     class Meta:
+#         unique_together = ("host","remote_user")     #联合唯一
 
 class UserProfileManager(BaseUserManager):
     def create_user(self, email, name, password=None):
@@ -106,8 +125,8 @@ class UserProfile(AbstractBaseUser,PermissionsMixin):
         help_text=('Designates whether the user can log into this admin site.'),
     )
 
-    bind_hosts = models.ManyToManyField("BindHost",blank=True)
-    host_groups = models.ManyToManyField("HostGroup",blank=True)
+    # bind_hosts = models.ManyToManyField("BindHost",blank=True)
+    # host_groups = models.ManyToManyField("HostGroup",blank=True)
 
     objects = UserProfileManager()
 
@@ -138,19 +157,18 @@ class UserProfile(AbstractBaseUser,PermissionsMixin):
 class Session(models.Model):
     '''生成用户操作session id '''
     user = models.ForeignKey('UserProfile',on_delete=models.CASCADE)
-    bind_host = models.ForeignKey('BindHost',on_delete=models.CASCADE)
+    #bind_host = models.ForeignKey('BindHost',on_delete=models.CASCADE)
     tag = models.CharField(max_length=128,default='n/a')
     closed = models.BooleanField(default=False)
     cmd_count = models.IntegerField(default=0) #命令执行数量
     stay_time = models.IntegerField(default=0, help_text="每次刷新自动计算停留时间",verbose_name="停留时长(seconds)")
     date = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return '<id:%s user:%s bind_host:%s>' % (self.id,self.user.email,self.bind_host.host)
+    # def __str__(self):
+    #     return '<id:%s user:%s bind_host:%s>' % (self.id,self.user.email,self.bind_host.host)
     class Meta:
         verbose_name = '审计日志'
         verbose_name_plural = '审计日志'
-
 
 class Task(models.Model):
     """批量任务记录表"""
@@ -167,7 +185,7 @@ class Task(models.Model):
 
 class TaskLogDetail(models.Model):
     task = models.ForeignKey("Task",on_delete=models.CASCADE)
-    bind_host = models.ForeignKey("BindHost",on_delete=models.CASCADE)
+    # bind_host = models.ForeignKey("BindHost",on_delete=models.CASCADE)
     result = models.TextField()
 
     status_choices = ((0,'success'),(1,'failed'),(2,'init'))
