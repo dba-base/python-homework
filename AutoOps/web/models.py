@@ -12,6 +12,8 @@ class IDC(models.Model):
 
     def __str__(self):
         return self.name
+class business(models.Model):
+    name = models.CharField(max_length=64,unique=True)
 
 class Host(models.Model):
     """存储所有主机"""
