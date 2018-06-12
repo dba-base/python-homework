@@ -158,6 +158,7 @@ class Session(models.Model):
     '''生成用户操作session id '''
     user = models.ForeignKey('UserProfile',on_delete=models.CASCADE)
     #bind_host = models.ForeignKey('BindHost',on_delete=models.CASCADE)
+    bind_host = models.ForeignKey('Host',on_delete=models.CASCADE)
     tag = models.CharField(max_length=128,default='n/a')
     closed = models.BooleanField(default=False)
     cmd_count = models.IntegerField(default=0) #命令执行数量
@@ -176,7 +177,7 @@ class Task(models.Model):
     task_type_choices = ((0,'cmd'),(1,'file_transfer'))
     task_type = models.SmallIntegerField(choices=task_type_choices)
     content = models.TextField(verbose_name="任务内容")
-    #hosts = models.ManyToManyField("BindHost")
+    hosts = models.ManyToManyField("Host")
     date  = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -186,6 +187,7 @@ class Task(models.Model):
 class TaskLogDetail(models.Model):
     task = models.ForeignKey("Task",on_delete=models.CASCADE)
     # bind_host = models.ForeignKey("BindHost",on_delete=models.CASCADE)
+    bind_host = models.ForeignKey("Host",on_delete=models.CASCADE)
     result = models.TextField()
 
     status_choices = ((0,'success'),(1,'failed'),(2,'init'))

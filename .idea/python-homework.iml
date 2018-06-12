@@ -24,6 +24,7 @@
     <orderEntry type="module" module-name="AutoOps" />
     <orderEntry type="module" module-name="CrazyEye-master" />
     <orderEntry type="module" module-name="CrazyMonitor" />
+    <orderEntry type="module" module-name="LuffyMoniter" />
   </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_CONFIGURATION" value="Django" />

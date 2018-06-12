@@ -7,5 +7,19 @@
       <auth-required>false</auth-required>
       <first-sync>true</first-sync>
     </data-source>
+    <data-source name="db" uuid="8d2c0a6d-9a08-4be1-8da7-b8eb8d8f359d">
+      <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" />
+      <auth-required>false</auth-required>
+    </data-source>
+    <data-source name="@localhost" uuid="4c7bdb73-96e1-4b08-95ac-80e670904fdb">
+      <database-info product="MySQL" version="5.6.38-log" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.46 ( Revision: 9cc87a48e75c2d2e87c1a293b2862ce651cb256e )">
+        <extra-name-characters>#@</extra-name-characters>
+        <identifier-quote-string>`</identifier-quote-string>
+      </database-info>
+      <case-sensitivity plain-identifiers="lower" quoted-identifiers="lower" />
+      <secret-storage>master_key</secret-storage>
+      <user-name>root</user-name>
+      <introspection-schemas>*:information_schema</introspection-schemas>
+    </data-source>
   </component>
 </project>
