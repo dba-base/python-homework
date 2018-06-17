@@ -9,7 +9,7 @@ from web.models import IDC
 
 
 class HostAdmin(admin.ModelAdmin):
-        list_display = ['idc','business','appcompany','hostname','ip_addr','port','instance_name','database_type','os_type','enabled']
+        list_display = ['id','idc','business','appcompany','hostname','ip_addr','port','instance_name','database_type','os_type','enabled']
 
 
 # 注册模型到admin中，让admin管理models

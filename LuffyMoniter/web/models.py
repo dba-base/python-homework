@@ -30,7 +30,6 @@ class AppCompany(models.Model):
 
 class Host(models.Model):
     """主机列表"""
-    province = models.CharField(max_length=20,verbose_name='省份')
     hostname = models.CharField(max_length=64,verbose_name="主机名")
     instance_name = models.CharField(max_length=64,verbose_name="实例名")
     ip_addr = models.GenericIPAddressField(unique=True,verbose_name="IP地址")
@@ -44,12 +43,23 @@ class Host(models.Model):
     os_type_choices = ((0,'Linux'),(1,'windows'),(2,'AIX'))
     os_type = models.SmallIntegerField(choices=os_type_choices,default=0,verbose_name="OS类型")
     opatch_version = models.CharField(max_length=64,verbose_name="补丁")
-    idc = models.ForeignKey("IDC",on_delete=models.CASCADE)
-    business = models.ForeignKey("Business",on_delete=models.CASCADE)
-    appcompany = models.ForeignKey("AppCompany",on_delete=models.CASCADE)
+    idc = models.ForeignKey("IDC",on_delete=models.CASCADE,verbose_name="机房")
+    business = models.ForeignKey("Business",on_delete=models.CASCADE,verbose_name="业务系统名称")
+    appcompany = models.ForeignKey("AppCompany",on_delete=models.CASCADE,verbose_name="厂商")
 
     enabled = models.BooleanField(default=True)
 
     def __str__(self):
         return self.ip_addr
+
+
+class Tablespace(models.Model):
+    name = models.CharField(max_length=64,blank=True)
+    total_size = models.CharField(max_length=64,blank=True)
+    free_size = models.CharField(max_length=64,blank=True)
+    used_size = models.CharField(max_length=64,blank=True)
+
+    def __str__(self):
+        return self.name
+
 
