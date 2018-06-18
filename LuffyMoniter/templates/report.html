@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <script src="/static/echarts.min.js"></script>
+    <!-- <script src="/static/echarts.min.js"></script> -->
 </head>
 <body>
     <table>
@@ -28,35 +28,195 @@
     </table>
 
      <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main" style="height:400px"></div>
+    <div id="main1" style="height:400px"></div>
+    <div id="main2" style="height:400px"></div>
+    <!-- ECharts单文件引入 -->
+    <script src="http://echarts.baidu.com/build/dist/echarts.js"></script>
+    <!-- <script src="/static/echarts.min.js"></script>#} -->
+    <script type="text/javascript">
+        // 路径配置
+        require.config({
+            paths: {
+                echarts: 'http://echarts.baidu.com/build/dist'
+            }
+        });
 
-    <script src="/static/echarts.min.js"></script>
-    <div id="main" style="width: 600px;height:400px;"></div>
-    <script type="text/javascript"  src="/static/echarts.min.js">
-        // 基于准备好的dom，初始化echarts实例
-        var myChart = echarts.init(document.getElementById('main'));
+        // 使用
+        require(
+            [
+                'echarts',
+                'echarts/chart/bar' // 使用柱状图就加载bar模块，按需加载
+            ],
+            function (ec) {
+                // 基于准备好的dom，初始化echarts图表
+                var myChart = ec.init(document.getElementById('main'));
 
-        // 指定图表的配置项和数据
-        var option = {
-            title: {
-                text: 'ECharts 入门示例'
-            },
-            tooltip: {},
-            legend: {
-                data:['销量']
-            },
-            xAxis: {
-                data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
-            },
-            yAxis: {},
-            series: [{
-                name: '销量',
-                type: 'bar',
-                data: [5, 20, 36, 10, 10, 20]
-            }]
-        };
+                var option = {
+                    tooltip: {
+                        show: true
+                    },
+                    legend: {
+                        data:['销量']
+                    },
+                    xAxis : [
+                        {
+                            type : 'category',
+                            data : ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+                        }
+                    ],
+                    yAxis : [
+                        {
+                            type : 'value'
+                        }
+                    ],
+                    series : [
+                        {
+                            "name":"销量",
+                            "type":"bar",
+                            "data":[5, 20, 40, 10, 10, 20]
+                        }
+                    ]
+                };
 
-        // 使用刚指定的配置项和数据显示图表。
-        myChart.setOption(option);
+                // 为echarts对象加载数据
+                myChart.setOption(option);
+            }
+
+
+        );
+
+        require(
+            [
+                'echarts',
+                'echarts/chart/bar' // 使用柱状图就加载bar模块，按需加载
+            ],
+            function (ec) {
+                // 基于准备好的dom，初始化echarts图表
+                var myChart = ec.init(document.getElementById('main1'));
+
+                var option = {
+                    tooltip : {
+                        trigger: 'axis',
+                        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                        }
+                    },
+                    legend: {
+                        data:['已使用','剩余空间']
+                    },
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    xAxis : [
+                        {
+                            type : 'category',
+                            data : ['周一','周二','周三','周四','周五','周六','周日']
+                        }
+                    ],
+                    yAxis : [
+                        {
+                            type : 'value'
+                        }
+                    ],
+                    series : [
+                        {
+                            name:'已使用',
+                            type:'bar',
+                            stack: '表空间',
+                            data:[20, 132, 101, 134, 90, 230, 210]
+                        },
+                        {
+                            name:'剩余空间',
+                            type:'bar',
+                            stack: '表空间',
+                            data:[220, 182, 191, 234, 290, 330, 310]
+                        },
+
+
+                    ]
+                };
+
+
+                // 为echarts对象加载数据
+                myChart.setOption(option);
+            }
+
+
+        );
+
+
+
+        function drawDJZZT(xaxisdata,serieszs,seriesyx){
+            var myChart = echarts.init(document.getElementById('main2'));
+            myChart.setOption({
+                title : {
+                    text : ""
+                },
+                tooltip : {
+                    trigger : 'axis',
+                    showDelay : 0, // 显示延迟，添加显示延迟可以避免频繁切换，单位ms
+                    axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                        type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                    }
+                },
+                legend: {
+                    data:['做市', '协议']
+                },
+                xAxis : [{
+                        type : 'category',
+                        data : xaxisdata,
+                        axisLabel:{
+                             textStyle:{
+                                 color:"#222"
+                             }
+                         }
+                }],
+                yAxis : [{
+                    type : 'value'
+                }],
+                series : [
+                     {
+                         name:'做市',
+                         type:'bar',
+                         stack: '总量',
+                         /*itemStyle : { normal: {label : {show: true, position: 'insideTop',textStyle:{color:'#000'}}}},*/
+                         data:serieszs
+                     },
+                     {
+                         name:'协议',
+                         type:'bar',
+                         stack: '总量',
+                         barWidth : 30,//柱图宽度
+                         /*itemStyle : { normal: {label : {show: true, position: 'insideTop',textStyle:{color:'#000'}}}},*/
+                         data:seriesyx
+                     }
+                 ]
+            });
+        }
+        var data = [5,4,6,7,89]
+        //console.log(data);
+        var xaxisdata = [];//月份
+        var serieszs = [];
+        var seriesyx = [];
+        // var year = new Date().format("yyyy");
+        for(var i=(data.length-1);i>=0;i--){
+            var monthDate = data[i].month_date;
+            //if( year == monthDate.substring(0,4)){
+                //xaxisdata.push(monthDate.substring(4)+"月");
+            //}else{
+                xaxisdata.push(i+"年"+i+"月");
+            //}
+            serieszs.push(data[i].zszrmygpsl);
+            seriesyx.push(data[i].xyzrmygpsl);
+        }
+        console.log(xaxisdata)
+        console.log(serieszs)
+        console.log(seriesyx)
+        drawDJZZT( xaxisdata, serieszs, seriesyx);
     </script>
 </body>
 </html>
