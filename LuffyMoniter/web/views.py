@@ -31,3 +31,15 @@ def report(request):
         #     print(row.name,row.total_size,row.used_size,row.free_size)
         # return HttpResponse("接收成功。。。")
         return render(request, 'report.html', {"tablespace_img":tablespace})
+
+def tbs_detail(request):
+    tablespace = Tablespace.objects.all()
+    return render(request,'tbs_detail.html',{"tablespace_img":tablespace})
+'''
+777	SYSAUX	860.0	41.9375	818.0625
+778	UNDOTBS1	130.0	110.625	19.375
+779	USERS	63.75	3.4375	60.3125
+780	SYSTEM	750.0	10.6875	739.3125
+781	JINGLONG	10.0	9.0	1.0
+782	DATA1	100.0	32.3125	67.6875
+'''

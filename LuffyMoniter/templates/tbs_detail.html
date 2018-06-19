@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- <script src="/static/echarts.min.js"></script> -->
+    <script src="/static/echarts.min.js" charset="utf-8" type="text/javascript"></script>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>表空间名</th>
+                <th>总空间(M)</th>
+                <th>已使用(M)</th>
+                <th>空闲(M)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {%  for tbs in tablespace_img %}
+            <tr>
+                <td>{{ tbs.name }}</td>
+                <td>{{ tbs.total_size }}</td>
+                <td>{{ tbs.used_size }}</td>
+                <td>{{ tbs.free_size }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+</body>
+</html>

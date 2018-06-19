@@ -168,8 +168,8 @@
 
             $('#ajax_submit').click(function(){
                 $.ajax({
-                    url: "/test_ajax",
-                    type: 'POST',
+                    url: "/detail",
+                    type: 'GET',
                     //data: {'hostname': $('#host').val(), 'ip': $('#ip').val(), 'port': $('#port').val(), 'b_id': $('#sel').val()},
                     data: $('#add_form').serialize(),
                     success: function(data){

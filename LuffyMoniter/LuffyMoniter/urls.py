@@ -20,4 +20,5 @@ from web import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^report/', views.report, name='report'),
+    url(r'^report/detail/(\w+)/$', views.tbs_detail, name='tbs_detail'),
 ]
