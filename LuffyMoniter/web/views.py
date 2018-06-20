@@ -1,6 +1,8 @@
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt,csrf_protect
 import os,django,sys
 from django.shortcuts import render
+from django.shortcuts import HttpResponseRedirect
 from django.shortcuts import HttpResponse
 import json
 
@@ -9,7 +11,7 @@ import json
 # # Create your views here.
 from web.models import Tablespace
 
-
+@csrf_exempt
 def report(request):
     if request.method == "POST":
         tbs_data = request.POST.get('tbs_data')
@@ -32,9 +34,15 @@ def report(request):
         # return HttpResponse("接收成功。。。")
         return render(request, 'report.html', {"tablespace_img":tablespace})
 
+@csrf_exempt
 def tbs_detail(request):
-    tablespace = Tablespace.objects.all()
-    return render(request,'tbs_detail.html',{"tablespace_img":tablespace})
+    if request.method == 'GET':
+        tbs = request.GET.get('tbs')
+        tablespace = Tablespace.objects.filter(name=tbs)
+        return render(request,'tbs_detail.html',{"tablespace_img":tablespace})
+
+
+
 '''
 777	SYSAUX	860.0	41.9375	818.0625
 778	UNDOTBS1	130.0	110.625	19.375

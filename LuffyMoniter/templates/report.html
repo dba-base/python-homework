@@ -31,6 +31,7 @@
 
      <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
     <div id="main" style="width:1000px;height:400px"></div>
+    <div id="resText" ></div>
     <!-- ECharts单文件引入 -->
     <!-- <script src="http://echarts.baidu.com/build/dist/echarts.js"></script> -->
     <script type="text/javascript">
@@ -93,8 +94,12 @@
         // 为echarts对象加载数据
         myChart.setOption(option);
         myChart.on('click', function (params) {
-           // window.open('./report/detail' + encodeURIComponent(params.name));
-            $.get("/report/detail/{{ params.name }}")
+            // <iframe src="../detail" frameborder="0"></iframe>
+            var iframe = document.createElement('iframe')
+            iframe.setAttribute("src","../detail?tbs=" + params.name)
+            iframe.setAttribute("frameborder","0")
+            $("#resText").append(iframe)
+             //window.location.href="../detail?tbs=" + params.name
 
         });
 
