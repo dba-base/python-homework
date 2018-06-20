@@ -31,7 +31,7 @@
 
      <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
     <div id="main" style="width:1000px;height:400px"></div>
-    <div id="resText" ></div>
+    <div id="resText" style="width:1000px;height:400px"></div>
     <!-- ECharts单文件引入 -->
     <!-- <script src="http://echarts.baidu.com/build/dist/echarts.js"></script> -->
     <script type="text/javascript">
@@ -94,9 +94,16 @@
         // 为echarts对象加载数据
         myChart.setOption(option);
         myChart.on('click', function (params) {
-            // <iframe src="../detail" frameborder="0"></iframe>
+            //判断<div>中是否有iframe标签，有就删除
+            var div = document.getElementById("resText");
+            while(div.hasChildNodes())  //当div下还存在子节点时 循环继续
+            {
+                div.removeChild(div.firstChild);
+            }
+            // 添加iframe标签到<div中><iframe src="../detail" frameborder="0"></iframe>
             var iframe = document.createElement('iframe')
             iframe.setAttribute("src","../detail?tbs=" + params.name)
+            iframe.setAttribute("style","width:1000px;height:400px")
             iframe.setAttribute("frameborder","0")
             $("#resText").append(iframe)
              //window.location.href="../detail?tbs=" + params.name
