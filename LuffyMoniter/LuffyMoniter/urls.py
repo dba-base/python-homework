@@ -20,5 +20,6 @@ from web import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^report/', views.report, name='report'),
-    url(r'^detail/', views.tbs_detail, name='tbs_detail')
+    url(r'^detail/', views.tbs_detail, name='tbs_detail'),
+    url(r'^modal/', views.modal, name='modal')
 ]

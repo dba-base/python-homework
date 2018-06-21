@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt,csrf_protect
 import os,django,sys
 from django.shortcuts import render
-from django.shortcuts import HttpResponseRedirect
+from django.shortcuts import HttpResponseRedirect,redirect
 from django.shortcuts import HttpResponse
 import json
 
@@ -41,7 +41,8 @@ def tbs_detail(request):
         tablespace = Tablespace.objects.filter(name=tbs)
         return render(request,'tbs_detail.html',{"tablespace_img":tablespace})
 
-
+def modal(request):
+    return render(request,'modals1.html')
 
 '''
 777	SYSAUX	860.0	41.9375	818.0625

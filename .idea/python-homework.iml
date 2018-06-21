@@ -14,25 +14,10 @@
     <content url="file://$MODULE_DIR$" />
     <orderEntry type="jdk" jdkName="Python 3.6.1 (D:\Python\Python36-32\python.exe)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="mydjango1" />
-    <orderEntry type="module" module-name="s14day19_2" />
-    <orderEntry type="module" module-name="Day20" />
-    <orderEntry type="module" module-name="s14day20" />
-    <orderEntry type="module" module-name="s14day21" />
-    <orderEntry type="module" module-name="s14day21" />
-    <orderEntry type="module" module-name="s14day22" />
-    <orderEntry type="module" module-name="AutoOps" />
-    <orderEntry type="module" module-name="CrazyEye-master" />
-    <orderEntry type="module" module-name="CrazyMonitor" />
     <orderEntry type="module" module-name="LuffyMoniter" />
   </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_CONFIGURATION" value="Django" />
-    <option name="TEMPLATE_FOLDERS">
-      <list>
-        <option value="$MODULE_DIR$/AutoOps/templates" />
-      </list>
-    </option>
   </component>
   <component name="TestRunnerService">
     <option name="PROJECT_TEST_RUNNER" value="Unittests" />
