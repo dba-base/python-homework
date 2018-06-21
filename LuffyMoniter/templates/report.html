@@ -69,14 +69,15 @@
             {% endfor %}
         </tbody>
     </table>
+    <br>
     <!-- 遮罩层 -->
-    <div class="shadow hide"></div>
+    <div class="shadow hide" id="shadow"></div>
      <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-    <div id="main" style="width:1000px;height:400px"></div>
+    <div id="main" style="width:1000px;height:400px;left:1%"></div>
     <div id="resText" class="hide">
         <button data-dismiss="modal" class="close" type="button">
-					<span aria-hidden="true">×</span>
-					</button>
+            <span aria-hidden="true">×</span>
+        </button>
     </div>
     <!-- ECharts单文件引入 -->
     <!-- <script src="http://echarts.baidu.com/build/dist/echarts.js"></script> -->
@@ -89,6 +90,10 @@
         var tbs_used = [{% for tbs in tablespace_img %}'{{ tbs.used_size }}',{% endfor %}]
         var tbs_free = [{% for tbs in tablespace_img %}'{{ tbs.free_size }}',{% endfor %}]
         var option = {
+                    title : {
+                        text: '表空间',
+                        subtext: '纯属虚构'
+                    },
                     label: {
                         textStyle: {
                             color: 'rgba(255, 255, 255, 0.3)'
@@ -159,6 +164,14 @@
              //window.location.href="../detail?tbs=" + params.name
 
         });
+
+        $(".close").click(function () {
+            $("#resText,.shadow").addClass('hide');
+        })
+
+        $("#shadow").click(function () {
+            $("#resText,.shadow").addClass('hide');
+        })
 
     </script>
 </body>
