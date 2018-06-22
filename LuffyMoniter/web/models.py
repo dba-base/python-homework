@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+import django.utils.timezone as timezone
 from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser,PermissionsMixin
 )
@@ -58,6 +58,9 @@ class Tablespace(models.Model):
     total_size = models.CharField(max_length=64,blank=True)
     free_size = models.CharField(max_length=64,blank=True)
     used_size = models.CharField(max_length=64,blank=True)
+    date = models.DateField('日期',auto_now_add=True)
+    time = models.TimeField('时间',auto_now_add=True)
+    host = models.ForeignKey('Host',on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name

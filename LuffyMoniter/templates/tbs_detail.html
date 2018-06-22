@@ -11,6 +11,7 @@
     <table border="1">
         <thead>
             <tr>
+                <th>日期</th>
                 <th>表空间名</th>
                 <th>总空间(M)</th>
                 <th>已使用(M)</th>
@@ -20,10 +21,11 @@
         <tbody>
             {%  for tbs in tablespace_img %}
             <tr>
+                <td>{{ tbs.date|date:"Y-m-d" }}</td>
                 <td>{{ tbs.name }}</td>
-                <td>{{ tbs.total_size }}</td>
-                <td>{{ tbs.used_size }}</td>
-                <td>{{ tbs.free_size }}</td>
+                <td>{{ tbs.total_size | floatformat:1 }}</td>
+                <td>{{ tbs.used_size | floatformat:1 }}</td>
+                <td>{{ tbs.free_size | floatformat:1 }}</td>
             </tr>
             {% endfor %}
         </tbody>
@@ -39,16 +41,13 @@
 
                 // 基于准备好的dom，初始化echarts图表
         var tbs_name = [{% for tbs in tablespace_img %}'{{ tbs.name }}',{% endfor %}]
-        var tbs_used = [{% for tbs in tablespace_img %}'{{ tbs.used_size }}',{% endfor %}]
-        var tbs_free = [{% for tbs in tablespace_img %}'{{ tbs.free_size }}',{% endfor %}]
+        var date = [{% for tbs in tablespace_img %}'{{ tbs.date | date:"Y-m-d" }}',{% endfor %}]
+        var tbs_used = [{% for tbs in tablespace_img %}'{{ tbs.used_size | floatformat:1 }}',{% endfor %}]
+        var tbs_free = [{% for tbs in tablespace_img %}'{{ tbs.free_size | floatformat:1 }}',{% endfor %}]
         var used_parecent = Math.floor(parseFloat(tbs_used)/(parseFloat(tbs_used)+parseFloat(tbs_free)) * 100)
-        console.log('used',parseFloat(tbs_used))
-        console.log(parseFloat(tbs_free))
-        console.log('Total',parseFloat(tbs_free)+parseFloat(tbs_used))
-        console.log(used_parecent)
         var option = {
                 title : {
-                    text: '未来一周表空间变化',
+                    text: '表空间变化',
                     subtext: '容量（MB）'
                 },
                 tooltip : {
@@ -72,7 +71,7 @@
                     {
                         type : 'category',
                         boundaryGap : false,
-                        data : ['周一','周二','周三','周四','周五','周六','周日']
+                        data : date
                     }
                 ],
                 yAxis : [
@@ -87,7 +86,7 @@
                     {
                         name:'最高使用',
                         type:'line',
-                        data:[11, 11, 15, 13, 12, 13, 10],
+                        data: tbs_used,
                         markPoint : {
                             data : [
                                 {type : 'max', name: '最大值'}

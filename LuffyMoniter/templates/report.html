@@ -62,9 +62,9 @@
             {%  for tbs in tablespace_img %}
             <tr>
                 <td>{{ tbs.name }}</td>
-                <td>{{ tbs.total_size }}</td>
-                <td>{{ tbs.used_size }}</td>
-                <td>{{ tbs.free_size }}</td>
+                <td>{{ tbs.total_size | floatformat:1 }}</td>
+                <td>{{ tbs.used_size | floatformat:1 }}</td>
+                <td>{{ tbs.free_size | floatformat:1 }}</td>
             </tr>
             {% endfor %}
         </tbody>
@@ -87,12 +87,15 @@
 
                 // 基于准备好的dom，初始化echarts图表
         var tbs_name = [{% for tbs in tablespace_img %}'{{ tbs.name }}',{% endfor %}]
-        var tbs_used = [{% for tbs in tablespace_img %}'{{ tbs.used_size }}',{% endfor %}]
-        var tbs_free = [{% for tbs in tablespace_img %}'{{ tbs.free_size }}',{% endfor %}]
+        var tbs_used = [{% for tbs in tablespace_img %}'{{ tbs.used_size | floatformat:1 }}',{% endfor %}]
+        var tbs_free = [{% for tbs in tablespace_img %}'{{ tbs.free_size | floatformat:1 }}',{% endfor %}]
+        var ip_addr = "{{ tablespace_img.0.host }}"
+        var a = {{ tablespace_img.tablespace.host }}
+        console.log(a)
         var option = {
                     title : {
                         text: '表空间',
-                        subtext: '纯属虚构'
+                        subtext: "IP地址："+ip_addr
                     },
                     label: {
                         textStyle: {
@@ -122,7 +125,10 @@
                     ],
                     yAxis : [
                         {
-                            type : 'value'
+                            type : 'value',
+                            axisLabel : {
+                            formatter: '{value} MB'
+                        }
                         }
                     ],
                     series : [

@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt,csrf_protect
 import os,django,sys
+from django.utils.timezone import now, timedelta
 from django.shortcuts import render
 from django.shortcuts import HttpResponseRedirect,redirect
 from django.shortcuts import HttpResponse
@@ -27,18 +28,25 @@ def report(request):
         print("tbs_obj_li:",tbs_obj_li)
 
         Tablespace.objects.bulk_create(tbs_obj_li)
-    else:
-        tablespace = Tablespace.objects.all()
         # for row in tablespace:
         #     print(row.name,row.total_size,row.used_size,row.free_size)
-        # return HttpResponse("接收成功。。。")
+        return HttpResponse("接收成功。。。")
+    else:
+        #获取今天的表空间数据
+        tablespace = Tablespace.objects.filter(date=now().date())
         return render(request, 'report.html', {"tablespace_img":tablespace})
 
 @csrf_exempt
 def tbs_detail(request):
+    '''
+    取得表空间详细数据，可以获取到7天之内的数据
+    :param request:
+    :return:
+    '''
     if request.method == 'GET':
         tbs = request.GET.get('tbs')
-        tablespace = Tablespace.objects.filter(name=tbs)
+        date_1 = now().date() + timedelta(days=-7)   #取得7天前的日期
+        tablespace = Tablespace.objects.filter(name=tbs,date__gt=date_1)
         return render(request,'tbs_detail.html',{"tablespace_img":tablespace})
 
 def modal(request):
