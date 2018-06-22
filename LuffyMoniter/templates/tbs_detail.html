@@ -28,6 +28,7 @@
             {% endfor %}
         </tbody>
     </table>
+    <br>
     <div id="main" style="width:1000px;height:400px"></div>
     <div id="main1" style="width:1000px;height:400px"></div>
 
@@ -40,6 +41,11 @@
         var tbs_name = [{% for tbs in tablespace_img %}'{{ tbs.name }}',{% endfor %}]
         var tbs_used = [{% for tbs in tablespace_img %}'{{ tbs.used_size }}',{% endfor %}]
         var tbs_free = [{% for tbs in tablespace_img %}'{{ tbs.free_size }}',{% endfor %}]
+        var used_parecent = Math.floor(parseFloat(tbs_used)/(parseFloat(tbs_used)+parseFloat(tbs_free)) * 100)
+        console.log('used',parseFloat(tbs_used))
+        console.log(parseFloat(tbs_free))
+        console.log('Total',parseFloat(tbs_free)+parseFloat(tbs_used))
+        console.log(used_parecent)
         var option = {
                 title : {
                     text: '未来一周表空间变化',
@@ -159,16 +165,16 @@
                                 fontWeight: 'bolder'
                             }
                         },
-                        data:[{value: 50, name: '完成率'}]
+                        data:[{value: used_parecent, name: '使用率'}]
                     }
                 ]
             };
         myChart1.setOption(option1);
         //clearInterval(timeTicket);
-        timeTicket = setInterval(function (){
-            option.series[0].data[0].value = (Math.random()*100).toFixed(2) - 0;
-            myChart1.setOption(option1,true);
-        },2000)
+{#        setInterval(function (){#}
+{#            option1.series[0].data[0].value = (Math.random()*100).toFixed(2) - 0;#}
+{#            myChart1.setOption(option1,true);#}
+{#        },2000)#}
 
     </script>
 </body>
