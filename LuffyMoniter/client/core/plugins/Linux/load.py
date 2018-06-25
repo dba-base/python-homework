@@ -11,7 +11,7 @@ from plugins.base import BasePlugin
 def monitor():
     shell_command = 'uptime'
 
-    contents = BasePlugin('192.168.2.128',22,'root','oracle').exec_shell_cmd(shell_command)
+    contents = BasePlugin('192.168.231.110',22,'root','oracle').exec_shell_cmd(shell_command)
 
     if contents['ERROR'] == "" :
         contents['ERROR'] = 0
@@ -27,12 +27,11 @@ def monitor():
         print(content_list[0])
         # 列表转字典
         uptime = content_list[0].split(',')[:1][0]
-        print(uptime)
-        print(type(content_list[0]))   #str
-        load1,load5,load15 = content_list[0].split('load averages:')[1].split()
+
+        load1,load5,load15 = content_list[0].split('load average:')[1].split()
         print(load1,load5,load15)
         value_dic= {
-            #'uptime': uptime,
+            'uptime': uptime,
             'load1': load1,
             'load5': load5,
             'load15': load15,
