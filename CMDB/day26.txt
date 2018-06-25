@@ -1,0 +1,73 @@
+概要：
+	1. 采集资产
+		- 采集方式的配置
+		- 插件的定制
+		- 测试模式
+		- 错误日志（详细行）   *1.级别；2.
+		- 汇报数据（API，认证）*
+			API认证：
+				1. 时间
+				2. 是否已经存在
+				3. 正向加密，密文验证
+		- 标识
+			- 只针对物理机 SN号作为唯一标识
+			- 建立规则：主机名不重复
+		
+		django
+			url
+			cbv
+				HttpResponse('...')
+		pip3 install requests
+		
+		
+		注意：
+			 CBV实现接触CSRF验证：
+				 @method_decorator(csrf_exempt)
+				 def dispatch(self, request, *args, **kwargs):
+					...
+		
+	2. API
+		- api
+		- web
+		- repository 
+		
+		
+		====== 表 ======
+		资产
+		服务器，网络设备...
+		硬盘
+		内存
+		网卡
+		变更记录
+		错误日志
+		
+		
+		知识点：
+			- Q做条件
+			- JsonResponse(字典)
+				from django.http import JsonResponse
+				return JsonResponse([1,2,3,],safe=False)
+	3. 后台管理
+	
+	作业：
+		Agent
+		API
+		数据库
+			代码熟悉
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		

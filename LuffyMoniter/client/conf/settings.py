@@ -15,6 +15,13 @@ Params = {
 
 PATH = os.path.join(os.path.dirname(os.getcwd()), 'log', 'cmdb.log')
 
+BASEDIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# 用于API认证的KEY
+KEY = '299095cc-1330-11e5-b06a-a45e60bec08b'
+# 用于API认证的请求头
+AUTH_KEY_NAME = 'auth-key'
+
 # 数据库采集
 db_params = {
     "url":'jdbc:oracle:thin:@192.168.2.128:1521:PROD',
