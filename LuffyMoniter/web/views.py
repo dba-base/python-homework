@@ -33,7 +33,7 @@ def report(request):
         return HttpResponse("接收成功。。。")
     else:
         #获取今天的表空间数据
-        tablespace = Tablespace.objects.filter(date=now().date())
+        tablespace = Tablespace.objects.filter(date=now().date()+timedelta(days=-2))
         return render(request, 'report.html', {"tablespace_img":tablespace})
 
 @csrf_exempt
@@ -45,9 +45,21 @@ def tbs_detail(request):
     '''
     if request.method == 'GET':
         tbs = request.GET.get('tbs')
+        today_date = now().date()
         date_1 = now().date() + timedelta(days=-7)   #取得7天前的日期
-        tablespace = Tablespace.objects.filter(name=tbs,date__gt=date_1)
-        return render(request,'tbs_detail.html',{"tablespace_img":tablespace})
+        tablespace = Tablespace.objects.filter(name=tbs,date__gt=date_1).order_by('-date')  #降序
+        today_tbs = Tablespace.objects.filter(name=tbs,date=today_date)  #降序
+        today_tbs_dict = {}
+        for today_detail in today_tbs:
+            today_tbs_dict['tbs_name'] = today_detail.name
+            today_tbs_dict['total_size'] = today_detail.total_size
+            today_tbs_dict['used_size'] = today_detail.used_size
+            today_tbs_dict['free_size'] = today_detail.free_size
+
+        today_tbs_data = json.dumps(today_tbs_dict)
+
+
+        return render(request,'tbs_detail.html',{"tablespace_img":tablespace,"today_data":today_tbs_data})
 
 def modal(request):
     return render(request,'modals1.html')

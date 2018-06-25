@@ -38,13 +38,17 @@
         // 使用
         var myChart = echarts.init(document.getElementById('main'));
         var myChart1 = echarts.init(document.getElementById('main1'));
-
                 // 基于准备好的dom，初始化echarts图表
         var tbs_name = [{% for tbs in tablespace_img %}'{{ tbs.name }}',{% endfor %}]
         var date = [{% for tbs in tablespace_img %}'{{ tbs.date | date:"Y-m-d" }}',{% endfor %}]
         var tbs_used = [{% for tbs in tablespace_img %}'{{ tbs.used_size | floatformat:1 }}',{% endfor %}]
         var tbs_free = [{% for tbs in tablespace_img %}'{{ tbs.free_size | floatformat:1 }}',{% endfor %}]
-        var used_parecent = Math.floor(parseFloat(tbs_used)/(parseFloat(tbs_used)+parseFloat(tbs_free)) * 100)
+
+        today_data = {{ today_data | safe }}
+        //使用率以当天的数据为准
+        var used_parecent = Math.floor(parseFloat(today_data.used_size)/parseFloat(today_data.total_size) * 100)
+
+
         var option = {
                 title : {
                     text: '表空间变化',
@@ -90,7 +94,6 @@
                         markPoint : {
                             data : [
                                 {type : 'max', name: '最大值'}
-
                             ]
                         },
                         markLine : {
@@ -101,10 +104,8 @@
                     }
                 ]
             };
-
         // 为echarts对象加载数据
         myChart.setOption(option);
-
         option1 = {
                 tooltip : {
                     formatter: "{a} <br/>{b} : {c}%"
@@ -174,7 +175,6 @@
 {#            option1.series[0].data[0].value = (Math.random()*100).toFixed(2) - 0;#}
 {#            myChart1.setOption(option1,true);#}
 {#        },2000)#}
-
     </script>
 </body>
 </html>

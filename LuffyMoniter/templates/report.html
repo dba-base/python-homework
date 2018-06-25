@@ -156,11 +156,6 @@
             //var div = document.getElementById("resText");
             $("#resText").find('iframe').remove()
 
-{#            while(div.hasChildNodes())  //当div下还存在子节点时 循环继续#}
-{#            {#}
-{#                $('iframe').remove()#}
-{#                //div.removeChild(div.firstChild);#}
-{#            }#}
             // 添加iframe标签到<div中><iframe src="../detail" frameborder="0"></iframe>
             var iframe = document.createElement('iframe')
             iframe.setAttribute("src","../detail?tbs=" + params.name)
