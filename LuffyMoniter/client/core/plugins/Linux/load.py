@@ -11,7 +11,7 @@ from plugins.base import BasePlugin
 def monitor():
     shell_command = 'uptime'
 
-    contents = BasePlugin('192.168.231.110',22,'root','oracle').exec_shell_cmd(shell_command)
+    contents = BasePlugin('192.168.2.128',22,'root','oracle').exec_shell_cmd(shell_command)
 
     if contents['ERROR'] == "" :
         contents['ERROR'] = 0
@@ -24,7 +24,6 @@ def monitor():
         value_dic = {}
         li = contents['RESULT'].split("\n")  # 字符串转列表
         content_list = li[:len(li) - 1]
-        print(content_list[0])
         # 列表转字典
         uptime = content_list[0].split(',')[:1][0]
 
