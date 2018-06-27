@@ -1,26 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="crazyeye_db" uuid="0de20a62-c56f-4ea5-97dc-238f10184109">
-      <driver-ref>sqlite.xerial</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:G:/1.学习资料/1.程序设计/1.python/python-51cto课程资料/Python14期课上代码按模块划分-全部/项目/CrazyEye-master/crazyeye_db</jdbc-url>
-      <driver-properties>
-        <property name="enable_load_extension" value="true" />
-      </driver-properties>
-    </data-source>
-    <data-source source="LOCAL" name="db" uuid="8d2c0a6d-9a08-4be1-8da7-b8eb8d8f359d">
-      <driver-ref>sqlite.xerial</driver-ref>
-      <synchronize>true</synchronize>
-      <imported>true</imported>
-      <remarks>SQLite</remarks>
-      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:F:\github\python_homework\LuffyMoniter\db.sqlite3</jdbc-url>
-      <driver-properties>
-        <property name="enable_load_extension" value="true" />
-      </driver-properties>
-    </data-source>
     <data-source source="LOCAL" name="@localhost" uuid="4c7bdb73-96e1-4b08-95ac-80e670904fdb">
       <driver-ref>mysql</driver-ref>
       <synchronize>true</synchronize>
@@ -35,7 +15,16 @@
         <property name="yearIsDateType" value="false" />
       </driver-properties>
     </data-source>
-    <data-source source="LOCAL" name="monitor" uuid="c2cd9f39-e666-4292-9511-9bba16aa0f98">
+    <data-source source="LOCAL" name="crazyMonitor" uuid="7721c117-7bc9-4269-a54c-c047de5e4364">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:F:\github\python_homework\CrazyMonitor\db.sqlite3</jdbc-url>
+      <driver-properties>
+        <property name="enable_load_extension" value="true" />
+      </driver-properties>
+    </data-source>
+    <data-source source="LOCAL" name="LuffyMonitor" uuid="a6bde2da-0457-43d8-b496-5e131566cf42">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
