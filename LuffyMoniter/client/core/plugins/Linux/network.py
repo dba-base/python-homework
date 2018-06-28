@@ -9,7 +9,7 @@ from plugins.base import BasePlugin
 
 def monitor(frist_invoke=1):
     shell_command = 'sar -n DEV 1 5 |grep -v IFACE |grep Average'
-    contents = BasePlugin('192.168.231.110', 22, 'root', 'oracle').exec_shell_cmd(shell_command)
+    contents = BasePlugin('192.168.2.128', 22, 'root', 'oracle').exec_shell_cmd(shell_command)
     #result = subprocess.Popen(shell_command,shell=True,stdout=subprocess.PIPE).stdout.readlines()
     #print(result)
     value_dic = {'status':0, 'data':{}}
@@ -22,5 +22,4 @@ def monitor(frist_invoke=1):
         value_dic['data'][nic_name] = {"t_in":line[4], "t_out":line[5]}
     return value_dic
 
-if __name__ == '__main__':
-    print(monitor())
+print(monitor())

@@ -39,5 +39,3 @@ def monitor():
     return value_dic
 
 
-
-print(monitor())

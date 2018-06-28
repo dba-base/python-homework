@@ -43,6 +43,3 @@ def monitor(frist_invoke=1):
         #real MemUsage value
         value_dic['MemUsage'] = MemUsage
     return value_dic
-
-if __name__ == '__main__':
-    print(monitor())

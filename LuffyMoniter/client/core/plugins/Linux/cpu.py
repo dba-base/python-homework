@@ -6,10 +6,15 @@ sys.path.append(BASEDIR)
 
 from plugins.base import BasePlugin
 
-def monitor(frist_invoke=1):
-    #shell_command = 'sar 1 3| grep "^Average:"'
+def monitor(frist_invoke=1,**kwargs):
+    for i,v in kwargs.items():
+        ip = i
+        username = v[0]
+        passwd = v[1]
+        port = v[2]
+    print(ip,username,port,passwd)
     shell_command = 'sar 1 3| grep "^Average:"'
-    contents = BasePlugin('192.168.2.128',22,'root','oracle').exec_shell_cmd(shell_command)
+    contents = BasePlugin(ip,port,username,passwd).exec_shell_cmd(shell_command)
     if contents['ERROR'] == "" :
         contents['ERROR'] = 0
     else:
@@ -32,4 +37,6 @@ def monitor(frist_invoke=1):
     return value_dic
 
 if __name__ == '__main__':
-    print(monitor())
+    host_message = {'192.168.2.128': ['root', 'oracle', 22]}
+    a = monitor(**host_message)
+    print(a)

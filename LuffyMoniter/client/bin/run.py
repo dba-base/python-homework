@@ -3,7 +3,9 @@ __author__ = "xiaoyu hao"
 import os,sys
 
 BASEDIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-os.path.join(BASEDIR)
+sys.path.append(BASEDIR)
+
+print(BASEDIR)
 from core import scripts
 
 if __name__ == '__main__':

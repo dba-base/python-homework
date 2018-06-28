@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 #_*_coding:utf-8_*_
 
-import AutoClient
+from core import AutoClient
 class command_handler(object):
 
     def __init__(self, sys_args):

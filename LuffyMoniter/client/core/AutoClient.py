@@ -17,11 +17,23 @@ class ClientHandle(object):
         load the latest monitor configs from monitor server
         :return:
         '''
-        request_type = settings.configs['urls']['get_configs'][1]     #get
-        url = "%s/%s" %(settings.configs['urls']['get_configs'][0], settings.configs['HostID'])  #api/client/config/1
-        latest_configs = self.url_request(request_type,url)  #以get方式请求
-        latest_configs = json.loads(latest_configs)
-        self.monitored_services.update(latest_configs)   #放入字典中
+        # request_type = settings.configs['urls']['get_configs'][1]     #get
+        # url = "%s/%s" %(settings.configs['urls']['get_configs'][0], settings.configs['HostID'])  #api/client/config/1
+        # latest_configs = self.url_request(request_type,url)  #以get方式请求
+        # latest_configs = json.loads(latest_configs)
+        # self.monitored_services.update(latest_configs)   #放入字典中
+        self.monitored_services = {'services':
+                                       {'LinuxCPU':
+                                            ['LinuxCpuPlugin',60],
+                                        'LinuxLoad':
+                                            ['LinuxLoadPlugin',30],
+                                        'LinuxMemory':
+                                            ['LinuxMemoryPlugin',90],
+                                        'LinuxNetwork':
+                                            ['LinuxNetworkPlugin',60]
+                                        },
+                                   'host':{'192.168.2.128':['root','oracle']}
+                                   }
 
     def forever_run(self):
         '''
@@ -40,9 +52,9 @@ class ClientHandle(object):
 
               for service_name,val in self.monitored_services['services'].items():
 
-                  # "services": {cpu: ['cpu_plug', 10s, 0], memory: ['memory_plug', 10s], io: ['io_plug', 10s]}
-                  # service_name:cpu
-                  # val: ['cpu_plug', 10s],['memory_plug', 10s], ['io_plug', 10s]
+                  # "services": {'LinuxCPU':['LinuxCpuPlugin',60],'LinuxLoad':['LinuxLoadPlugin',30],'LinuxMemory':['LinuxMemoryPlugin',90],'LinuxNetwork':['LinuxNetworkPlugin',60]}
+                  # service_name:LinuxCPU
+                  # val: ['LinuxCpuPlugin', 60]
 
                   if len(val) == 2:             # means it's the first time to monitor
                       self.monitored_services['services'][service_name].append(0)
@@ -79,18 +91,18 @@ class ClientHandle(object):
             print("--monitor result:",plugin_callback)
             print(type(plugin_callback))
 
-            report_data = {
-                'client_id':settings.configs['HostID'],
-                'service_name':service_name,
-                'data':json.dumps(plugin_callback)
-            }
-
-            request_action = settings.configs['urls']['service_report'][1]  # Post
-            request_url = settings.configs['urls']['service_report'][0]     # api/client/service/report/
-
-            #report_data = json.dumps(report_data)
-            print('---report data:',report_data)
-            self.url_request(request_action,request_url,params=report_data)
+            # report_data = {
+            #     'client_id':settings.configs['HostID'],
+            #     'service_name':service_name,
+            #     'data':json.dumps(plugin_callback)
+            # }
+            #
+            # request_action = settings.configs['urls']['service_report'][1]  # Post
+            # request_url = settings.configs['urls']['service_report'][0]     # api/client/service/report/
+            #
+            # #report_data = json.dumps(report_data)
+            # print('---report data:',report_data)
+            # self.url_request(request_action,request_url,params=report_data)
         else:
             print("\033[31;1mCannot find service [%s]'s plugin name [%s] in plugin_api\033[0m"% (service_name,plugin_name ))
         print('--plugin:',val)

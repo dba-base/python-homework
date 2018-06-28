@@ -19,5 +19,3 @@ def monitor(frist_invoke=1):
     }
     return value_dic
 
-
-print(monitor())
