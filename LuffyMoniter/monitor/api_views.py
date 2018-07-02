@@ -28,8 +28,7 @@ def service_report(request):
             #StatusData_1_memory_latest
             client_id = request.POST.get('client_id')
             service_name = request.POST.get('service_name')
-            #把数据存下来
-            data_saveing_obj = data_optimization.DataStore(client_id,service_name,data,REDIS_OBJ)
+            #把数据存下来data_saveing_obj = data_optimization.DataStore(client_id,service_name,data,REDIS_OBJ)
 
             #redis_key_format = "StatusData_%s_%s_latest" %(client_id,service_name)
             #data['report_time'] = time.time()

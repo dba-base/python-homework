@@ -15,7 +15,12 @@ def monitor(frist_invoke=1,**kwargs):
         port = v[2]
     value_dic = {}
     shell_command = 'uptime'
+<<<<<<< HEAD
     contents = BasePlugin(ip, port, username, passwd).exec_shell_cmd(shell_command)
+=======
+    contents = BasePlugin(ip,port,username,passwd).exec_shell_cmd(shell_command)
+    # contents = BasePlugin('192.168.2.128', 22, 'root', 'oracle').exec_shell_cmd(shell_command)
+>>>>>>> 6ecfbf47f8803bc2f0083c090b9bb3c2d7d16b96
 
     #user,nice,system,iowait,steal,idle = result.split()[2:]
     value_dic= {

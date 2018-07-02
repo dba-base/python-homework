@@ -1,11 +1,10 @@
 from django.contrib import admin
 
 import web
-import monitor
 
 class HostAdmin(admin.ModelAdmin):
         list_display = ['id','idc','business','appcompany','hostname','ip_addr','port','instance_name','database_type','os_type','enabled']
-
+        filter_horizontal = ('templates',)
 
 class TbsAdmin(admin.ModelAdmin):
         list_display = ['name','total_size','used_size','free_size','date','time','host']
@@ -30,6 +29,6 @@ admin.site.register(web.models.Business)
 admin.site.register(web.models.AppCompany)
 admin.site.register(web.models.IDC)
 admin.site.register(web.models.Tablespace,TbsAdmin)
-admin.site.register(monitor.models.ServiceIndex,ServiceIndexAdmin)
-admin.site.register(monitor.models.Service,ServiceAdmin)
-admin.site.register(monitor.models.Template,TemplateAdmin)
+admin.site.register(web.models.ServiceIndex,ServiceIndexAdmin)
+admin.site.register(web.models.Service,ServiceAdmin)
+admin.site.register(web.models.Template,TemplateAdmin)

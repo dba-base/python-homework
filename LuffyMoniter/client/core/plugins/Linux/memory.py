@@ -18,8 +18,12 @@ def monitor(frist_invoke=1,**kwargs):
         'MemUsage'  : 'percentage',
     }
     shell_command ="grep 'MemTotal\|MemFree\|Buffers\|^Cached\|SwapTotal\|SwapFree' /proc/meminfo"
-
     contents = BasePlugin(ip,port,username,passwd).exec_shell_cmd(shell_command)
+
+<<<<<<< HEAD
+    contents = BasePlugin(ip,port,username,passwd).exec_shell_cmd(shell_command)
+=======
+>>>>>>> 6ecfbf47f8803bc2f0083c090b9bb3c2d7d16b96
     if contents['ERROR'] == "" :
         contents['ERROR'] = 0
     else:
@@ -48,3 +52,8 @@ def monitor(frist_invoke=1,**kwargs):
         #real MemUsage value
         value_dic['MemUsage'] = MemUsage
     return value_dic
+
+# if __name__ == '__main__':
+#     host_message = {'192.168.2.128': ['root', 'oracle', 22]}
+#     a = monitor(**host_message)
+#     print(a)
