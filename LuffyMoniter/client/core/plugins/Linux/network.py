@@ -7,9 +7,14 @@ sys.path.append(BASEDIR)
 
 from plugins.base import BasePlugin
 
-def monitor(frist_invoke=1):
+def monitor(frist_invoke=1,**kwargs):
+    for i,v in kwargs.items():
+        ip = i
+        username = v[0]
+        passwd = v[1]
+        port = v[2]
     shell_command = 'sar -n DEV 1 5 |grep -v IFACE |grep Average'
-    contents = BasePlugin('192.168.2.128', 22, 'root', 'oracle').exec_shell_cmd(shell_command)
+    contents = BasePlugin(ip, port, username, passwd).exec_shell_cmd(shell_command)
     #result = subprocess.Popen(shell_command,shell=True,stdout=subprocess.PIPE).stdout.readlines()
     #print(result)
     value_dic = {'status':0, 'data':{}}
@@ -21,5 +26,3 @@ def monitor(frist_invoke=1):
         nic_name,t_in,t_out = line[1],line[4],line[5]
         value_dic['data'][nic_name] = {"t_in":line[4], "t_out":line[5]}
     return value_dic
-
-print(monitor())

@@ -7,17 +7,17 @@ print(BASEDIR)
 from core.plugins.Linux import sysinfo,cpu,memory,network,host_alive,load
 # from plugins.oracle import sysinfo,cpu_mac,cpu,memory,network,host_alive
 
-def LinuxCpuPlugin():
-    return cpu.monitor()
+def LinuxCpuPlugin(**kwargs):
+    return cpu.monitor(**kwargs)
 
-def host_alive_check():
-    return host_alive.monitor()
+def host_alive_check(**kwargs):
+    return host_alive.monitor(**kwargs)
 
-def LinuxNetworkPlugin():
-    return network.monitor()
+def LinuxNetworkPlugin(**kwargs):
+    return network.monitor(**kwargs)
 
-def LinuxMemoryPlugin():
-    return memory.monitor()
+def LinuxMemoryPlugin(**kwargs):
+    return memory.monitor(**kwargs)
 
-def LinuxLoadPlugin():
-    return load.monitor()
+def LinuxLoadPlugin(**kwargs):
+    return load.monitor(**kwargs)

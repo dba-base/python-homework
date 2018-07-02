@@ -7,10 +7,16 @@ sys.path.append(BASEDIR)
 
 from plugins.base import BasePlugin
 
-def monitor(frist_invoke=1):
+def monitor(frist_invoke=1,**kwargs):
+    for i,v in kwargs.items():
+        ip = i
+        username = v[0]
+        passwd = v[1]
+        port = v[2]
     value_dic = {}
     shell_command = 'uptime'
-    contents = BasePlugin('192.168.2.128', 22, 'root', 'oracle').exec_shell_cmd(shell_command)
+    contents = BasePlugin(ip,port,username,passwd).exec_shell_cmd(shell_command)
+    # contents = BasePlugin('192.168.2.128', 22, 'root', 'oracle').exec_shell_cmd(shell_command)
 
     #user,nice,system,iowait,steal,idle = result.split()[2:]
     value_dic= {
