@@ -1,4 +1,8 @@
 #_*_coding:utf-8_*_
+import os,sys
+BASEDIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(BASEDIR)
+
 import time
 from conf import settings
 import urllib
@@ -23,16 +27,17 @@ class ClientHandle(object):
         # latest_configs = json.loads(latest_configs)
         # self.monitored_services.update(latest_configs)   #放入字典中
         self.monitored_services = {'services':
-                                       {'LinuxCPU':
-                                            ['LinuxCpuPlugin',60],
+                                       {
+                                        'LinuxCPU':
+                                            ['LinuxCpuPlugin',6],
                                         'LinuxLoad':
-                                            ['LinuxLoadPlugin',30],
+                                            ['LinuxLoadPlugin',3],
                                         'LinuxMemory':
-                                            ['LinuxMemoryPlugin',90],
+                                            ['LinuxMemoryPlugin',9],
                                         'LinuxNetwork':
-                                            ['LinuxNetworkPlugin',60]
+                                            ['LinuxNetworkPlugin',6]
                                         },
-                                   'host':{'192.168.2.128':['root','oracle']}
+                                   'host':{'192.168.233.110':['root','oracle',22]}
                                    }
 
     def forever_run(self):
@@ -49,6 +54,9 @@ class ClientHandle(object):
                   print("Loaded latest config:", self.monitored_services)
                   config_last_update_time = time.time()
               #start to monitor services
+              for h_key, h_val in self.monitored_services['host'].items():
+                  host = {h_key: h_val}
+                  print(host)
 
               for service_name,val in self.monitored_services['services'].items():
 
@@ -66,9 +74,10 @@ class ClientHandle(object):
                       self.monitored_services['services'][service_name][2]= time.time() #更新此服务最后一次监控的时间
                       # val: ['cpu_plug', 10s,12345],['memory_plug', 5s,23456], ['io_plug', 15s,34567]
                       #start a new thread to call each monitor plugin
-                      t = threading.Thread(target=self.invoke_plugin,args=(service_name,val))
-                      t.start()
+                      print("HOST:",host)
+                      t = threading.Thread(target=self.invoke_plugin,args=(service_name,val,host))
                       print("Going to monitor [%s]" % service_name)
+                      t.start()
 
                   else:
                       print("Going to monitor [%s] in [%s] secs" % (service_name,
@@ -76,7 +85,7 @@ class ClientHandle(object):
 
               time.sleep(1)
 
-    def invoke_plugin(self,service_name,val):
+    def invoke_plugin(self,service_name,val,host):
         '''
         invoke the monitor plugin here, and send the data to monitor server after plugin returned status data each time
         :param service_name: 监控项 LinuxCPU
@@ -87,8 +96,8 @@ class ClientHandle(object):
         # 反射
         if hasattr(plugin_api,plugin_name):
             func = getattr(plugin_api,plugin_name)
-            plugin_callback = func()    #执行函数，并把结果放在plugin_callback
-            print("--monitor result:",plugin_callback)
+            plugin_callback = func(**host)    #执行函数，并把结果放在plugin_callback
+            print("--monitor result:%s,%s"%(plugin_name,plugin_callback))
             print(type(plugin_callback))
 
             # report_data = {
@@ -105,7 +114,6 @@ class ClientHandle(object):
             # self.url_request(request_action,request_url,params=report_data)
         else:
             print("\033[31;1mCannot find service [%s]'s plugin name [%s] in plugin_api\033[0m"% (service_name,plugin_name ))
-        print('--plugin:',val)
 
 
     def url_request(self,action,url,**extra_data):
@@ -122,7 +130,7 @@ class ClientHandle(object):
         abs_url = "http://%s:%s/%s" % (settings.configs['Server'],
                                        settings.configs["ServerPort"],
                                        url)
-        if action in  ('get','GET'):
+        if action in ('get','GET'):
             print(abs_url,extra_data)
             try:
                 req = urllib.request.Request(abs_url)
@@ -155,3 +163,32 @@ class ClientHandle(object):
             except Exception as e:
                 print('---exec',e)
                 exit("\033[31;1m%s\033[0m"%e)
+
+
+if __name__ == '__main__':
+    monitored_services = {'services':
+                              {'LinuxCPU':
+                                   ['LinuxCpuPlugin', 60],
+                               'LinuxLoad':
+                                   ['LinuxLoadPlugin', 30],
+                               'LinuxMemory':
+                                   ['LinuxMemoryPlugin', 90],
+                               'LinuxNetwork':
+                                   ['LinuxNetworkPlugin', 60]
+                               },
+                          'host':
+                              {'192.168.233.110': ['root', 'oracle', 22]}
+                          }
+    # host_message = {'192.168.231.110': ['root', 'oracle', 22]}
+    client = ClientHandle()
+    for h_key, h_val in monitored_services['host'].items():   #加上循环之后就报错
+        host = {h_key: h_val}
+        print(host)
+
+    # client.forever_run()
+    for service_name, val in monitored_services['services'].items():
+        t = threading.Thread(target=client.invoke_plugin, args=(service_name, val, host))
+        print("Going to monitor [%s]" % service_name)
+        t.start()
+
+

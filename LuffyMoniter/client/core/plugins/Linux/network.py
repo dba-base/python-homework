@@ -7,11 +7,15 @@ sys.path.append(BASEDIR)
 
 from plugins.base import BasePlugin
 
-def monitor(frist_invoke=1):
+def monitor(frist_invoke=1,**kwargs):
+    for i,v in kwargs.items():
+        ip = i
+        username = v[0]
+        passwd = v[1]
+        port = v[2]
     shell_command = 'sar -n DEV 1 5 |grep -v IFACE |grep Average'
-    contents = BasePlugin('192.168.2.128', 22, 'root', 'oracle').exec_shell_cmd(shell_command)
+    contents = BasePlugin(ip,port,username,passwd).exec_shell_cmd(shell_command)
     #result = subprocess.Popen(shell_command,shell=True,stdout=subprocess.PIPE).stdout.readlines()
-    #print(result)
     value_dic = {'status':0, 'data':{}}
     li = contents['RESULT'].split("\n")  # 字符串转列表
     content_list = li[:len(li) - 1]  # 取列表开始到倒数第二个元素，最后一个元素为空
@@ -22,4 +26,7 @@ def monitor(frist_invoke=1):
         value_dic['data'][nic_name] = {"t_in":line[4], "t_out":line[5]}
     return value_dic
 
-print(monitor())
+if __name__ == '__main__':
+    host_message = {'192.168.231.110': ['root', 'oracle', 22]}
+    a = monitor(**host_message)
+    print(a)

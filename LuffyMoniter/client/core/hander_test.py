@@ -11,13 +11,12 @@ monitored_services = {'services':
                                         'LinuxNetwork':
                                             ['LinuxNetworkPlugin',60]
                                         },
-                                   'host':{'192.168.2.128':['root','oracle']}
+                                   'host':{'192.168.2.128':['root','oracle'],'192.168.233.128':['root','oracle']}
                                    }
 
-for service_name,val in monitored_services['services'].items():
-    print('service Name:',service_name)
-    print('val:',val)
 
-for ip,img in monitored_services['host'].items():
-    print('ip:',ip)
-    print('img:',img)
+
+
+for ip_key,val in monitored_services['host'].items():
+    host = {ip_key:val}
+    print(host)
