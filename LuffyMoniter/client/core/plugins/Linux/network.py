@@ -20,15 +20,38 @@ def monitor(frist_invoke=1,**kwargs):
     contents = BasePlugin(ip, port, username, passwd).exec_shell_cmd(shell_command)
 >>>>>>> 6ecfbf47f8803bc2f0083c090b9bb3c2d7d16b96
     #result = subprocess.Popen(shell_command,shell=True,stdout=subprocess.PIPE).stdout.readlines()
+<<<<<<< HEAD
+    #print(result)
+    if contents['ERROR'] == "" :
+        contents['ERROR'] = 0
+    else:
+        contents['ERROR'] = 1
+    status = contents['ERROR']
+=======
     value_dic = {'status':0, 'data':{}}
     li = contents['RESULT'].split("\n")  # 字符串转列表
     content_list = li[:len(li) - 1]  # 取列表开始到倒数第二个元素，最后一个元素为空
+>>>>>>> d841c496728554b89a5f20e1073fbaf9b852716a
 
-    for line in content_list:
-        line = line.split()
-        nic_name,t_in,t_out = line[1],line[4],line[5]
-        value_dic['data'][nic_name] = {"t_in":line[4], "t_out":line[5]}
+    if status != 0:
+        value_dic = {'status': status}
+    else:
+        value_dic = {'status':0, 'data':{}}
+        li = contents['RESULT'].split("\n")  # 字符串转列表
+        content_list = li[:len(li) - 1]  # 取列表开始到倒数第二个元素，最后一个元素为空
+
+        for line in content_list:
+            line = line.split()
+            nic_name,t_in,t_out = line[1],line[4],line[5]
+            value_dic['data'][nic_name] = {"t_in":line[4], "t_out":line[5]}
     return value_dic
+<<<<<<< HEAD
+
+# if __name__ == '__main__':
+#     host_message = {'192.168.2.12': ['root', 'oracle', 22]}
+#     a = monitor(**host_message)
+#     print(a)
+=======
 <<<<<<< HEAD
 
 if __name__ == '__main__':
@@ -37,3 +60,4 @@ if __name__ == '__main__':
     print(a)
 =======
 >>>>>>> 6ecfbf47f8803bc2f0083c090b9bb3c2d7d16b96
+>>>>>>> d841c496728554b89a5f20e1073fbaf9b852716a

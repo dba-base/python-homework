@@ -22,7 +22,7 @@ configs ={
 
     },
     'RequestTimeout':30,
-    'ConfigUpdateInterval': 300, #5 mins as default
+    'ConfigUpdateInterval': 30, #5 mins as default
 
 }
 

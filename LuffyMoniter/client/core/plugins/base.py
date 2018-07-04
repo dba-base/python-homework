@@ -20,8 +20,8 @@ class BasePlugin(object):
         :return:
         '''
         import paramiko
+        result_dict = {}
         try:
-            result_dict = {}
             ssh = paramiko.SSHClient()
             ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
             ssh.connect(hostname=self.hostname, port=self.port, username=self.username, password=self.password,timeout=10)
@@ -34,7 +34,9 @@ class BasePlugin(object):
             return result_dict
 
         except Exception as e:
-            print(e)
+            print('.....',e)
+            result_dict['ERROR'] = e
+            return result_dict
 
     def jdbc(self,sql):
         '''
@@ -49,7 +51,7 @@ class BasePlugin(object):
         return output
 
 
-# ssh = BasePlugin('192.168.2.128',22,'root','oracle')
-# status,result = ssh.exec_shell_cmd('sar 1 3')
-# print(status)
-# print(result)
+# ssh = BasePlugin('192.168.2.129',22,'root','oracle')
+# a = ssh.exec_shell_cmd('sar 1 3')
+# print(a)
+

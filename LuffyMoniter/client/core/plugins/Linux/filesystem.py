@@ -14,13 +14,11 @@ def monitor(frist_invoke=1,**kwargs):
         username = v[0]
         passwd = v[1]
         port = v[2]
-<<<<<<< HEAD
-    shell_command = 'uptime'
-
-=======
-    print(ip,username,port,passwd)
-    shell_command = 'uptime'
->>>>>>> 6ecfbf47f8803bc2f0083c090b9bb3c2d7d16b96
+    monitor_dic = {
+        'SwapUsage': 'percentage',
+        'MemUsage'  : 'percentage',
+    }
+    shell_command ="df -m | sed '1d'"
     contents = BasePlugin(ip,port,username,passwd).exec_shell_cmd(shell_command)
     run_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
     if contents['ERROR'] == "" :
@@ -32,26 +30,23 @@ def monitor(frist_invoke=1,**kwargs):
         value_dic = {'status':status}
     else:
         value_dic = {}
-        li = contents['RESULT'].split("\n")  # 字符串转列表
-        content_list = li[:len(li) - 1]
-        # 列表转字典
-        uptime = content_list[0].split(',')[:1][0]
+        value_dic['ip'] = ip
+        li=contents['RESULT'].split("\n")  # 字符串转列表
+        content_list = li[:len(li)-1]      # 取列表开始到倒数第二个元素，最后一个元素为空
 
-        load1,load5,load15 = content_list[0].split('load average:')[1].split()
-        print(load1,load5,load15)
-        value_dic= {
-            'ip':ip,
-            'uptime': uptime,
-            'load1': load1,
-            'load5': load5,
-            'load15': load15,
-            'time': run_time,
-            'status': status
-        }
+        #列表转字典
+        for i in content_list:
+            key= i.split()[5].strip(':') # factor name 取得挂载点
+            value = i.split()[1:4]   # factor value
+            value_dic[key] = value
+
+        value_dic['time'] = run_time
+        value_dic['status'] = status
+
     return value_dic
 
 if __name__ == '__main__':
-    host_message = {'192.168.2.128': ['root', 'oracle', 22]}
-    a = monitor(**host_message)
-    print(a)
-
+    # for i in range(3):
+        host_message = {'192.168.2.128': ['root', 'oracle', 22]}
+        a = monitor(**host_message)
+        print(a)

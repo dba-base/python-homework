@@ -100,3 +100,49 @@ class Template(models.Model):
     #triggers = models.ManyToManyField('Trigger',verbose_name=u"触发器列表",blank=True)
     def __str__(self):
         return self.name
+
+
+class CpuInfo(models.Model):
+    ip = models.CharField(max_length=64,blank=True,verbose_name=u"IP地址")
+    user = models.DecimalField(max_digits=5, decimal_places=2,null=True,verbose_name=u"用户使用率")
+    nice = models.DecimalField(max_digits=5, decimal_places=2,null=True,verbose_name=u"NICE")
+    system  = models.DecimalField(max_digits=5, decimal_places=2,null=True,verbose_name=u"系统使用率")
+    idle = models.DecimalField(max_digits=5, decimal_places=2,null=True,verbose_name=u"空闲率")
+    time = models.CharField(max_length=64,blank=True,null=True,verbose_name=u"采集时间")
+    status = models.CharField(max_length=6,blank=True,verbose_name=u"状态")
+    host = models.ForeignKey('Host',null=True,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.ip
+
+class MemInfo(models.Model):
+    ip = models.CharField(max_length=64,blank=True,verbose_name=u"IP地址")
+    MemTotal = models.DecimalField(max_digits=10, decimal_places=2,null=True,verbose_name=u"总内存(Kb)")
+    MemFree = models.DecimalField(max_digits=10, decimal_places=2,null=True,verbose_name=u"未分配内存(Kb)")
+    Buffers  = models.DecimalField(max_digits=10, decimal_places=2,null=True,verbose_name=u"Buffers(Kb)")
+    Cached = models.DecimalField(max_digits=10, decimal_places=2,null=True,verbose_name=u"Cached(Kb)")
+    SwapTotal = models.DecimalField(max_digits=10, decimal_places=2,null=True,verbose_name=u"总Swap(Kb)")
+    SwapFree = models.DecimalField(max_digits=10, decimal_places=2,null=True,verbose_name=u"空闲swap(Kb)")
+    SwapUsage_p = models.DecimalField(max_digits=10, decimal_places=2,null=True,verbose_name=u"swap使用率")
+    SwapUsage = models.DecimalField(max_digits=10, decimal_places=2,null=True,verbose_name=u"已用swap(Kb)")
+    MemUsage_p = models.DecimalField(max_digits=10, decimal_places=2,null=True,verbose_name=u"内存使用率")
+    MemUsage = models.DecimalField(max_digits=10, decimal_places=2,null=True,verbose_name=u"已分配内存(Kb)")
+    time = models.CharField(max_length=64,blank=True,null=True,verbose_name=u"采集时间")
+    status = models.CharField(max_length=6,blank=True,verbose_name=u"状态")
+
+    host = models.ForeignKey('Host',null=True,on_delete=models.CASCADE)
+
+class Filesystem(models.Model):
+    ip = models.CharField(max_length=64, blank=True, verbose_name=u"IP地址")
+    mount_point = models.CharField(max_length=64,blank=True,verbose_name=u"挂载点")
+    Total_size = models.PositiveIntegerField(verbose_name=u'总大小')
+    used_size = models.PositiveIntegerField(verbose_name=u'已用')
+    avail_size = models.PositiveIntegerField(verbose_name=u'剩余')
+    time = models.CharField(max_length=64, blank=True, null=True, verbose_name=u"采集时间")
+    status = models.CharField(max_length=6,blank=True,verbose_name=u"状态")
+
+    host = models.ForeignKey('Host',null=True,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.mount_point
+
