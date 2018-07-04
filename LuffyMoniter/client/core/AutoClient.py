@@ -1,11 +1,8 @@
 #_*_coding:utf-8_*_
-<<<<<<< HEAD
 import os,sys
-=======
 
 import os,sys
 
->>>>>>> 6ecfbf47f8803bc2f0083c090b9bb3c2d7d16b96
 BASEDIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(BASEDIR)
 
@@ -27,7 +24,6 @@ class ClientHandle(object):
         load the latest monitor configs from monitor server
         :return:
         '''
-<<<<<<< HEAD
         # request_type = settings.configs['urls']['get_configs'][1]     #get
         # url = "%s/%s" %(settings.configs['urls']['get_configs'][0], settings.configs['HostID'])  #api/client/config/1
         # latest_configs = self.url_request(request_type,url)  #以get方式请求
@@ -46,7 +42,6 @@ class ClientHandle(object):
                                         },
                                    'host':{'192.168.233.110':['root','oracle',22]}
                                    }
-=======
         request_type = settings.configs['urls']['get_configs'][1]     #get
         url = "%s/%s" %(settings.configs['urls']['get_configs'][0], settings.configs['HostID'])  #api/client/config/1
         latest_configs = self.url_request(request_type,url)  #以get方式请求
@@ -64,7 +59,6 @@ class ClientHandle(object):
         #                                 },
         #                            'host':{'192.168.2.128':['root','oracle',22]}
         #                            }
->>>>>>> 6ecfbf47f8803bc2f0083c090b9bb3c2d7d16b96
 
     def forever_run(self):
         '''
@@ -80,7 +74,6 @@ class ClientHandle(object):
                   # print("Loaded latest config:", self.monitored_services)
                   config_last_update_time = time.time()
               #start to monitor services
-<<<<<<< HEAD
               for h_key, h_val in self.monitored_services['host'].items():
                   host = {h_key: h_val}
                   print(host)
@@ -113,7 +106,6 @@ class ClientHandle(object):
               time.sleep(1)
 
     def invoke_plugin(self,service_name,val,host):
-=======
               for ip_k,host_val in self.monitored_services['host'].items():
                   host_message = {ip_k:host_val}
                   for service_name,val in self.monitored_services['services'].items():
@@ -144,7 +136,6 @@ class ClientHandle(object):
                   time.sleep(1)
 
     def invoke_plugin(self,service_name,val,host_message):
->>>>>>> 6ecfbf47f8803bc2f0083c090b9bb3c2d7d16b96
         '''
         invoke the monitor plugin here, and send the data to monitor server after plugin returned status data each time
         :param service_name: 监控项 LinuxCPU
@@ -155,13 +146,10 @@ class ClientHandle(object):
         # 反射
         if hasattr(plugin_api,plugin_name):
             func = getattr(plugin_api,plugin_name)
-<<<<<<< HEAD
             plugin_callback = func(**host)    #执行函数，并把结果放在plugin_callback
             print("--monitor result:%s,%s"%(plugin_name,plugin_callback))
-=======
             plugin_callback = func(**host_message)    #执行函数，并把结果放在plugin_callback
             print("\033[0;47;31m--monitor result:%s，%s\033[0m" %(plugin_api,plugin_callback))
->>>>>>> 6ecfbf47f8803bc2f0083c090b9bb3c2d7d16b96
             print(type(plugin_callback))
 
             # report_data = {
@@ -227,7 +215,6 @@ class ClientHandle(object):
                 print('---exec',e)
                 exit("\033[31;1m%s\033[0m"%e)
 
-<<<<<<< HEAD
 
 if __name__ == '__main__':
     monitored_services = {'services':
@@ -256,9 +243,6 @@ if __name__ == '__main__':
         t.start()
 
 
-=======
-#
 # if __name__ == "__main__":
 #     obj = ClientHandle()
 #     obj.forever_run()
->>>>>>> 6ecfbf47f8803bc2f0083c090b9bb3c2d7d16b96
