@@ -14,8 +14,13 @@ def monitor(frist_invoke=1,**kwargs):
         username = v[0]
         passwd = v[1]
         port = v[2]
+<<<<<<< HEAD
+    shell_command = 'uptime'
+
+=======
     print(ip,username,port,passwd)
     shell_command = 'uptime'
+>>>>>>> 6ecfbf47f8803bc2f0083c090b9bb3c2d7d16b96
     contents = BasePlugin(ip,port,username,passwd).exec_shell_cmd(shell_command)
     run_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
     if contents['ERROR'] == "" :

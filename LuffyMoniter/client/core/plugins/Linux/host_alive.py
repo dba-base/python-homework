@@ -16,14 +16,21 @@ def monitor(frist_invoke=1,**kwargs):
         port = v[2]
     value_dic = {}
     shell_command = 'uptime'
+<<<<<<< HEAD
+    contents = BasePlugin(ip, port, username, passwd).exec_shell_cmd(shell_command)
+=======
     contents = BasePlugin(ip,port,username,passwd).exec_shell_cmd(shell_command)
     run_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
     # contents = BasePlugin('192.168.2.128', 22, 'root', 'oracle').exec_shell_cmd(shell_command)
+<<<<<<< HEAD
     if contents['ERROR'] == "" :
         contents['ERROR'] = 0
     else:
         contents['ERROR'] = 1
     status = contents['ERROR']
+=======
+>>>>>>> 6ecfbf47f8803bc2f0083c090b9bb3c2d7d16b96
+>>>>>>> d841c496728554b89a5f20e1073fbaf9b852716a
 
     if status != 0:
         value_dic = {'status': status}
