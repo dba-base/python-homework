@@ -1,5 +1,6 @@
 from django.shortcuts import render,HttpResponse
 import json
+import time
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 
@@ -7,10 +8,10 @@ from monitor.serializer import ClientHandler
 # Create your views here.
 
 
-def client_config(request,client_id):
+def client_config(request,temp_id):
 
-    config_obj = ClientHandler(client_id)
-    config = config_obj.fetch_configs()
+    config_obj = ClientHandler(temp_id)
+    config = config_obj.fetch_host_configs()
 
     if config:
         return HttpResponse(json.dumps(config))
@@ -22,23 +23,24 @@ def service_report(request):
     if request.method == 'POST':
         #REDIS_OBJ.set("test_alex",'hahaha')
         try:
-            print('host=%s, service=%s' %(request.POST.get('client_id'),request.POST.get('service_name') ) )
-            data =  json.loads(request.POST['data'])
+            print('host=%s, service=%s' %(request.POST.get('plugin_name'),request.POST.get('service_name') ) )
+            report_data = json.loads(request.POST['data'])
             #print(data)
             #StatusData_1_memory_latest
-            client_id = request.POST.get('client_id')
-            service_name = request.POST.get('service_name')
-            #把数据存下来data_saveing_obj = data_optimization.DataStore(client_id,service_name,data,REDIS_OBJ)
+            plugin_name = request.POST.get('plugin_name')
 
-            #redis_key_format = "StatusData_%s_%s_latest" %(client_id,service_name)
-            #data['report_time'] = time.time()
-            #REDIS_OBJ.lpush(redis_key_format,json.dumps(data))
+            report_data['report_time'] = time.time()
 
+            config_obj = ClientHandler(plugin_name,data=report_data)
+            report = config_obj.report_data()
+            if report == 'OK':
+                return HttpResponse('上传成功。。')
 
         except IndexError as e:
             print('----->err:',e)
+            return HttpResponse('上传失败。。')
 
 
-    return HttpResponse(json.dumps(data))
+    return HttpResponse(json.dumps(report_data))
 
 

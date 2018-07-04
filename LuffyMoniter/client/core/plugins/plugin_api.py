@@ -4,7 +4,7 @@ BASEDIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file
 sys.path.append(BASEDIR)
 print(BASEDIR)
 
-from core.plugins.Linux import sysinfo,cpu,memory,network,host_alive,load
+from core.plugins.Linux import sysinfo,cpu,memory,network,host_alive,load,filesystem
 # from plugins.oracle import sysinfo,cpu_mac,cpu,memory,network,host_alive
 
 def LinuxCpuPlugin(**kwargs):
@@ -21,3 +21,6 @@ def LinuxMemoryPlugin(**kwargs):
 
 def LinuxLoadPlugin(**kwargs):
     return load.monitor(**kwargs)
+
+def LinuxFilesystemPlugin(**kwargs):
+    return filesystem.monitor(**kwargs)
