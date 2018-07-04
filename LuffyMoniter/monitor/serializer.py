@@ -15,7 +15,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 
 class ClientHandler(object):
-    def __init__(self,args,**kwargs):
+    def __init__(self,*args,**kwargs):
         self.args = args
         self.data = kwargs
         self.client_configs = {
@@ -45,12 +45,17 @@ class ClientHandler(object):
         return self.client_configs
 
     def report_data(self):
-        temp_obj = models.Template.objects.get(name=self.args)
-        print(temp_obj)
+        service_obj = models.Service.objects.get(name=self.data['service_name'])
+        for service in service_obj:
+            service_name = service.name
+        if service_name == 'LinuxCPU':
+            print('insert into cpuinfo')
+        print(service_obj)
+
         return 'OK'
 if __name__ == '__main__':
     dict = {'name':'haoxy','age':28}
-    client = ClientHandler(1,data=dict)
+    client = ClientHandler(data=dict)
     print(client.args,client.data)
 
 

@@ -156,14 +156,14 @@ class ClientHandle(object):
                 exit("\033[31;1m%s\033[0m"%e)
 
         elif action in ('post','POST'):
-            #print(abs_url,extra_data['params'])
+            print(abs_url,extra_data['params'])
             #把监控的结果以post方式发送给服务端
             try:
                 data_encode = urllib.urlencode(extra_data['params'])
 
                 # data_encode :
                 # report_data = {
-                #     'client_id': settings.configs['HostID'],
+                #     'plugin_name': plugin_name,
                 #     'service_name': service_name,
                 #     'data': json.dumps(plugin_callback)
                 # }
