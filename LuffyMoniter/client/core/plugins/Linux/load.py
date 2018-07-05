@@ -14,15 +14,13 @@ def monitor(frist_invoke=1,**kwargs):
         username = v[0]
         passwd = v[1]
         port = v[2]
-<<<<<<< HEAD
     shell_command = 'uptime'
 
-=======
     print(ip,username,port,passwd)
-    shell_command = 'uptime'
->>>>>>> 6ecfbf47f8803bc2f0083c090b9bb3c2d7d16b96
     contents = BasePlugin(ip,port,username,passwd).exec_shell_cmd(shell_command)
     run_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
+    # print(contents)
+    # print(type(contents))
     if contents['ERROR'] == "" :
         contents['ERROR'] = 0
     else:
@@ -35,23 +33,26 @@ def monitor(frist_invoke=1,**kwargs):
         li = contents['RESULT'].split("\n")  # 字符串转列表
         content_list = li[:len(li) - 1]
         # 列表转字典
-        uptime = content_list[0].split(',')[:1][0]
-
+        days = content_list[0].split(',')[0].split()[2]   #运行天数
+        hours_li = content_list[0].split(',')[1].strip().split(':')   #运行小时
+        runtime = days + '天' + hours_li[0] + '时' + hours_li[1] + '分'
+        users = content_list[0].split(',')[2].split()[0]
         load1,load5,load15 = content_list[0].split('load average:')[1].split()
-        print(load1,load5,load15)
+
         value_dic= {
             'ip':ip,
-            'uptime': uptime,
-            'load1': load1,
-            'load5': load5,
-            'load15': load15,
+            'runtime': runtime,
+            'users': users,
+            'load1': float(load1.strip(',')),
+            'load5': float(load5.strip(',')),
+            'load15': float(load15),
             'time': run_time,
             'status': status
         }
     return value_dic
-
-if __name__ == '__main__':
-    host_message = {'192.168.2.128': ['root', 'oracle', 22]}
-    a = monitor(**host_message)
-    print(a)
+#
+# if __name__ == '__main__':
+#     host_message = {'192.168.2.128': ['root', 'oracle', 22]}
+#     a = monitor(**host_message)
+#     print(a)
 

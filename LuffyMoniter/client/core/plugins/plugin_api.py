@@ -7,7 +7,6 @@ print(BASEDIR)
 from core.plugins.Linux import sysinfo,cpu,memory,network,host_alive,load,filesystem
 # from plugins.oracle import sysinfo,cpu_mac,cpu,memory,network,host_alive
 
-<<<<<<< HEAD
 def LinuxCpuPlugin(**host_message):
     return cpu.monitor(**host_message)
 
@@ -23,7 +22,8 @@ def LinuxMemoryPlugin(**host_message):
 def LinuxLoadPlugin(**host_message):
     return load.monitor(**host_message)
 
-
+def LinuxFilesystemPlugin(**host_message):
+    return load.monitor(**host_message)
 # if __name__ == '__main__':
 #     # if __name__ == '__main__':
 #     host_message = {'192.168.231.110': ['root', 'oracle', 22]}
@@ -31,25 +31,3 @@ def LinuxLoadPlugin(**host_message):
 #     print(a)
 #     b=host_alive_check(**host_message)
 #     print(b)
-=======
-def LinuxCpuPlugin(**kwargs):
-    return cpu.monitor(**kwargs)
-
-def host_alive_check(**kwargs):
-    return host_alive.monitor(**kwargs)
-
-def LinuxNetworkPlugin(**kwargs):
-    return network.monitor(**kwargs)
-
-def LinuxMemoryPlugin(**kwargs):
-    return memory.monitor(**kwargs)
-
-def LinuxLoadPlugin(**kwargs):
-    return load.monitor(**kwargs)
-<<<<<<< HEAD
-
-def LinuxFilesystemPlugin(**kwargs):
-    return filesystem.monitor(**kwargs)
-=======
->>>>>>> 6ecfbf47f8803bc2f0083c090b9bb3c2d7d16b96
->>>>>>> d841c496728554b89a5f20e1073fbaf9b852716a

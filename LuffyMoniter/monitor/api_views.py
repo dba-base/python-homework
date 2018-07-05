@@ -27,11 +27,9 @@ def service_report(request):
             report_data = json.loads(request.POST['data'])
             #print(data)
             #StatusData_1_memory_latest
-            plugin_name = request.POST.get('plugin_name')
+            service_name = request.POST.get('service_name')
 
-            report_data['report_time'] = time.time()
-
-            config_obj = ClientHandler(plugin_name,data=report_data)
+            config_obj = ClientHandler(service_name,data=report_data)
             report = config_obj.report_data()
             if report == 'OK':
                 return HttpResponse('上传成功。。')

@@ -146,3 +146,16 @@ class Filesystem(models.Model):
     def __str__(self):
         return self.mount_point
 
+
+class LoadInfo(models.Model):
+    ip = models.CharField(max_length=64,blank=True,verbose_name=u"IP地址")
+    runtime = models.CharField(max_length=64,blank=True,verbose_name=u"IP地址")
+    users = models.CharField(max_length=64,blank=True,verbose_name=u"IP地址")
+    load1  = models.DecimalField(max_digits=5, decimal_places=2,null=True,verbose_name=u"Buffers(Kb)")
+    load5  = models.DecimalField(max_digits=5, decimal_places=2,null=True,verbose_name=u"Buffers(Kb)")
+    load15  = models.DecimalField(max_digits=5, decimal_places=2,null=True,verbose_name=u"Buffers(Kb)")
+
+    time = models.CharField(max_length=64,blank=True,null=True,verbose_name=u"采集时间")
+    status = models.CharField(max_length=6,blank=True,verbose_name=u"状态")
+
+    host = models.ForeignKey('Host',null=True,on_delete=models.CASCADE)

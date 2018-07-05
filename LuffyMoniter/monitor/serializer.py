@@ -45,14 +45,35 @@ class ClientHandler(object):
         return self.client_configs
 
     def report_data(self):
-        service_obj = models.Service.objects.get(name=self.data['service_name'])
-        for service in service_obj:
-            service_name = service.name
-        if service_name == 'LinuxCPU':
-            print('insert into cpuinfo')
-        print(service_obj)
+        service_name = self.args
+        report_data = self.data['data']
+        print('%s,%s' %(service_name,report_data))
+        if service_name[0] == 'LinuxCPU':
+            print("\033[31;1m[%s]\033[0m" %service_name)
+            models.CpuInfo.objects.create(**report_data)
+            print('完成入库')
+            return 'OK'
+        if service_name[0] == 'LinuxMemory':
+            print("\033[31;1m[%s]\033[0m" %service_name)
+            models.MemInfo.objects.create(**report_data)
+            print('完成入库')
+            return 'OK'
+        if service_name[0] == 'LinuxLoad':
+            print("\033[31;1m[%s]\033[0m" %service_name)
+            models.LoadInfo.objects.create(**report_data)
+            print('完成入库')
+            return 'OK'
+        if service_name[0] == 'LinuxNetwork':
+            print("\033[31;1m[%s]\033[0m" %service_name)
+            models.CpuInfo.objects.create(**report_data)
+            print('完成入库')
+            return 'OK'
+        if service_name[0] == 'LinuxFileSystem':
+            print("\033[31;1m[%s]\033[0m" %service_name)
+            models.Filesystem.objects.create(**report_data)
+            print('完成入库')
+            return 'OK'
 
-        return 'OK'
 if __name__ == '__main__':
     dict = {'name':'haoxy','age':28}
     client = ClientHandler(data=dict)
