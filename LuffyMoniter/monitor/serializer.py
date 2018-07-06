@@ -68,9 +68,25 @@ class ClientHandler(object):
             models.CpuInfo.objects.create(**report_data)
             print('完成入库')
             return 'OK'
-        if service_name[0] == 'LinuxFileSystem':
+        if service_name[0] == 'LinuxFilesystem':
             print("\033[31;1m[%s]\033[0m" %service_name)
-            models.Filesystem.objects.create(**report_data)
+            fs_obj_li = []
+            #取得字典的子集
+            fs_dict =  {key: value for key, value in report_data.items() if key not in {'ip','time','status'}}
+            for fs_name,fs_size in fs_dict.items():
+                dict = {
+                    "ip":report_data['ip'],
+                    "mount_point": fs_name,
+                    "Total_size": fs_size[0],
+                    "used_size": fs_size[1],
+                    "avail_size": fs_size[2],
+                    "time":report_data['time'],
+                    "status":report_data['status']
+                }
+                print(dict)
+                fs_obj = models.Filesystem(**dict)
+                fs_obj_li.append(fs_obj)
+            models.Filesystem.objects.bulk_create(fs_obj_li)
             print('完成入库')
             return 'OK'
 

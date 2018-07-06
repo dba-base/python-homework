@@ -40,10 +40,9 @@ class ClientHandle(object):
         config_last_update_time = 0
 
         while not exit_flag:
-              # if time.time() - config_last_update_time > settings.configs['ConfigUpdateInterval']:
-              #     self.load_latest_configs()    # 获取最新的监控配置信息
-              #     print("Loaded latest config:", self.monitored_services)
-              #     config_last_update_time = time.time()
+              if time.time() - config_last_update_time > settings.configs['ConfigUpdateInterval']:
+                  self.load_latest_configs()    # 获取最新的监控配置信息
+                  config_last_update_time = time.time()
 
               # start to monitor services
               for ip_k,host_val in self.monitored_services['host'].items():
@@ -64,7 +63,7 @@ class ClientHandle(object):
                           host_val[3]['services'][service_name][2]= time.time() #更新此服务最后一次监控的时间
                           # val: ['cpu_plug', 10s,12345],['memory_plug', 5s,23456], ['io_plug', 15s,34567]
                           #start a new thread to call each monitor plugin
-                          t = threading.Thread(target=self.invoke_plugin,args=(service_name,val,host_message))
+                          t = threading.Thread(target=self.os_invoke_plugin,args=(service_name,val,host_message))
                           t.start()
                           print("Going to monitor [%s]" % service_name)
 
@@ -74,7 +73,7 @@ class ClientHandle(object):
 
                   time.sleep(2)
 
-    def invoke_plugin(self,service_name,val,host_message):
+    def os_invoke_plugin(self,service_name,val,host_message):
         '''
         invoke the monitor plugin here, and send the data to monitor server after plugin returned status data each time
         :param service_name: 监控项 LinuxCPU
@@ -105,6 +104,39 @@ class ClientHandle(object):
         else:
             print("\033[31;1mCannot find service [%s]'s plugin name [%s] in plugin_api\033[0m"% (service_name,plugin_name ))
         print('--plugin:',val)
+
+    def oracle_invoke_plugin(self, service_name, val, host_message):
+        '''
+        invoke the monitor plugin here, and send the data to monitor server after plugin returned status data each time
+        :param service_name: 监控项 LinuxCPU
+        :param val: [pulgin_name,monitor_interval,last_run_time]
+        :return:
+        '''
+        plugin_name = val[0]  # api 插件名
+        # 反射
+        if hasattr(plugin_api, plugin_name):
+
+            func = getattr(plugin_api, plugin_name)
+            plugin_callback = func(**host_message)  # 执行函数，并把结果放在plugin_callback
+            print("\033[0;47;31m--monitor result:%s,%s，%s\033[0m" % (host_message, plugin_name, plugin_callback))
+
+            report_data = {
+                'plugin_name': plugin_name,
+                'service_name': service_name,
+                'data': json.dumps(plugin_callback)
+            }  # 现对里面的数据进行dump转换成字符串
+
+            request_action = settings.configs['urls']['service_report'][1]  # Post
+            request_url = settings.configs['urls']['service_report'][0]  # api/client/service/report/
+
+            # report_data = json.dumps(report_data).encode('utf-8')
+            print(report_data)
+            print(type(report_data))
+            self.url_request(request_action, request_url, params=report_data)
+        else:
+            print("\033[31;1mCannot find service [%s]'s plugin name [%s] in plugin_api\033[0m" % (
+            service_name, plugin_name))
+        print('--plugin:', val)
 
     def url_request(self,action,url,**extra_data):
         '''
@@ -165,12 +197,22 @@ if __name__ == "__main__":
     monitored_services = {
         'host': {
             '192.168.2.128':
-                     ['root', 'oracle', 22,
+                     ['root', 'oracle', 22,'scott','tiger','PROD',1521,
                       {'services':
                           {
                               'LinuxCPU': ['LinuxCpuPlugin', 30],
                               'LinuxLoad': ['LinuxLoadPlugin', 60],
                               'LinuxMemory': ['LinuxMemoryPlugin', 9],
+                              'LinuxFilesystem': ['LinuxFilesystemPlugin', 9],
+                              # 'LinuxNetwork': ['LinuxNetworkPlugin', 6]
+                          }},
+                      {"db_flag" : True},   #是否是数据库服务器
+                      {'db_services':
+                          {
+                              'LinuxCPU': ['LinuxCpuPlugin', 30],
+                              'LinuxLoad': ['LinuxLoadPlugin', 60],
+                              'LinuxMemory': ['LinuxMemoryPlugin', 9],
+                              'LinuxFilesystem': ['LinuxFilesystemPlugin', 9],
                               # 'LinuxNetwork': ['LinuxNetworkPlugin', 6]
                           }}
                       ],
@@ -180,6 +222,7 @@ if __name__ == "__main__":
                            {'LinuxCPU': ['LinuxCpuPlugin', 30],
                             'LinuxLoad': ['LinuxLoadPlugin', 60],
                             'LinuxMemory': ['LinuxMemoryPlugin', 9],
+                            'LinuxFilesystem': ['LinuxFilesystemPlugin', 9],
                             # 'LinuxNetwork': ['LinuxNetworkPlugin', 6]
                             }}]
                  }

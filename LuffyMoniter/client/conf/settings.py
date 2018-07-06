@@ -39,7 +39,7 @@ AUTH_KEY_NAME = 'auth-key'
 
 # 数据库采集
 db_params = {
-    "url":'jdbc:oracle:thin:@192.168.2.128:1521:PROD',
+    "url":'jdbc:oracle:thin:@%s:%s:%s',
     "user":'scott',
     "password":'tiger',
     "driver":'oracle.jdbc.driver.OracleDriver',

@@ -5,14 +5,25 @@
 '''
 提供ssh访问主机和jdbc访问数据库的接口
 '''
+import jaydebeapi
+from conf import settings
+
 class BasePlugin(object):
-
-    def __init__(self, hostname,port,username,password):
-        self.hostname = hostname
-        self.port = port
-        self.username = username
-        self.password = password
-
+    # {'192.168.2.128': ['root', 'oracle', 22, 'scott', 'tiger','prod', 1521]}
+    def __init__(self, **kwargs):
+        for i, v in kwargs.items():
+            self.ip = i
+            self.username = v[0]
+            self.passwd = v[1]
+            self.port = v[2]
+            self.db_user = v[3]
+            self.db_passwd = v[4]
+            self.db_port = v[6]
+            self.SID = v[5]
+        self.driver = settings.db_params['driver'],
+        self.url = settings.db_params['url']%(self.ip,self.db_port,self.SID),
+        #"url":'jdbc:oracle:thin:@%s:%s:%s'
+        self.jarFile = settings.db_params['jarFile']
     def ssh(self, cmd):
         '''
         SSH 方式访问主机
@@ -24,7 +35,7 @@ class BasePlugin(object):
         try:
             ssh = paramiko.SSHClient()
             ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-            ssh.connect(hostname=self.hostname, port=self.port, username=self.username, password=self.password,timeout=10)
+            ssh.connect(hostname=self.ip, port=self.port, username=self.username, password=self.passwd,timeout=10)
             stdin, stdout, stderr = ssh.exec_command(cmd)
             stdout_res = stdout.read()
             stderr_res = stderr.read()
@@ -38,13 +49,22 @@ class BasePlugin(object):
             result_dict['ERROR'] = e
             return result_dict
 
-    def jdbc(self,sql):
+    def oracle_connect(self,sql):
         '''
-        访问数据库接口
+        访问oracle数据库接口
         :param sql: 要执行的sql语句
         :return:
         '''
-        pass
+        try:
+            conn = jaydebeapi.connect(self.driver[0],[self.url[0],self.db_user,self.db_passwd],self.jarFile)
+            curs = conn.cursor()
+            curs.execute(sql)
+            result = curs.fetchall()
+            curs.close()
+            conn.close()
+            return result
+        except Exception as e:
+            print(e)
 
     def exec_shell_cmd(self, cmd):
         output = self.ssh(cmd)

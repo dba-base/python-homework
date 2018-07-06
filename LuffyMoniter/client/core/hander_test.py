@@ -1,65 +1,53 @@
-# __author__ = "xiaoyu hao"
-#
-# monitored_services = {
-#     'host': {'192.168.2.128':
-#                  ['root', 'oracle', 22,
-#                   {'services':
-#                     {
-#                         'LinuxCPU':     ['LinuxCpuPlugin', 30],
-#                         'LinuxLoad':['LinuxLoadPlugin', 60],
-#                         'LinuxMemory':['LinuxMemoryPlugin', 9],
-#                         'LinuxNetwork':['LinuxNetworkPlugin', 6]
-#                     }}
-#                   ],
-#             '192.168.2.129':
-#                   ['root', 'oracle', 22,
-#                    {'services':
-#                     {'LinuxCPU':['LinuxCpuPlugin', 30],
-#                      'LinuxLoad':['LinuxLoadPlugin', 60],
-#                      'LinuxMemory':['LinuxMemoryPlugin', 9],
-#                      'LinuxNetwork':['LinuxNetworkPlugin', 6]
-#                     }}]
-#             }
-#
-#         }
-#
-# for service_name,val in monitored_services['host'].items():
-#     print('service Name:',service_name)
-#     print('val:',val[0:3])
-#     print('=======================================================')
-#     for service_name,val_plugin in val[3]['services'].items():
-#         print(service_name)
-#         print(val_plugin)
+# _*_coding:utf-8_*_
+import os,sys
+pathname = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, pathname)
+sys.path.insert(0, os.path.abspath(os.path.join(pathname, '..')))
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "LuffyMoniter.settings")  # 在Django 里想单独执行文件写上这句话
+import django  # 导入Django
+django.setup()  # 执行
 
-li = ['/dev/mapper/VolGroup-lv_root   27G   25G  347M  99% /',
-      'tmpfs                         431M   80K  431M   1% /dev/shm',
-      '/dev/sda1                     485M   40M  421M   9% /boot']
-
-<<<<<<< HEAD
-{'ip': '192.168.2.128',
- '/': ['27G', '25G', '347M', '99%'],
- '/dev/shm': ['431M', '80K', '431M', '1%'],
- '/boot': ['485M', '40M', '421M', '9%'],
- 'status': 0, 
- 'time': '2018-07-04 16:22'}
-=======
-monitored_services = {'services':
-                                       {'LinuxCPU':
-                                            ['LinuxCpuPlugin',60],
-                                        'LinuxLoad':
-                                            ['LinuxLoadPlugin',30],
-                                        'LinuxMemory':
-                                            ['LinuxMemoryPlugin',90],
-                                        'LinuxNetwork':
-                                            ['LinuxNetworkPlugin',60]
-                                        },
-                                   'host':{'192.168.2.128':['root','oracle'],'192.168.233.128':['root','oracle']}
-                                   }
+from web import models
+import json, time
+from django.core.exceptions import ObjectDoesNotExist
 
 
 
+class ClientHandler(object):
 
-for ip_key,val in monitored_services['host'].items():
-    host = {ip_key:val}
-    print(host)
->>>>>>> d841c496728554b89a5f20e1073fbaf9b852716a
+    def report_data(self):
+        service_name = ('LinuxFileSystem',)
+
+        report_data = {'ip': '192.168.2.128',
+             '/': ['26718', '25056', '306'],
+             '/dev/shm': ['431', '1', '431'],
+             '/boot': ['485', '40', '421'],
+             'time': '2018-07-05 16:42',
+             'status': 0}
+        if service_name[0] == 'LinuxFileSystem':
+            print("\033[31;1m[%s]\033[0m" %service_name)
+            fs_obj_li = []
+            #取得字典的子集
+            fs_dict =  {key: value for key, value in report_data.items() if key not in {'ip','time','status'}}
+            for fs_name,fs_size in fs_dict.items():
+                dict = {
+                    "ip":report_data['ip'],
+                    "mount_point": fs_name,
+                    "Total_size": fs_size[0],
+                    "used_size": fs_size[1],
+                    "avail_size": fs_size[2],
+                    "time":report_data['time'],
+                    "status":report_data['status']
+                }
+                print(dict)
+                fs_obj = models.Filesystem(**dict)
+                fs_obj_li.append(fs_obj)
+            models.Filesystem.objects.bulk_create(fs_obj_li)
+            print('完成入库')
+            return 'OK'
+
+if __name__ == '__main__':
+    client = ClientHandler()
+    client.report_data()
+
+

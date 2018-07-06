@@ -11,15 +11,9 @@ from plugins.base import BasePlugin
 def monitor(frist_invoke=1,**kwargs):
     for i,v in kwargs.items():
         ip = i
-        username = v[0]
-        passwd = v[1]
-        port = v[2]
-    monitor_dic = {
-        'SwapUsage': 'percentage',
-        'MemUsage'  : 'percentage',
-    }
+
     shell_command ="df -m | sed '1d'"
-    contents = BasePlugin(ip,port,username,passwd).exec_shell_cmd(shell_command)
+    contents = BasePlugin(**kwargs).exec_shell_cmd(shell_command)
     run_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
     if contents['ERROR'] == "" :
         contents['ERROR'] = 0
@@ -45,8 +39,8 @@ def monitor(frist_invoke=1,**kwargs):
 
     return value_dic
 
-if __name__ == '__main__':
-    # for i in range(3):
-        host_message = {'192.168.2.128': ['root', 'oracle', 22]}
-        a = monitor(**host_message)
-        print(a)
+# if __name__ == '__main__':
+#     # for i in range(3):
+#         host_message = {'192.168.2.128': ['root', 'oracle', 22]}
+#         a = monitor(**host_message)
+#         print(a)

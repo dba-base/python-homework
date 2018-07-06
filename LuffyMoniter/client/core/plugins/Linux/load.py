@@ -11,13 +11,10 @@ from plugins.base import BasePlugin
 def monitor(frist_invoke=1,**kwargs):
     for i,v in kwargs.items():
         ip = i
-        username = v[0]
-        passwd = v[1]
-        port = v[2]
+
     shell_command = 'uptime'
 
-    print(ip,username,port,passwd)
-    contents = BasePlugin(ip,port,username,passwd).exec_shell_cmd(shell_command)
+    contents = BasePlugin(**kwargs).exec_shell_cmd(shell_command)
     run_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
     # print(contents)
     # print(type(contents))
