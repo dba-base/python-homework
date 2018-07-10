@@ -5,7 +5,7 @@ sys.path.append(BASEDIR)
 #print(BASEDIR)
 import jaydebeapi
 import json
-import time
+import datetime
 from core.plugins.base import BasePlugin
 
 from urllib import request, parse
@@ -16,13 +16,15 @@ def monitor(frist_invoke=1,**kwargs):
     转换取得表空间列表为字典格式。
     :return:
     '''
-    tablespace_dic = {}
-    result  = BasePlugin(**kwargs).oracle_connect(sqlsets.TOP10EVENT)
-    print(result)
+    for i,v in kwargs.items():
+        ip = i
+    tablespace_dic = {'ip': ip}
+    result  = BasePlugin(**kwargs).oracle_connect(sqlsets.TABLESPACE_SQL)
+    run_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
     for tbs in result:
         tablespace_dic[tbs[0]] = tbs[1:]
+    tablespace_dic['time'] = run_time
     return tablespace_dic
-
 
 
 if __name__ == "__main__":

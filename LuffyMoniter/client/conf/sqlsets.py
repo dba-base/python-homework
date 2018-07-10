@@ -13,8 +13,7 @@ Select a.Tablespace_Name, Total, Free, Total - Free Used
 '''
 
 PATCH_SQL = '''
-select * from dba_registry_history
-'''
+select * from dba_registry_history order by  action_time desc'''
 
 DB_TIME = '''
 SELECT * FROM
@@ -43,4 +42,14 @@ SELECT EVENT,TOTAL_WAITS,AVERAGE_WAIT,TIME_WAITED
 FROM v$system_event WHERE wait_class<>'Idle' 
 ORDER BY time_waited desc)  WHERE rownum<=10
 '''
+
+DBSIZE='''
+select to_char(sysdate,'yyyy-mm-dd hh24:mi:ss') ,a.Total_size,b.segment_size,c.instance_name from 
+(select sum(bytes/1024/1024/1024) Total_size from dba_data_files) a,
+(select sum(bytes/1024/1024/1024) segment_size from dba_segments) b,
+(select instance_name,VERSION,ARCHIVER,STARTUP_TIME from v$instance) c
+'''
+
+
+
 

@@ -5,8 +5,8 @@ sys.path.append(BASEDIR)
 print(BASEDIR)
 
 from core.plugins.Linux import sysinfo,cpu,memory,network,host_alive,load,filesystem
-from core.plugins.oracle import db
-# from plugins.oracle import sysinfo,cpu_mac,cpu,memory,network,host_alive
+from core.plugins.oracle import OraTBS
+
 
 def LinuxCpuPlugin(**host_message):
     return cpu.monitor(**host_message)
@@ -26,12 +26,6 @@ def LinuxLoadPlugin(**host_message):
 def LinuxFilesystemPlugin(**host_message):
     return filesystem.monitor(**host_message)
 
-def OraclePlugin(**host_message):
-    return db.monitor(**host_message)
-# if __name__ == '__main__':
-#     # if __name__ == '__main__':
-#     host_message = {'192.168.231.110': ['root', 'oracle', 22]}
-#     a=LinuxCpuPlugin(**host_message)
-#     print(a)
-#     b=host_alive_check(**host_message)
-#     print(b)
+def OraTBSPlugin(**host_message):
+    return OraTBS.monitor(**host_message)
+

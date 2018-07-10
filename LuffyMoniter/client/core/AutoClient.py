@@ -7,6 +7,7 @@ BASEDIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(BASEDIR)
 
 import time
+import schedule
 from conf import settings
 import urllib
 import urllib.request
@@ -24,12 +25,33 @@ class ClientHandle(object):
         load the latest monitor configs from monitor server
         :return:
         '''
+        self.monitored_services = {
+            'host': {
+                '192.168.2.128':
+                    ['root', 'oracle', 22, 'scott', 'tiger', 'PROD', 1521,
+                     {'services':
+                         {
+                             # 'LinuxCPU': ['LinuxCpuPlugin', 30],
+                             # 'LinuxLoad': ['LinuxLoadPlugin', 60],
+                             # 'LinuxMemory': ['LinuxMemoryPlugin', 9],
+                             # 'LinuxFilesystem': ['LinuxFilesystemPlugin', 9],
+                             # 'LinuxNetwork': ['LinuxNetworkPlugin', 6]
+                         }},
+                     {"db_flag": 1},  # 是否是数据库服务器
+                     {'ora_services':
+                         {
+                             'OraTBS': ['OraTBSPlugin', 300],
+                             # 'OraDBTime': ['OraDBTimePlugin', 60],
+                             # 'OraWaitEvent': ['OraWaitEventPlugin', 9],
+                             # 'OraSession': ['OraSessionPlugin', 9],
+                         }},
+                     {"host_status": 1}]}}
 
-        request_type = settings.configs['urls']['get_configs'][1]     #get
-        url = "%s/%s" %(settings.configs['urls']['get_configs'][0], settings.configs['HostID'])  #api/client/config/1
-        latest_configs = self.url_request(request_type,url)  #以get方式请求
-        latest_configs = json.loads(latest_configs)
-        self.monitored_services.update(latest_configs)   #放入字典中
+        # request_type = settings.configs['urls']['get_configs'][1]     #get
+        # url = "%s/%s" %(settings.configs['urls']['get_configs'][0], settings.configs['HostID'])  #api/client/config/1
+        # latest_configs = self.url_request(request_type,url)  #以get方式请求
+        # latest_configs = json.loads(latest_configs)
+        # self.monitored_services.update(latest_configs)   #放入字典中
 
     def forever_run(self):
         '''
@@ -38,41 +60,61 @@ class ClientHandle(object):
         '''
         exit_flag = False
         config_last_update_time = 0
-
+        self.load_latest_configs()  # 获取监控配置信息
         while not exit_flag:
-              if time.time() - config_last_update_time > settings.configs['ConfigUpdateInterval']:
-                  self.load_latest_configs()    # 获取最新的监控配置信息
-                  config_last_update_time = time.time()
 
-              # start to monitor services
-              for ip_k,host_val in self.monitored_services['host'].items():
-                  host_message = {ip_k:host_val[0:3]}
-                  print('正在监控：',host_message)
-                  for service_name,val in host_val[3]['services'].items():
+            # start to monitor services
+            for ip_k,host_val in self.monitored_services['host'].items():
+                host_message = {ip_k:host_val}
+                print('正在监控：',host_message)
+                if host_val[len(host_val)-1]['host_status'] == 1:  # 判断主机是否可用,1：可用  0：下线
+                    for service_name,val in host_val[7]['services'].items():
 
-                      # "services": {'LinuxCPU':['LinuxCpuPlugin',60],'LinuxLoad':['LinuxLoadPlugin',30],'LinuxMemory':['LinuxMemoryPlugin',90],'LinuxNetwork':['LinuxNetworkPlugin',60]}
-                      # service_name:LinuxCPU
-                      # val: ['LinuxCpuPlugin', 60]
+                        # "services": {'LinuxCPU':['LinuxCpuPlugin',60],'LinuxLoad':['LinuxLoadPlugin',30],'LinuxMemory':['LinuxMemoryPlugin',90],'LinuxNetwork':['LinuxNetworkPlugin',60]}
+                        # service_name:LinuxCPU
+                        # val: ['LinuxCpuPlugin', 60]
+                        if len(val) == 2:             # means it's the first time to monitor
+                            host_val[7]['services'][service_name].append(0)
+                            #为什么是0， 因为为了保证第一次肯定触发监控这个服务
+                        monitor_interval = val[1]   # 监控间隔
+                        last_invoke_time = val[2]   # 0
+                        if time.time() - last_invoke_time > monitor_interval: #needs to run the plugin
+                            host_val[7]['services'][service_name][2]= time.time() #更新此服务最后一次监控的时间
+                            # val: ['cpu_plug', 10s,12345],['memory_plug', 5s,23456], ['io_plug', 15s,34567]
+                            #start a new thread to call each monitor plugin
+                            t = threading.Thread(target=self.os_invoke_plugin,args=(service_name,val,host_message))
+                            t.start()
+                            print("Going to monitor [%s]" % service_name)
 
-                      if len(val) == 2:             # means it's the first time to monitor
-                          host_val[3]['services'][service_name].append(0)
-                          #为什么是0， 因为为了保证第一次肯定触发监控这个服务
-                      monitor_interval = val[1]   # 监控间隔
-                      last_invoke_time = val[2]   # 0
-                      if time.time() - last_invoke_time > monitor_interval: #needs to run the plugin
-                          host_val[3]['services'][service_name][2]= time.time() #更新此服务最后一次监控的时间
-                          # val: ['cpu_plug', 10s,12345],['memory_plug', 5s,23456], ['io_plug', 15s,34567]
-                          #start a new thread to call each monitor plugin
-                          t = threading.Thread(target=self.os_invoke_plugin,args=(service_name,val,host_message))
-                          t.start()
-                          print("Going to monitor [%s]" % service_name)
+                        else:
+                            print("Going to monitor [%s] in [%s] secs" % (service_name,
+                                                                            monitor_interval - (time.time()-last_invoke_time)))
 
-                      else:
-                          print("Going to monitor [%s] in [%s] secs" % (service_name,
+                        time.sleep(2)
+
+                    if host_val[8]["db_flag"] == 1:  # 为 1 则为数据库服务器
+                        for service_name, val in host_val[9]['ora_services'].items():
+                            print("service_name",service_name)
+                            print("val",val)
+                            if len(val) == 2:             # means it's the first time to monitor
+                                host_val[9]['ora_services'][service_name].append(0)
+                                #为什么是0， 因为为了保证第一次肯定触发监控这个服务
+                            monitor_interval = val[1]   # 监控间隔
+                            last_invoke_time = val[2]   # 0
+                            if time.time() - last_invoke_time > monitor_interval: #needs to run the plugin
+                                host_val[9]['ora_services'][service_name][2]= time.time() #更新此服务最后一次监控的时间
+                                # val: ['cpu_plug', 10s,12345],['memory_plug', 5s,23456], ['io_plug', 15s,34567]
+                                #start a new thread to call each monitor plugin
+                                t = threading.Thread(target=self.ora_invoke_plugin,args=(service_name,val,host_message))
+                                t.start()
+                                print("Going to monitor [%s]" % service_name)
+
+                            else:
+                                print("Going to monitor [%s] in [%s] secs" % (service_name,
                                                                         monitor_interval - (time.time()-last_invoke_time)))
-
-                  time.sleep(2)
-
+                            time.sleep(2)
+                else:
+                    print('{%s}主机不可用'%ip_k)
     def os_invoke_plugin(self,service_name,val,host_message):
         '''
         invoke the monitor plugin here, and send the data to monitor server after plugin returned status data each time
@@ -105,7 +147,8 @@ class ClientHandle(object):
             print("\033[31;1mCannot find service [%s]'s plugin name [%s] in plugin_api\033[0m"% (service_name,plugin_name ))
         print('--plugin:',val)
 
-    def oracle_invoke_plugin(self, service_name, val, host_message):
+
+    def ora_invoke_plugin(self, service_name, val, host_message):
         '''
         invoke the monitor plugin here, and send the data to monitor server after plugin returned status data each time
         :param service_name: 监控项 LinuxCPU
@@ -194,41 +237,6 @@ class ClientHandle(object):
 
 #
 if __name__ == "__main__":
-    monitored_services = {
-        'host': {
-            '192.168.2.128':
-                     ['root', 'oracle', 22,'scott','tiger','PROD',1521,
-                      {'services':
-                          {
-                              'LinuxCPU': ['LinuxCpuPlugin', 30],
-                              'LinuxLoad': ['LinuxLoadPlugin', 60],
-                              'LinuxMemory': ['LinuxMemoryPlugin', 9],
-                              'LinuxFilesystem': ['LinuxFilesystemPlugin', 9],
-                              # 'LinuxNetwork': ['LinuxNetworkPlugin', 6]
-                          }},
-                      {"db_flag" : True},   #是否是数据库服务器
-                      {'db_services':
-                          {
-                              'LinuxCPU': ['LinuxCpuPlugin', 30],
-                              'LinuxLoad': ['LinuxLoadPlugin', 60],
-                              'LinuxMemory': ['LinuxMemoryPlugin', 9],
-                              'LinuxFilesystem': ['LinuxFilesystemPlugin', 9],
-                              # 'LinuxNetwork': ['LinuxNetworkPlugin', 6]
-                          }}
-                      ],
-            '192.168.2.12':
-                     ['root', 'oracle', 22,
-                      {'services':
-                           {'LinuxCPU': ['LinuxCpuPlugin', 30],
-                            'LinuxLoad': ['LinuxLoadPlugin', 60],
-                            'LinuxMemory': ['LinuxMemoryPlugin', 9],
-                            'LinuxFilesystem': ['LinuxFilesystemPlugin', 9],
-                            # 'LinuxNetwork': ['LinuxNetworkPlugin', 6]
-                            }}]
-                 }
-
-    }
     obj = ClientHandle()
-    obj.monitored_services = monitored_services
     obj.forever_run()
 

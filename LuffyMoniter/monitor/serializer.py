@@ -89,10 +89,33 @@ class ClientHandler(object):
             models.Filesystem.objects.bulk_create(fs_obj_li)
             print('完成入库')
             return 'OK'
+        if service_name[0] == 'OraTBS':
+            tbs_obj_li = []
+            fs_dict = {key: value for key, value in report_data.items() if key not in {'ip', 'time', 'status'}}
+            for tbs_name, tbs_size in fs_dict.items():
+                host = models.Host.objects.get(ip_addr=report_data['ip'])
+                dict = {
+                    "name": tbs_name,
+                    "total_size": tbs_size[0],
+                    "free_size": tbs_size[1],
+                    "used_size": tbs_size[2],
+                    "time": report_data['time'],
+                    "host": host
+                }
+                print(dict)
+                tbs_obj = models.Tablespace(**dict)
+                tbs_obj_li.append(tbs_obj)
+            print("tbs_obj_li:", tbs_obj_li)
+            print("\033[31;1m[%s]\033[0m" % service_name)
+            models.Tablespace.objects.bulk_create(tbs_obj_li)
+            # for row in tablespace:
+            #     print(row.name,row.total_size,row.used_size,row.free_size)
+            print('完成入库')
+            return 'OK'
 
-if __name__ == '__main__':
-    dict = {'name':'haoxy','age':28}
-    client = ClientHandler(data=dict)
-    print(client.args,client.data)
+# if __name__ == '__main__':
+#     dict = {'name':'haoxy','age':28}
+#     client = ClientHandler(data=dict)
+#     print(client.args,client.data)
 
 

@@ -7,7 +7,7 @@ class HostAdmin(admin.ModelAdmin):
         filter_horizontal = ('templates',)
 
 class TbsAdmin(admin.ModelAdmin):
-        list_display = ['name','total_size','used_size','free_size','date','time','host']
+        list_display = ['name','total_size','used_size','free_size','time','host']
 
 
 class ServiceAdmin(admin.ModelAdmin):
