@@ -22,6 +22,7 @@ class BasePlugin(object):
             self.SID = v[5]
         self.driver = settings.db_params['driver'],
         self.url = settings.db_params['url']%(self.ip,self.db_port,self.SID),
+        self.tnsname = '%s:%s/%s'%(self.ip,self.db_port,self.SID)
         #"url":'jdbc:oracle:thin:@%s:%s:%s'
         self.jarFile = settings.db_params['jarFile']
     def ssh(self, cmd):
@@ -49,9 +50,9 @@ class BasePlugin(object):
             result_dict['ERROR'] = e
             return result_dict
 
-    def oracle_connect(self,sql):
+    def jdbc_connect(self,sql):
         '''
-        访问oracle数据库接口
+        访问JDBC数据库接口
         :param sql: 要执行的sql语句
         :return:
         '''
@@ -65,6 +66,24 @@ class BasePlugin(object):
             return result
         except Exception as e:
             print(e)
+
+    def ora_connect(self,sql,val):
+        '''
+        oracle 连接接口
+        :param sql: 执行的sql
+        :param val: 1 只取结果的一行,返回元组，2 取得所有结果，返回列表，元素为元组
+        :return:
+        '''
+        import cx_Oracle
+        conn = cx_Oracle.connect(self.db_user,self.db_passwd,self.tnsname)
+        c = conn.cursor()
+        if val == 1:
+            result = c.execute(sql).fetchone()
+        if val == 2:
+            result = c.execute(sql).fetchall()
+        c.close()
+        conn.close()
+        return result
 
     def exec_shell_cmd(self, cmd):
         output = self.ssh(cmd)

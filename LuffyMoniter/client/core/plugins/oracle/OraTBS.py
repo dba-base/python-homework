@@ -19,7 +19,7 @@ def monitor(frist_invoke=1,**kwargs):
     for i,v in kwargs.items():
         ip = i
     tablespace_dic = {'ip': ip}
-    result  = BasePlugin(**kwargs).oracle_connect(sqlsets.TABLESPACE_SQL)
+    result  = BasePlugin(**kwargs).ora_connect(sqlsets.TABLESPACE_SQL,2)
     run_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
     for tbs in result:
         tablespace_dic[tbs[0]] = tbs[1:]
