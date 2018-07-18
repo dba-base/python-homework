@@ -19,8 +19,10 @@ from web import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^$', views.index,name='index'),
+    url(r'^monitor/db_list$', views.db_list,name='db_list'),
+    url(r'^monitor/items$', views.monitor_items,name='monitor_items'),
     url(r'^report/', views.report, name='report'),
     url(r'^detail/', views.tbs_detail, name='tbs_detail'),
-    url(r'^modal/', views.modal, name='modal'),
-    url(r'^api/', include("monitor.api_urls"))
+    url(r'^modal/', views.modal, name='modal')
 ]

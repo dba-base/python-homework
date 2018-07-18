@@ -13,6 +13,18 @@ import json
 from web.models import Tablespace
 
 @csrf_exempt
+def index(request):
+    return render(request,'index.html',locals())
+
+@csrf_exempt
+def monitor_items(request):
+    return render(request,'monitor_items.html',)
+
+@csrf_exempt
+def db_list(request):
+    return render(request,'monitor_items.html',)
+
+@csrf_exempt
 def report(request):
     if request.method == "POST":
         tbs_data = request.POST.get('tbs_data')

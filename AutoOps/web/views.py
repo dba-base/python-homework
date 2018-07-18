@@ -14,7 +14,6 @@ def json_date_handler(obj):
         return obj.strftime("%Y-%m-%d %T")
 
 
-
 @login_required
 def dashboard(request):
     return render(request,'index.html')
