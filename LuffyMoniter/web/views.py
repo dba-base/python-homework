@@ -14,7 +14,7 @@ from web.models import Tablespace
 
 @csrf_exempt
 def index(request):
-    return render(request,'index.html',locals())
+    return render(request,'index.html',)
 
 @csrf_exempt
 def monitor_items(request):
@@ -23,6 +23,13 @@ def monitor_items(request):
 @csrf_exempt
 def db_list(request):
     return render(request,'monitor_items.html',)
+
+@csrf_exempt
+def tablespace(request):
+    tablespace = Tablespace.objects.filter(time='15:47:32.310310')
+    hosts = tablespace.values('host_id').distinct()
+    print(tablespace)
+    return render(request,'tablespace.html',{"tablespace_img":tablespace,"hosts":hosts})
 
 @csrf_exempt
 def report(request):
