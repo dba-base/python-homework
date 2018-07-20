@@ -1,3 +1,4 @@
+{% load models_handle %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,20 +18,34 @@
         hosts.forEach(function (host) {
             $("body").prepend('<div id="host'+host+'"'+' style="width:400px;height:200px;left:1%;float: left"></div>')
             name = $("div").attr('id')
-            console.log(name,host)
-            echart(name,host)
+            var host_id = host
+            var ip_addr = {{ tablespace_img.host_id.ip_addr }}
+            console.log("ip_addr:",ip_addr)
+            echart(name,host_id)
         })
     }
 
     // 使用
     function echart(name,host) {
-        var myChart = echarts.init(document.getElementById(name));
+        console.log(name,host)
         // 基于准备好的dom，初始化echarts图表
-        var tbs_name = [{% for tbs in tablespace_img %}'{{ tbs.name }}',{% endfor %}];
-        var tbs_used = [{% for tbs in tablespace_img %}'{{ tbs.used_size | floatformat:1 }}',{% endfor %}];
-        var tbs_free = [{% for tbs in tablespace_img %}'{{ tbs.free_size | floatformat:1 }}',{% endfor %}];
-        var ip_addr = "{{ tablespace_img.0.host }}";
-        console.log(tbs_name)
+        var myChart = echarts.init(document.getElementById(name));
+        //过滤数组
+        var tablespace = {% tablespace_part %}
+        var result = []
+        //遍历数组，并根据条件形成新的数组
+        for(var i=0,len=tablespace.length;i<len;i++){
+            var a = tablespace[i][4]
+            if (a==host){
+                result.push(tablespace[i])
+            }
+        }
+        console.log("RESULT:",result)
+
+        var tbs_name = result.map(function(value){return value[0]})
+        var tbs_used = result.map(function(value){return value[3]})
+        var tbs_free = result.map(function(value){return value[2]})
+        var ip_addr = "{{ .0.host }}";
         var option = {
             title: {
                 text: '表空间',
