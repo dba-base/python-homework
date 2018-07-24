@@ -7,27 +7,27 @@
                 <div class="list-group bord-no">
                     <a onclick="HostListDisplayToggle(this)" class="list-group-item " href="#">
                         <input type="checkbox" onclick="SelectGroup(this)">
-                        未分组主机
-                        <span class="badge badge-primary">{{ request.user.bind_hosts.count }}</span>
+                        全部主机
+                        <span class="badge badge-primary">{{ hosts.count }}</span>
                     </a>
                     <ol class="hide">
-                        {% for bind_host in request.user.bind_hosts.all %}
-                            <li><input type="checkbox"  select_host="true" value="{{ bind_host.id }}">{{ bind_host.host.hostname }}({{ bind_host.host.ip_addr }})@{{ bind_host.remote_user.username}}</li>
+                        {% for bind_host in hosts %}
+                            <li><input type="checkbox"  select_host="true" value="{{ bind_host.id }}">{{ bind_host.hostname }}-{{ bind_host.ip_addr }}</li>
                         {% endfor %}
                     </ol>
 
 
 
-                    {% for host_group in request.user.host_groups.select_related %}
+                    {% for bus in business.select_related %}
 
                         <a onclick="HostListDisplayToggle(this)" class="list-group-item " href="#">
                             <input type="checkbox" onclick="SelectGroup(this)">
-                            {{ host_group.name }}
-                            <span class="badge badge-primary">{{ host_group.bind_hosts.count }}</span>
+                            {{ bus.name }}
+                            <span class="badge badge-primary">{{ bus.host_set.count }}</span>
                         </a>
                         <ol class="hide">
-                            {% for bind_host in host_group.bind_hosts.all %}
-                                <li><input type="checkbox"  select_host="true" value="{{ bind_host.id }}">{{ bind_host.host.hostname }}({{ bind_host.host.ip_addr }})@{{ bind_host.remote_user.username}}</li>
+                            {% for host in bus.host_set.all %}
+                                <li><input type="checkbox"  select_host="true" value="{{ host.id }}">{{ host.hostname }}-{{ host.ip_addr }}</li>
                             {% endfor %}
                         </ol>
 

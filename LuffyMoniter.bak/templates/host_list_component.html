@@ -1,0 +1,41 @@
+<div class="col-lg-4" style="width: 230px;float: left;">
+    <div class="panel">
+        <div class="panel-heading">
+            <h3 class="panel-title">主机列表</h3>
+        </div>
+        <div class="panel-body">
+                <div class="list-group bord-no">
+                    <a onclick="HostListDisplayToggle(this)" class="list-group-item " href="#">
+                        <input type="checkbox" onclick="SelectGroup(this)">
+                        未分组主机
+                        <span class="badge badge-primary">{{ request.user.bind_hosts.count }}</span>
+                    </a>
+                    <ol class="hide">
+                        {% for bind_host in request.user.bind_hosts.all %}
+                            <li><input type="checkbox"  select_host="true" value="{{ bind_host.id }}">{{ bind_host.host.hostname }}({{ bind_host.host.ip_addr }})@{{ bind_host.remote_user.username}}</li>
+                        {% endfor %}
+                    </ol>
+
+
+
+                    {% for bus in business %}
+
+                        <a onclick="HostListDisplayToggle(this)" class="list-group-item " href="#">
+                            <input type="checkbox" onclick="SelectGroup(this)">
+                            {{ bus.name }}
+{#                            <span class="badge badge-primary">2</span>#}
+                            <span class="badge badge-primary">{{ bus.host_set.count }}</span>
+                        </a>
+                        <ol>
+                            {% for host in bus.host_set.all %}
+                                <li><input type="checkbox"  select_host="true" value="{{ host.id }}">{{ host.hostname }}({{ host.ip_addr }})</li>
+                            {% endfor %}
+                        </ol>
+
+
+                    {% endfor %}
+                </div>
+        </div>
+    </div>
+
+</div>

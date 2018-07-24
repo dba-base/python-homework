@@ -12,38 +12,38 @@
 
     <div class="panel panel-primary" style="margin-left: 235px;">
 
-								<!--Panel heading-->
-								<div class="panel-heading">
-									<div class="panel-control">
+        <!--Panel heading-->
+        <div class="panel-heading">
+            <div class="panel-control">
 
-										<!--Nav tabs-->
-										<ul class="nav nav-tabs">
-											<li id="myTab" class="active"><a data-toggle="tab" href="#tablespace" onclick="addIframe()">表空间</a>
-											</li>
-											<li><a data-toggle="tab" href="#demo-tabs-box-2">等待事件</a>
-											</li>
-										</ul>
+                <!--Nav tabs-->
+                <ul class="nav nav-tabs">
+                    <li id="myTab" class="active"><a data-toggle="tab" href="#tablespace" onclick="addIframe()">表空间</a>
+                    </li>
+                    <li><a data-toggle="tab" href="#demo-tabs-box-2">等待事件</a>
+                    </li>
+                </ul>
 
-									</div>
-									<h3 class="panel-title">监控项</h3>
-								</div>
+            </div>
+            <h3 class="panel-title">监控项</h3>
+        </div>
 
-								<!--Panel body-->
-								<div class="panel-body" style="padding-bottom: 20px;" >
+        <!--Panel body-->
+        <div class="panel-body" style="padding-bottom: 20px;" >
 
-									<!--Tabs content-->
-									<div class="tab-content">
-                                        <div id="tablespace" class="tab-pane fade in active" >
+            <!--Tabs content-->
+            <div class="tab-content">
+                <div id="tablespace" class="tab-pane fade in active" >
 
-                                        </div>
+                </div>
 
-										<div id="demo-tabs-box-2" class="tab-pane fade">
-											<h4 class="text-thin">Second Tab Content</h4>
-											<p>Duis autem vel eum iriure dolor in hendrerit in vulputate.</p>
-										</div>
-									</div>
-								</div>
-							</div>
+                <div id="demo-tabs-box-2" class="tab-pane fade">
+                    <h4 class="text-thin">Second Tab Content</h4>
+                    <p>Duis autem vel eum iriure dolor in hendrerit in vulputate.</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>
 
@@ -52,6 +52,9 @@
 <script src="/static/js/bootstrap.min.js"></script>
 {#{% include 'host_list_js_component.html' %}#}
 <script type="text/javascript">
+
+
+
 
     function addIframe() {
         $("div").remove("#tablespace div");

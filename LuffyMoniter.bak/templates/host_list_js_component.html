@@ -1,0 +1,183 @@
+<script>
+
+
+    function SelectFileTransferType(ele) {
+        if ($(ele).val() == 'get'){
+
+            $("#local_file_path").addClass("hide");
+        }else {
+            $("#local_file_path").removeClass("hide");
+        }
+    }
+
+    function HostListDisplayToggle(ele) {
+
+        $(ele).next().toggleClass("hide");
+
+
+    }
+
+    function SelectGroup(ele) {
+
+        $(ele).parent().next().find("input").prop("checked",$(ele).prop("checked"))
+
+    }
+
+
+    function PostTask(ele,task_type) {
+
+        var selected_host_ids  = [];
+
+        $("input[select_host]:checked").each(function () {
+            selected_host_ids.push( $(this).val()  );
+        })       //取得选中主机的id
+
+        console.log(selected_host_ids)
+        if (selected_host_ids.length == 0){
+            alert("必须选择主机!")
+            return false
+        }
+
+        if (task_type == "cmd"){
+            var cmd_text = $("#cmd_text").val().trim();    // 取得输入的命令
+
+            if (cmd_text.length == 0){
+
+                alert("必须输入要执行的命令!")
+                return false
+            }
+
+            var task_arguments = {
+                'selected_host_ids' : selected_host_ids,
+                'task_type':0 ,//cmd
+                'cmd': cmd_text,
+
+            }  //选中主机的id、任务类型、命令存储成一个字典
+
+        }else {
+
+            var file_transfer_type = $("select[name='file_transfer_type']").val()
+            var local_file_path = $("#local_file_path").val().trim()
+            var remote_file_path = $("#remote_file_path").val().trim()
+            if (file_transfer_type == "send"){
+                if (local_file_path.length == 0){
+                    alert("必须输入本地文件路径！")
+                    return false
+                }
+
+            }
+
+            if (remote_file_path.length == 0){
+                    alert("必须输入远程文件路径！")
+                    return false
+            }
+
+            var task_arguments = {
+                'selected_host_ids' : selected_host_ids,
+                'task_type':1 ,//file_transfer
+                'file_transfer_type': file_transfer_type,
+                'local_file_path':local_file_path,
+                'remote_file_path':remote_file_path
+
+            }
+
+        }
+
+
+
+
+        //再此任务执行完成前，不允许再提交新任务
+        $(ele).addClass("disabled")
+        //提交新任务之前清空任务结果面版
+        $("#task_result_container").empty();
+
+
+{#        $.post("{%  url 'multitask' %}"  , {'task_data':JSON.stringify(task_arguments),'csrfmiddlewaretoken':$("input[name='csrfmiddlewaretoken']").val() },function(callback){#}
+{##}
+{#            console.log('PostTask:',callback);#}
+{##}
+{#            var callback = JSON.parse(callback);#}
+{#            $.each(callback.selected_hosts,function (index,ele) {#}
+{#                var li_ele = "<li bind_host_id='"+ ele['id'] +"'>Host:" + ele.bind_host__host__hostname + "(" +ele.bind_host__host__ip_addr +")----------------<span></span></li><pre>sdff</pre>" ;#}
+{#                $("#task_result_container").append(li_ele);#}
+{##}
+{#            })#}
+{##}
+{##}
+{##}
+{#             //去后端定时拿结果#}
+{#			var timer_counter = 0#}
+{#            get_result_timer = setInterval(function () {#}
+{##}
+{#                    GetTaskResult(callback.task_id);#}
+{##}
+{#					//if (timer_counter < 10){ //还可以继续运行#}
+{#					if (timer_counter < callback.timeout){ //还可以继续运行#}
+{#						timer_counter +=2;#}
+{#					}else{#}
+{#						clearInterval(get_result_timer);#}
+{#						console.log('task is timed out')#}
+{##}
+{#                     $.niftyNoty({#}
+{#                            type: "warning",#}
+{#                            container : "floating",#}
+{#                            title : "You have've got 30 Messages",#}
+{#                            message : "Lorem ipsum dolor sit amet, consectetuer adipiscing elit",#}
+{#                            closeBtn : true,#}
+{#                            timer : 25000#}
+{#                        });#}
+{#					}#}
+{##}
+{##}
+{##}
+{#                },2000);#}
+{##}
+{#        });//end post#}
+
+
+
+    }
+	    function  GetTaskResult(task_id) {
+
+			$.getJSON( "{% url 'task_result'  %}" ,{'task_id':task_id},function(callback){
+
+           console.log( 'GetTaskResult:',callback);
+           var all_task_done = true;
+           var finished_task_counter = 0
+           $.each(callback,function (index,ele) {
+               var li_ele = $("li[bind_host_id='"+  ele['id'] +"']");
+               li_ele.next().text(ele['result']);    // 找到li的下一个标签并修改标签内容
+               $(li_ele.children()[0]).text(ele.status);
+               if ( ele.status == 2 ){
+                   all_task_done = false; //有任务未完成
+               }
+               else {
+                   //执行完成
+                   finished_task_counter += 1
+               }
+
+
+           })
+
+           if (all_task_done){
+                // 代表所有任务执行完成
+               clearInterval(get_result_timer);
+               $("#post_task_btn").removeClass("disabled");
+               $.niftyNoty({
+                    type: "success",
+                    container : "floating",
+                    title : "You have've got 30 Messages",
+                    message : "Lorem ipsum dolor sit amet, consectetuer adipiscing elit",
+                    closeBtn : false,
+                    timer : 5000
+                });
+           }
+            //进度条实现
+           var finished_percent = finished_task_counter / callback.length * 100
+           $("#task_process").parent().removeClass("hide");
+           $("#task_process").css("width",finished_percent+"%").text(finished_percent+"%")
+
+        });//end getJSON
+    }
+
+</script>

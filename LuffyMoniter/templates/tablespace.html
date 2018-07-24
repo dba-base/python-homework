@@ -18,10 +18,7 @@
         hosts.forEach(function (host) {
             $("body").prepend('<div id="host'+host+'"'+' style="width:400px;height:200px;left:1%;float: left"></div>')
             name = $("div").attr('id')
-            var host_id = host
-            var ip_addr = {{ tablespace_img.host_id.ip_addr }}
-            console.log("ip_addr:",ip_addr)
-            echart(name,host_id)
+            echart(name,host)
         })
     }
 
@@ -45,7 +42,7 @@
         var tbs_name = result.map(function(value){return value[0]})
         var tbs_used = result.map(function(value){return value[3]})
         var tbs_free = result.map(function(value){return value[2]})
-        var ip_addr = "{{ .0.host }}";
+        var ip_addr = result[0][5]
         var option = {
             title: {
                 text: '表空间',

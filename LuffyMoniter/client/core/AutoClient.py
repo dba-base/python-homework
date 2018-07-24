@@ -237,6 +237,39 @@ class ClientHandle(object):
 
 #
 if __name__ == "__main__":
+    monitored_services = {
+        'host': {
+            '192.168.2.128':
+                     ['root', 'oracle', 22,'scott','tiger','PROD',1521,
+                      {'services':
+                          {
+                              'LinuxCPU': ['LinuxCpuPlugin', 30],
+                              'LinuxLoad': ['LinuxLoadPlugin', 60],
+                              'LinuxMemory': ['LinuxMemoryPlugin', 9],
+                              'LinuxFilesystem': ['LinuxFilesystemPlugin', 9],
+                              # 'LinuxNetwork': ['LinuxNetworkPlugin', 6]
+                          }},
+                      {"db_flag" : True},   #是否是数据库服务器
+                      {'db_services':
+                          {
+                              'OracleTBS': ['OracleTBSPlugin', 30],
+                              # 'LinuxLoad': ['LinuxLoadPlugin', 60],
+                              # 'LinuxMemory': ['LinuxMemoryPlugin', 9],
+                              # 'LinuxFilesystem': ['LinuxFilesystemPlugin', 9],
+                          }}
+                      ],
+            '192.168.2.12':
+                     ['root', 'oracle', 22,
+                      {'services':
+                           {'LinuxCPU': ['LinuxCpuPlugin', 30],
+                            'LinuxLoad': ['LinuxLoadPlugin', 60],
+                            'LinuxMemory': ['LinuxMemoryPlugin', 9],
+                            'LinuxFilesystem': ['LinuxFilesystemPlugin', 9],
+                            # 'LinuxNetwork': ['LinuxNetworkPlugin', 6]
+                            }}]
+                 }
+
+    }
     obj = ClientHandle()
     obj.forever_run()
 
