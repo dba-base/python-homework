@@ -28,9 +28,13 @@ def db_list(request):
 
 @csrf_exempt
 def tablespace(request):
-    tablespace = Tablespace.objects.filter(time='15:47:32.310310')
+    host_dict = json.loads(request.GET.get('host_ids'))
+    host_ids = host_dict['selected_host_ids']
+
+
+    tablespace = Tablespace.objects.filter(time='15:47:32.310310').filter(host_id__in=host_ids)
     hosts = tablespace.values('host_id').distinct()
-    print(tablespace)
+    print("tablespace:",tablespace)
     return render(request,'tablespace.html',{"tablespace_img":tablespace,"hosts":hosts})
 
 @csrf_exempt

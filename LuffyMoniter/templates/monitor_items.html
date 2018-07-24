@@ -18,7 +18,7 @@
 
                 <!--Nav tabs-->
                 <ul class="nav nav-tabs">
-                    <li id="myTab" class="active"><a data-toggle="tab" href="#tablespace" onclick="addIframe()">表空间</a>
+                    <li id="myTab" class="active"><a data-toggle="tab" href="#tablespace" onclick="getItemsValues()">表空间</a>
                     </li>
                     <li><a data-toggle="tab" href="#demo-tabs-box-2">等待事件</a>
                     </li>
@@ -50,20 +50,30 @@
 <script src="/static/echarts.min.js" charset="utf-8" type="text/javascript"></script>
 <script src="/static/jquery-2.1.1.min.js" charset="utf-8" type="text/javascript"></script>
 <script src="/static/js/bootstrap.min.js"></script>
-{#{% include 'host_list_js_component.html' %}#}
+{% include 'host_list_js_component.html' %}
 <script type="text/javascript">
 
+    function getItemsValues() {
+        var selected_host_ids  = [];
 
+        $("input[select_host]:checked").each(function () {
+            selected_host_ids.push($(this).val());
+        })
+        var task_arguments = {
+            'selected_host_ids': selected_host_ids
+        }
+        hosts = JSON.stringify((task_arguments))
+{#        $.post("{%  url 'tablespace' %}"  , {'hosts': JSON.stringify((task_arguments))})#}
 
-
-    function addIframe() {
         $("div").remove("#tablespace div");
         $("#tablespace").find('iframe').remove()
         var iframe = document.createElement('iframe')
-        iframe.setAttribute("src","../monitor/tablespace")
+        iframe.setAttribute("src","../monitor/tablespace?host_ids="+hosts)
         iframe.setAttribute("style","width:950px;height:425px")
         iframe.setAttribute("frameborder","0")
         $("#tablespace").append(iframe)
+        console.log(selected_host_ids)
+
     }
 
 </script>

@@ -12,7 +12,7 @@
                     </a>
                     <ol class="hide">
                         {% for bind_host in hosts %}
-                            <li><input type="checkbox"  select_host="true" value="{{ bind_host.id }}">{{ bind_host.hostname }}-{{ bind_host.ip_addr }}</li>
+                            <li><input type="checkbox"  select_host="true" value="{{ bind_host.id }}">{{ bind_host.ip_addr }}</li>
                         {% endfor %}
                     </ol>
 
@@ -27,7 +27,7 @@
                         </a>
                         <ol class="hide">
                             {% for host in bus.host_set.all %}
-                                <li><input type="checkbox"  select_host="true" value="{{ host.id }}">{{ host.hostname }}-{{ host.ip_addr }}</li>
+                                <li><input type="checkbox"  select_host="true" value="{{ host.id }}">{{ host.ip_addr }}</li>
                             {% endfor %}
                         </ol>
 

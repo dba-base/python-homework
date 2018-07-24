@@ -24,11 +24,11 @@
         <property name="enable_load_extension" value="true" />
       </driver-properties>
     </data-source>
-    <data-source source="LOCAL" name="LuffyMonitor" uuid="a6bde2da-0457-43d8-b496-5e131566cf42">
+    <data-source source="LOCAL" name="luffymonitor" uuid="400bfa86-fcc4-44d9-a210-e6d32803c0c7">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:F:\github\python_homework\LuffyMoniter\db.sqlite3</jdbc-url>
+      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/LuffyMoniter/db.sqlite3</jdbc-url>
       <driver-properties>
         <property name="enable_load_extension" value="true" />
       </driver-properties>
