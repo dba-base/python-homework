@@ -25,33 +25,12 @@ class ClientHandle(object):
         load the latest monitor configs from monitor server
         :return:
         '''
-        self.monitored_services = {
-            'host': {
-                '192.168.2.128':
-                    ['root', 'oracle', 22, 'scott', 'tiger', 'PROD', 1521,
-                     {'services':
-                         {
-                             # 'LinuxCPU': ['LinuxCpuPlugin', 30],
-                             # 'LinuxLoad': ['LinuxLoadPlugin', 60],
-                             # 'LinuxMemory': ['LinuxMemoryPlugin', 9],
-                             # 'LinuxFilesystem': ['LinuxFilesystemPlugin', 9],
-                             # 'LinuxNetwork': ['LinuxNetworkPlugin', 6]
-                         }},
-                     {"db_flag": 1},  # 是否是数据库服务器
-                     {'ora_services':
-                         {
-                             'OraTBS': ['OraTBSPlugin', 300],
-                             # 'OraDBTime': ['OraDBTimePlugin', 60],
-                             # 'OraWaitEvent': ['OraWaitEventPlugin', 9],
-                             # 'OraSession': ['OraSessionPlugin', 9],
-                         }},
-                     {"host_status": 1}]}}
-
-        # request_type = settings.configs['urls']['get_configs'][1]     #get
-        # url = "%s/%s" %(settings.configs['urls']['get_configs'][0], settings.configs['HostID'])  #api/client/config/1
-        # latest_configs = self.url_request(request_type,url)  #以get方式请求
-        # latest_configs = json.loads(latest_configs)
-        # self.monitored_services.update(latest_configs)   #放入字典中
+        self.monitored_services = {}
+        request_type = settings.configs['urls']['get_configs'][1]     #get
+        url = settings.configs['urls']['get_configs'][0] #api/client/config/
+        latest_configs = self.url_request(request_type,url)  #以get方式请求
+        latest_configs = json.loads(latest_configs)
+        self.monitored_services.update(latest_configs)   #放入字典中
 
     def forever_run(self):
         '''
@@ -190,7 +169,7 @@ class ClientHandle(object):
         :return: 返回网站的全部数据
         '''
 
-        #http://192.168.16.56/8000/api/client/config/1
+        #http://192.168.16.56/8000/api/client/config/
         #http://192.168.16.56/8000/api/client/service/report/
         abs_url = "http://%s:%s/%s" % (settings.configs['Server'],
                                        settings.configs["ServerPort"],
@@ -237,39 +216,40 @@ class ClientHandle(object):
 
 #
 if __name__ == "__main__":
-    monitored_services = {
-        'host': {
-            '192.168.2.128':
-                     ['root', 'oracle', 22,'scott','tiger','PROD',1521,
-                      {'services':
-                          {
-                              'LinuxCPU': ['LinuxCpuPlugin', 30],
-                              'LinuxLoad': ['LinuxLoadPlugin', 60],
-                              'LinuxMemory': ['LinuxMemoryPlugin', 9],
-                              'LinuxFilesystem': ['LinuxFilesystemPlugin', 9],
-                              # 'LinuxNetwork': ['LinuxNetworkPlugin', 6]
-                          }},
-                      {"db_flag" : True},   #是否是数据库服务器
-                      {'db_services':
-                          {
-                              'OracleTBS': ['OracleTBSPlugin', 30],
-                              # 'LinuxLoad': ['LinuxLoadPlugin', 60],
-                              # 'LinuxMemory': ['LinuxMemoryPlugin', 9],
-                              # 'LinuxFilesystem': ['LinuxFilesystemPlugin', 9],
-                          }}
-                      ],
-            '192.168.2.12':
-                     ['root', 'oracle', 22,
-                      {'services':
-                           {'LinuxCPU': ['LinuxCpuPlugin', 30],
-                            'LinuxLoad': ['LinuxLoadPlugin', 60],
-                            'LinuxMemory': ['LinuxMemoryPlugin', 9],
-                            'LinuxFilesystem': ['LinuxFilesystemPlugin', 9],
-                            # 'LinuxNetwork': ['LinuxNetworkPlugin', 6]
-                            }}]
-                 }
-
-    }
+    # monitored_services = {
+    #     'host': {
+    #         '192.168.2.128':
+    #                  ['root', 'oracle', 22,'scott','tiger','PROD',1521,
+    #                   {'services':
+    #                       {
+    #                           'LinuxCPU': ['LinuxCpuPlugin', 30],
+    #                           'LinuxLoad': ['LinuxLoadPlugin', 60],
+    #                           'LinuxMemory': ['LinuxMemoryPlugin', 9],
+    #                           'LinuxFilesystem': ['LinuxFilesystemPlugin', 9],
+    #                           # 'LinuxNetwork': ['LinuxNetworkPlugin', 6]
+    #                       }},
+    #                   {"db_flag" : True},   #是否是数据库服务器
+    #                   {'db_services':
+    #                       {
+    #                           'OracleTBS': ['OracleTBSPlugin', 30],
+    #                           # 'LinuxLoad': ['LinuxLoadPlugin', 60],
+    #                           # 'LinuxMemory': ['LinuxMemoryPlugin', 9],
+    #                           # 'LinuxFilesystem': ['LinuxFilesystemPlugin', 9],
+    #                       }}
+    #                   ],
+    #         '192.168.2.12':
+    #                  ['root', 'oracle', 22,
+    #                   {'services':
+    #                        {'LinuxCPU': ['LinuxCpuPlugin', 30],
+    #                         'LinuxLoad': ['LinuxLoadPlugin', 60],
+    #                         'LinuxMemory': ['LinuxMemoryPlugin', 9],
+    #                         'LinuxFilesystem': ['LinuxFilesystemPlugin', 9],
+    #                         # 'LinuxNetwork': ['LinuxNetworkPlugin', 6]
+    #                         }}]
+    #              }
+    #
+    # }
     obj = ClientHandle()
-    obj.forever_run()
+    obj.load_latest_configs()
+    print(obj.monitored_services)
 

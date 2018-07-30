@@ -20,6 +20,7 @@ from web import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.index,name='index'),
+    url(r'^api/', include("monitor.api_urls")),
     url(r'^monitor/db_list$', views.db_list,name='db_list'),
     url(r'^monitor/tablespace/$', views.tablespace,name='tablespace'),
     url(r'^monitor/items$', views.monitor_items,name='monitor_items'),

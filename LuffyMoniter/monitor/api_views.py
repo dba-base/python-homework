@@ -8,9 +8,9 @@ from monitor.serializer import ClientHandler
 # Create your views here.
 
 
-def client_config(request,temp_id):
+def client_config(request):
 
-    config_obj = ClientHandler(temp_id)
+    config_obj = ClientHandler()
     config = config_obj.fetch_host_configs()
 
     if config:

@@ -26,19 +26,18 @@ class ClientHandler(object):
     # 根据模板ID获取主机列表和服务列表
     def fetch_host_configs(self):
         try:
-            temp_obj = models.Template.objects.get(id = self.args)
-            host_obj = temp_obj.host_set.all()    #反向查询
+            host_obj = models.Host.objects.all()
             for host in host_obj:
-                host_li =[ host.username,host.password,host.port ]
-                service_dict = {'services': {}}
-                for service in temp_obj.services.select_related():  # loop each service
-                    print(service)
-                    service_dict['services'][service.name] = [service.plugin_name, service.interval]
-                host_li.append(service_dict)
-                self.client_configs["host"][host.ip_addr] = host_li
-
-            print(self.client_configs)
-
+                is_enable = host.enabled
+                if is_enable:
+                    host_li = [host.username, host.password, host.port,host.db_username,host.db_password,host.instance_name,host.db_port]
+                    service_dict = {'services': {}}
+                    for temps in host.templates.select_related():
+                        for service in temps.services.select_related():
+                            print(service)
+                            service_dict['services'][service.name] = [service.plugin_name, service.interval]
+                    host_li.append(service_dict)
+                    self.client_configs["host"][host.ip_addr] = host_li
         except ObjectDoesNotExist:
             pass
 

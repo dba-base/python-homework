@@ -11,16 +11,11 @@ class TbsAdmin(admin.ModelAdmin):
 
 
 class ServiceAdmin(admin.ModelAdmin):
-        list_display = ['name', 'interval', 'plugin_name',]
-        filter_horizontal = ('items',)
+        list_display = ['name', 'interval', 'plugin_name']
 
 class TemplateAdmin(admin.ModelAdmin):
         list_display = ['name',]
         filter_horizontal = ('services',)
-
-
-class ServiceIndexAdmin(admin.ModelAdmin):
-        list_display = ['name', 'key', 'data_type', 'memo']
 
 class CpuAdmin(admin.ModelAdmin):
         list_display = ['user']
@@ -31,7 +26,6 @@ admin.site.register(web.models.Business)
 admin.site.register(web.models.AppCompany)
 admin.site.register(web.models.IDC)
 admin.site.register(web.models.Tablespace,TbsAdmin)
-admin.site.register(web.models.ServiceIndex,ServiceIndexAdmin)
 admin.site.register(web.models.Service,ServiceAdmin)
 admin.site.register(web.models.Template,TemplateAdmin)
 admin.site.register(web.models.CpuInfo,CpuAdmin)
