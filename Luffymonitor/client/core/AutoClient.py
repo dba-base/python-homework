@@ -43,6 +43,7 @@ class ClientHandle(object):
         while not exit_flag:
 
             # start to monitor services
+
             for ip_k,host_val in self.monitored_services['host'].items():
                 host_message = {ip_k:host_val}
                 print('正在监控：',host_message)
@@ -70,6 +71,16 @@ class ClientHandle(object):
 
                     time.sleep(2)
 
+    def get_hostinfo(self):
+        self.load_latest_configs()  # 获取监控配置信息
+        service_name = "hostinfo"
+        val = ["HostInfoPlugin"]
+        host_message = {}
+
+        for ip_k, host_val in self.monitored_services['host'].items():
+            host_message[ip_k] = host_val[0:-1]
+        self.invoke_plugin(service_name,val,host_message)
+
     def invoke_plugin(self,service_name,val,host_message):
         '''
         invoke the monitor plugin here, and send the data to monitor server after plugin returned status data each time
@@ -83,7 +94,7 @@ class ClientHandle(object):
 
             func = getattr(plugin_api,plugin_name)
             plugin_callback = func(**host_message)    #执行函数，并把结果放在plugin_callback
-            print("\033[0;47;31m--monitor result:%s,%s，%s\033[0m" %(host_message,plugin_name,plugin_callback))
+            # print("\033[0;47;31m--monitor result:%s，%s\033[0m" %(plugin_name,plugin_callback))
 
             report_data = {
                 'plugin_name':plugin_name,
@@ -96,11 +107,9 @@ class ClientHandle(object):
 
             # report_data = json.dumps(report_data).encode('utf-8')
             print(report_data)
-            print(type(report_data))
             self.url_request(request_action,request_url,params=report_data)
         else:
             print("\033[31;1mCannot find service [%s]'s plugin name [%s] in plugin_api\033[0m"% (service_name,plugin_name ))
-        print('--plugin:',val)
 
     def url_request(self,action,url,**extra_data):
         '''
@@ -146,20 +155,18 @@ class ClientHandle(object):
                 callback = res_data.read()
                 #callback = json.loads(callback)
                 callback = callback.decode('utf-8')
-                print("\033[31;1m[%s]\033[0m" % callback)
-                print("\033[31;1m[%s]:[%s]\033[0m response:\n%s" %(action,abs_url,callback))
+                print("\033[31;1m发送的数据：[%s]\033[0m" % callback)
                 return callback
             except Exception as e:
                 print('---exec',e)
                 exit("\033[31;1m%s\033[0m"%e)
 
 
-
-
-#
 if __name__ == "__main__":
 
     obj = ClientHandle()
-    obj.forever_run()
-    print(obj.monitored_services)
+    obj.get_hostinfo()
+    # print(obj.monitored_services)
+
+
 

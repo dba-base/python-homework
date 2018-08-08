@@ -111,6 +111,12 @@ class ClientHandler(object):
             #     print(row.name,row.total_size,row.used_size,row.free_size)
             print('完成入库')
             return 'OK'
+        if service_name[0] == 'hostinfo':
+            print("\033[31;1mreport_data:[%s]\033[0m" %report_data)
+            print("host_li:",report_data)
+            for host in report_data:
+                print("host------",host)
+                models.Host.objects.filter(ip_addr=host["ip_addr"]).update(**host)
 
 # if __name__ == '__main__':
 #     dict = {'name':'haoxy','age':28}

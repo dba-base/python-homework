@@ -9,7 +9,6 @@ import os,sys
 
 BASEDIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.append(BASEDIR)
-print(BASEDIR)
 import jaydebeapi
 from conf import settings
 
@@ -51,7 +50,7 @@ class BasePlugin(object):
             return result_dict
 
         except Exception as e:
-            print('.....',e)
+            print(self.ip,'.....',e)
             result_dict['ERROR'] = e
             return result_dict
 

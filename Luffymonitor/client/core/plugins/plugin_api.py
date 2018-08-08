@@ -4,9 +4,11 @@ BASEDIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file
 sys.path.append(BASEDIR)
 print(BASEDIR)
 
-from core.plugins.Linux import sysinfo,cpu,memory,network,host_alive,load,filesystem
+from core.plugins.Linux import sysinfo,cpu,memory,network,host_alive,load,filesystem,hostinfo
 from core.plugins.oracle import OraTBS
 
+def HostInfoPlugin(**host_message):
+    return hostinfo.monitor(**host_message)
 
 def LinuxCpuPlugin(**host_message):
     return cpu.monitor(**host_message)
