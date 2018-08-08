@@ -45,3 +45,9 @@ db_params = {
     "driver":'oracle.jdbc.driver.OracleDriver',
     "jarFile":'D:\\instantclient_11_2\\ojdbc6.jar'
 }
+
+# 操作系统的类型
+
+os_type_choices = {'Linux':0,
+                   'windows':1,
+                   'AIX':2}

@@ -41,7 +41,7 @@ class Host(models.Model):
     db_password = models.CharField(max_length=128, blank=True, null=True)
     database_type_choices = ((0, 'oracle 10g'), (1, 'oracle 11g'), (2, 'oracle 12c'), (3, 'mysql'))
     database_type = models.SmallIntegerField(choices=database_type_choices,default=0,verbose_name="数据库类型")
-    os_type_choices = ((0,'Linux'),(1,'windows'),(2,'AIX'))
+    os_type_choices = ((0,'Linux'),(1,'windows'),(2,'AIX'),(3,'other'))
     os_type = models.SmallIntegerField(choices=os_type_choices,default=0,verbose_name="OS类型")
     opatch_version = models.CharField(max_length=64,verbose_name="补丁")
     idc = models.ForeignKey("IDC",on_delete=models.CASCADE,verbose_name="机房")

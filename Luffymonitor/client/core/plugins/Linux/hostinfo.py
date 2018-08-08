@@ -6,13 +6,13 @@ BASEDIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file
 sys.path.append(BASEDIR)
 
 from plugins.base import BasePlugin
+from conf import settings
 
 hostinfo_li = []
 
 def monitor(**kwargs):
 
-    shell_command = 'uanme -a'
-    print(kwargs)
+    shell_command = 'uname -sn'  # Linux hostname
     thread_list = []  # 线程存放列表
     for ip,v in kwargs.items():
         host_info = {ip: v}
@@ -44,16 +44,20 @@ def exec_cmd(cmd,ip,kwargs):
         value_dic["enabled"] = 0
         value_dic["hostname"] = "NULL"
     else:
-        li = contents['RESULT'].split("\n")  # 字符串转列表
-        content_list = li[:len(li) - 1]  # 取列表开始到倒数第二个元素，最后一个元素为空
+        li = contents['RESULT'].split()  # 字符串转列表
+        if li[0] in settings.os_type_choices:   #判断操作系统是否在列表中
+            os_type = settings.os_type_choices.get(li[0])
+        else:
+            os_type = 3
         value_dic["ip_addr"] = ip
         value_dic["enabled"] = 1
-        value_dic["hostname"] = contents['RESULT'].strip()
+        value_dic["os_type"] = os_type
+        value_dic["hostname"] = li[1]
     hostinfo_li.append(value_dic)
 
 
 # if __name__ == '__main__':
-#     kwargs={'192.168.2.128': ['root', 'oracle', 22, 'scott', 'tiger', 'prod', 1521],
-#      '192.168.2.129': ['root', 'oracle', 22, 'scott', 'tiger', 'prod', 1521]}
+#     kwargs={'10.10.0.2': ['root', 'oracle', 22, 'scott', 'tiger', 'prod', 1521]}
+#     # kwargs={'192.168.2.128': ['root', 'oracle', 22, 'scott', 'tiger', 'prod', 1521],'192.168.2.129': ['root', 'oracle', 22, 'scott', 'tiger', 'prod', 1521],'10.10.0.2': ['root', 'oracle', 22, 'scott', 'tiger', 'prod', 1521]}
 #     a=monitor(**kwargs)
 #     print(a)

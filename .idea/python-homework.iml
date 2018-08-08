@@ -3,8 +3,8 @@
   <component name="FacetManager">
     <facet type="django" name="Django">
       <configuration>
-        <option name="rootFolder" value="$MODULE_DIR$/LuffyMoniter" />
-        <option name="settingsModule" value="LuffyMoniter/settings.py" />
+        <option name="rootFolder" value="$MODULE_DIR$/Luffymonitor" />
+        <option name="settingsModule" value="Luffymonitor/settings.py" />
         <option name="manageScript" value="manage.py" />
         <option name="environment" value="&lt;map/&gt;" />
       </configuration>
