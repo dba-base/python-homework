@@ -43,7 +43,6 @@ class Host(models.Model):
     database_type = models.SmallIntegerField(choices=database_type_choices,default=0,verbose_name="数据库类型")
     os_type_choices = ((0,'Linux'),(1,'windows'),(2,'AIX'),(3,'other'))
     os_type = models.SmallIntegerField(choices=os_type_choices,default=0,verbose_name="OS类型")
-    opatch_version = models.CharField(max_length=64,verbose_name="补丁")
     idc = models.ForeignKey("IDC",on_delete=models.CASCADE,verbose_name="机房")
     business = models.ForeignKey("Business",on_delete=models.CASCADE,verbose_name="业务系统名称")
     appcompany = models.ForeignKey("AppCompany",on_delete=models.CASCADE,verbose_name="厂商")
@@ -51,6 +50,7 @@ class Host(models.Model):
 
     enabled = models.BooleanField(default=True)
     is_database = models.BooleanField(default=True)
+    comment = models.CharField(max_length=128, blank=True, null=True,verbose_name="备注")
 
 
     def __str__(self):

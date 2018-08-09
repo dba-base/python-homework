@@ -51,7 +51,7 @@ class BasePlugin(object):
 
         except Exception as e:
             print(self.ip,'.....',e)
-            result_dict['ERROR'] = e
+            result_dict['ERROR'] = str(e)
             return result_dict
 
     def jdbc_connect(self,sql):

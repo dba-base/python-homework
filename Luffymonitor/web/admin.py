@@ -3,7 +3,7 @@ from django.contrib import admin
 import web
 
 class HostAdmin(admin.ModelAdmin):
-        list_display = ['id','idc','business','appcompany','hostname','ip_addr','port','instance_name','database_type','os_type','enabled']
+        list_display = ['id','idc','business','appcompany','hostname','ip_addr','port','instance_name','database_type','is_database','os_type','enabled','comment']
         filter_horizontal = ('templates',)
 
 class TbsAdmin(admin.ModelAdmin):
