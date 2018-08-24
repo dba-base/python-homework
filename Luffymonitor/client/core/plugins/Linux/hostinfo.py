@@ -2,6 +2,7 @@
 #coding:utf-8
 import os,sys
 import threading
+import time
 BASEDIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.append(BASEDIR)
 
@@ -23,6 +24,8 @@ def monitor(**kwargs):
 
     for t in thread_list:
         t.start()
+        time.sleep(1)
+
 
     for t in thread_list:
         t.join()
@@ -52,6 +55,7 @@ def exec_cmd(cmd,ip,kwargs):
         value_dic["enabled"] = 1
         value_dic["os_type"] = os_type
         value_dic["hostname"] = li[1]
+        value_dic["comment"] = ""
     hostinfo_li.append(value_dic)
 
 

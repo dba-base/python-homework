@@ -32,6 +32,7 @@ class ClientHandle(object):
         latest_configs = json.loads(latest_configs)
         self.monitored_services.update(latest_configs)   #放入字典中
 
+
     def forever_run(self):
         '''
         start the client program forever
@@ -73,6 +74,7 @@ class ClientHandle(object):
 
     def get_hostinfo(self):
         self.load_latest_configs()  # 获取监控配置信息
+        print(self.monitored_services)
         service_name = "hostinfo"
         val = ["HostInfoPlugin"]
         host_message = {}
@@ -166,7 +168,7 @@ if __name__ == "__main__":
 
     obj = ClientHandle()
     obj.get_hostinfo()
-    # print(obj.monitored_services)
+    print(obj.monitored_services)
 
 
 

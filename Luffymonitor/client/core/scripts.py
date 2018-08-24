@@ -26,7 +26,7 @@ class command_handler(object):
         valid_commands = '''
         start       start monitor client
         stop        stop monitor client
-
+        get_hostinfo  get host infomations and test host's connection 
         '''
         exit(valid_commands)
 
@@ -40,3 +40,7 @@ class command_handler(object):
 
     def stop(self):
         print("stopping the monitor client")
+
+    def get_hostinfo(self):
+        client = AutoClient.ClientHandle()
+        client.get_hostinfo()
