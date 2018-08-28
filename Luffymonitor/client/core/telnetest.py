@@ -1,5 +1,5 @@
 # encoding=utf-8
-
+import time
 def do_telnet(Host, username, password, finish, commands):
     import telnetlib
     '''''Telnet远程登录：Windows客户端连接Linux服务器'''
@@ -24,7 +24,7 @@ def do_telnet(Host, username, password, finish, commands):
     tn.read_until(finish)
     for command in commands:
         tn.write('%s\n' % command)
-
+        time.sleep(2)
         # 执行完毕后，终止Telnet连接（或输入exit退出）
     tn.read_until(finish)
     tn.close()  # tn.write('exit\n')
