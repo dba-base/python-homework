@@ -32,7 +32,7 @@ def do_telnet(Host, username, password, finish, commands):
 
 if __name__ == '__main__':
     # 配置选项
-    Host = '192.168.2.112'  # Telnet服务器IP
+    Host = '10.10.0.2'  # Telnet服务器IP
     username = 'root'  # 登录用户名
     password = 'oracle'  # 登录密码
     finish = '~]# '  # 命令提示符
