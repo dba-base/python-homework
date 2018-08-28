@@ -17,10 +17,10 @@ class TelnetClient():
             logging.warning('%s网络连接失败'%host_ip)
             return False
         # 等待login出现后输入用户名，最多等待10秒
-        self.tn.read_until(b'login: ',timeout=10)
+        self.tn.read_until(b'login: ',timeout=20)
         self.tn.write(username.encode('ascii') + b'\n')
         # 等待Password出现后输入用户名，最多等待10秒
-        self.tn.read_until(b'Password: ',timeout=10)
+        self.tn.read_until(b'Password: ',timeout=20)
         self.tn.write(password.encode('ascii') + b'\n')
         # 延时两秒再收取返回结果，给服务端足够响应时间
         time.sleep(2)
@@ -38,10 +38,11 @@ class TelnetClient():
     def execute_some_command(self,command):
         # 执行命令
         self.tn.write(command.encode('ascii')+b'\n')
-        time.sleep(2)
+        time.sleep(.1)
         # 获取命令结果
         command_result = self.tn.read_very_eager().decode('ascii')
-        logging.warning('命令执行结果：\n%s' % command_result)
+        # logging.info('命令执行结果：\n%s' % command_result)
+        print('命令执行结果：\n%s' % command_result)
 
     # 退出telnet
     def logout_host(self):
@@ -51,7 +52,7 @@ if __name__ == '__main__':
     host_ip = '192.168.2.112'
     username = 'root'
     password = 'oracle'
-    command = 'whoami'
+    command = 'ls -l'
     telnet_client = TelnetClient()
     # 如果登录结果返加True，则执行命令，然后退出
     if telnet_client.login_host(host_ip,username,password):
