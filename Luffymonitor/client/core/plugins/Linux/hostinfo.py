@@ -42,7 +42,7 @@ def exec_cmd(cmd,ip,kwargs):
         status = 1
     if status != 0:
         value_dic["ip_addr"] = ip
-        value_dic["enabled"] = 0
+        value_dic["enabled"] = 0    #主机不可用
         value_dic["hostname"] = "NULL"
         value_dic["comment"] = contents['ERROR']
     else:
@@ -52,7 +52,7 @@ def exec_cmd(cmd,ip,kwargs):
         else:
             os_type = 3
         value_dic["ip_addr"] = ip
-        value_dic["enabled"] = 1
+        value_dic["enabled"] = 1  #主机可用
         value_dic["os_type"] = os_type
         value_dic["hostname"] = li[1]
         value_dic["comment"] = ""
@@ -60,9 +60,9 @@ def exec_cmd(cmd,ip,kwargs):
 
 
 
-# if __name__ == '__main__':
-#     kwargs={'192.168.2.128': ['root', 'oracle', 22, 'scott', 'tiger', 'prod', 1521]}
-#     # kwargs={'10.10.0.2': ['root', 'oracle', 22, 'scott', 'tiger', 'prod', 1521],'192.168.2.128': ['root', 'qqq', 22, 'scott', 'tiger', 'prod', 1521]}
-#     # kwargs={'192.168.2.128': ['root', 'oracle', 22, 'scott', 'tiger', 'prod', 1521],'192.168.2.129': ['root', 'oracle', 22, 'scott', 'tiger', 'prod', 1521],'10.10.0.2': ['root', 'oracle', 22, 'scott', 'tiger', 'prod', 1521]}
-#     a=monitor(**kwargs)
-#     print(a)
+if __name__ == '__main__':
+    kwargs={'192.168.2.112': ['root', 'oracle', 23, 'scott', 'tiger', 'prod', 1521,1]}
+    # kwargs={'10.10.0.2': ['root', 'oracle', 22, 'scott', 'tiger', 'prod', 1521],'192.168.2.128': ['root', 'qqq', 22, 'scott', 'tiger', 'prod', 1521]}
+    # kwargs={'192.168.2.128': ['root', 'oracle', 22, 'scott', 'tiger', 'prod', 1521],'192.168.2.129': ['root', 'oracle', 22, 'scott', 'tiger', 'prod', 1521],'10.10.0.2': ['root', 'oracle', 22, 'scott', 'tiger', 'prod', 1521]}
+    a=monitor(**kwargs)
+    print(a)

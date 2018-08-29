@@ -34,6 +34,8 @@ class Host(models.Model):
     instance_name = models.CharField(max_length=64,verbose_name="实例名")
     ip_addr = models.GenericIPAddressField(unique=True,verbose_name="IP地址")
     port = models.PositiveSmallIntegerField(default=22,verbose_name="端口号")
+    connect_type_choices = ((0,'ssh'),(1,'telnet'),(2,'snmp'))
+    host_conn_type = models.SmallIntegerField(choices=connect_type_choices,default=0,verbose_name="主机连接方式")
     db_port = models.PositiveSmallIntegerField(default=1521,null=True,verbose_name="DB端口号")
     username = models.CharField(max_length=64,verbose_name="用户名")
     db_username = models.CharField(max_length=64)

@@ -1,40 +1,61 @@
-# encoding=utf-8
+__author__ = "xiaoyu hao"
+import logging
+import telnetlib
 import time
-def do_telnet(Host, username, password, finish, commands):
-    import telnetlib
-    '''''Telnet远程登录：Windows客户端连接Linux服务器'''
 
-    # 连接Telnet服务器  
-    tn = telnetlib.Telnet(Host, port=23, timeout=10)
-    tn.set_debuglevel(2)
 
-    # 输入登录用户名  
-    tn.read_until('login: '.encode('utf-8'))
-    tn.write(username.encode('ascii') + b'\n')
+class TelnetClient():
+    def __init__(self,):
+        self.tn = telnetlib.Telnet()
 
-    # 输入登录密码  
-    tn.read_until('password: '.encode('utf-8'))
-    tn.write(password.encode('ascii') + b'\n')
-
-    # 冯总：
-    # 1.BSS精细化，差异化，2.MSS智慧化，3.开发转型 4.推动运维变革-全网集中统一的维护体系
-    # 5.人才转型
-
-    # 登录完毕后执行命令  
-    tn.read_until(finish)
-    for command in commands:
-        tn.write('%s\n' % command)
+    # 此函数实现telnet登录主机
+    def login_host(self,host_ip,username,password):
+        try:
+            # self.tn = telnetlib.Telnet(host_ip,port=23)
+            self.tn.open(host_ip,port=23)
+        except:
+            logging.warning('%s网络连接失败'%host_ip)
+            return False
+        # 等待login出现后输入用户名，最多等待10秒
+        self.tn.read_until(b'login: ',timeout=20)
+        self.tn.write(username.encode('ascii') + b'\n')
+        # 等待Password出现后输入用户名，最多等待10秒
+        self.tn.read_until(b'Password: ',timeout=20)
+        self.tn.write(password.encode('ascii') + b'\n')
+        # 延时两秒再收取返回结果，给服务端足够响应时间
         time.sleep(2)
-        # 执行完毕后，终止Telnet连接（或输入exit退出）
-    tn.read_until(finish)
-    tn.close()  # tn.write('exit\n')
+        # 获取登录结果
+        # read_very_eager()获取到的是的是上次获取之后本次获取之前的所有输出
+        command_result = self.tn.read_very_eager().decode('ascii')
+        if 'Login incorrect' not in command_result:
+            logging.warning('%s登录成功'%host_ip)
+            return True
+        else:
+            logging.warning('%s登录失败，用户名或密码错误'%host_ip)
+            return False
 
+    # 此函数实现执行传过来的命令，并输出其执行结果
+    def execute_some_command(self,host_ip,username,password,command):
+        if self.login_host(host_ip,username,password):
+            # 执行命令
+            self.tn.write(command.encode('ascii')+b'\n')
+            time.sleep(.1)
+            # 获取命令结果
+            command_result = self.tn.read_very_eager().decode('ascii')
+            # logging.info('命令执行结果：\n%s' % command_result)
+            return command_result
+
+    # 退出telnet
+    def logout_host(self):
+        self.tn.write(b"exit\n")
 
 if __name__ == '__main__':
-    # 配置选项
-    Host = '192.168.2.112'  # Telnet服务器IP
-    username = 'root'  # 登录用户名
-    password = 'oracle'  # 登录密码
-    finish = '~]# '  # 命令提示符
-    commands = ['ls -l']
-    do_telnet(Host, username, password, finish, commands)  
+    host_ip = '192.168.2.112'
+    username = 'root'
+    password = 'oracle'
+    command = 'ls -l'
+    telnet_client = TelnetClient()
+    # 如果登录结果返加True，则执行命令，然后退出
+    result = telnet_client.execute_some_command(host_ip,username,password,command)
+    print(result)
+    telnet_client.logout_host()

@@ -6,6 +6,9 @@
 提供ssh访问主机和jdbc访问数据库的接口
 '''
 import os,sys
+import logging
+import telnetlib
+import time
 
 BASEDIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.append(BASEDIR)
@@ -13,8 +16,9 @@ import jaydebeapi
 from conf import settings
 
 class BasePlugin(object):
-    # {'192.168.2.128': ['root', 'oracle', 22, 'scott', 'tiger','prod', 1521]}
+    # {'192.168.2.128': ['root', 'oracle', 22, 'scott', 'tiger','prod', 1521,2]}
     def __init__(self, **kwargs):
+        self.tn = telnetlib.Telnet()
         for i, v in kwargs.items():
             self.ip = i
             self.username = v[0]
@@ -24,6 +28,7 @@ class BasePlugin(object):
             self.db_passwd = v[4]
             self.db_port = v[6]
             self.SID = v[5]
+            self.login_type = v[7]
         self.driver = settings.db_params['driver'],
         self.url = settings.db_params['url']%(self.ip,self.db_port,self.SID),
         self.tnsname = '%s:%s/%s'%(self.ip,self.db_port,self.SID)
@@ -53,6 +58,52 @@ class BasePlugin(object):
             print(self.ip,'.....',e)
             result_dict['ERROR'] = str(e)
             return result_dict
+            # 此函数实现telnet登录主机
+
+    def telnet_login(self,cmd):
+        result_dict = {}
+        try:
+            # self.tn = telnetlib.Telnet(host_ip,port=23)
+            self.tn.open(self.ip, port=self.port)
+        except Exception as e:
+            logging.warning('%s网络连接失败' % self.ip)
+            result_dict['ERROR'] = str(e)
+            return result_dict
+        try:
+            # 等待login出现后输入用户名，最多等待10秒
+            self.tn.read_until(b'login: ', timeout=200)
+            self.tn.write(self.username.encode('ascii') + b'\n')
+            # 等待Password出现后输入用户名，最多等待10秒
+            self.tn.read_until(b'Password: ', timeout=200)
+            self.tn.write(self.passwd.encode('ascii') + b'\n')
+            # 延时两秒再收取返回结果，给服务端足够响应时间
+            time.sleep(2)
+            # 获取登录结果
+            # read_very_eager()获取到的是的是上次获取之后本次获取之前的所有输出
+            return_result = self.tn.read_very_eager().decode('ascii')
+            if return_result.strip().endswith('#') or return_result.strip().endswith('$'):
+                logging.warning('%s登录成功' % self.ip)
+                # 执行命令
+                self.tn.write(cmd.encode('ascii') + b'\n')
+                time.sleep(.1)
+                # 获取命令结果
+                command_result = self.tn.read_very_eager().decode('ascii')
+                # logging.info('命令执行结果：\n%s' % command_result)
+                result_dict['ERROR'] = ""
+                result_dict['RESULT'] = str(command_result.split("\r\n")[1:-1])
+                return result_dict
+            else:
+                logging.warning('%s登录失败，用户名或密码错误' % self.ip)
+                result_dict['ERROR'] = '登录失败，用户名或密码错误'
+                return result_dict
+        except Exception as e:
+            logging.error(e)
+        # self.tn.write(b"exit\n")
+    # 退出telnet
+    def logout_host(self):
+        self.tn.write(b"exit\n")
+
+
 
     def jdbc_connect(self,sql):
         '''
@@ -90,11 +141,14 @@ class BasePlugin(object):
         return result
 
     def exec_shell_cmd(self, cmd):
-        output = self.ssh(cmd)
+        if self.login_type == 0:
+            output = self.ssh(cmd)
+        elif self.login_type == 1:
+            output = self.telnet_login(cmd)
         return output
 
-
-# ssh = BasePlugin('192.168.2.129',22,'root','oracle')
-# a = ssh.exec_shell_cmd('sar 1 3')
+# hosts = {'192.168.2.112': ['root', 'oracle', 23, 'scott', 'tiger','prod', 1521,1]}
+# ssh = BasePlugin(**hosts)
+# a = ssh.exec_shell_cmd('df -h')
 # print(a)
 
