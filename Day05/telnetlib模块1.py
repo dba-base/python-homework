@@ -29,7 +29,13 @@ class TelnetClient():
         command_result = self.tn.read_very_eager().decode('ascii')
         if 'Login incorrect' not in command_result:
             logging.warning('%s登录成功'%host_ip)
-            return True
+            self.tn.read_until(b'^# ')
+            self.tn.write(command.encode('ascii') + b'\n')
+            # 获取命令结果
+            command_result = self.tn.read_very_eager().decode('ascii')
+            print('命令执行结果：\n%s' %command_result)
+            logging.warning('命令执行结果：\n%s' % command_result)
+            # return True
         else:
             logging.warning('%s登录失败，用户名或密码错误'%host_ip)
             return False
@@ -49,12 +55,12 @@ class TelnetClient():
         self.tn.write(b"exit\n")
 
 if __name__ == '__main__':
-    host_ip = '192.168.2.112'
+    host_ip = '10.10.0.2'
     username = 'root'
     password = 'oracle'
     command = 'ls -l'
     telnet_client = TelnetClient()
     # 如果登录结果返加True，则执行命令，然后退出
     if telnet_client.login_host(host_ip,username,password):
-        telnet_client.execute_some_command(command)
+        # telnet_client.execute_some_command(command)
         telnet_client.logout_host()
