@@ -13,7 +13,7 @@ hostinfo_li = []
 
 def monitor(**kwargs):
 
-    shell_command = 'ps -ef | grep smaon | grep -v grep;uname -sn'  # Linux hostname
+    shell_command = 'uname -sn'  # Linux hostname
     thread_list = []  # 线程存放列表
     for ip,v in kwargs.items():
         host_info = {ip: v}
@@ -47,6 +47,7 @@ def exec_cmd(cmd,ip,kwargs):
         value_dic["comment"] = contents['ERROR']
     else:
         li = contents['RESULT'].split()  # 字符串转列表
+        print(li)
         if li[0] in settings.os_type_choices:   #判断操作系统是否在列表中
             os_type = settings.os_type_choices.get(li[0])
         else:
@@ -61,7 +62,7 @@ def exec_cmd(cmd,ip,kwargs):
 
 
 if __name__ == '__main__':
-    kwargs={'192.168.2.112': ['root', 'oracle', 23, 'scott', 'tiger', 'prod', 1521,1]}
+    kwargs={'10.10.0.2': ['root', 'oracle', 23, 'scott', 'tiger', 'prod', 1521,1]}
     # kwargs={'10.10.0.2': ['root', 'oracle', 22, 'scott', 'tiger', 'prod', 1521],'192.168.2.128': ['root', 'qqq', 22, 'scott', 'tiger', 'prod', 1521]}
     # kwargs={'192.168.2.128': ['root', 'oracle', 22, 'scott', 'tiger', 'prod', 1521],'192.168.2.129': ['root', 'oracle', 22, 'scott', 'tiger', 'prod', 1521],'10.10.0.2': ['root', 'oracle', 22, 'scott', 'tiger', 'prod', 1521]}
     a=monitor(**kwargs)

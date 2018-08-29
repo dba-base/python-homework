@@ -50,17 +50,7 @@ class TelnetClient():
         self.tn.write(b"exit\n")
 
 if __name__ == '__main__':
-<<<<<<< HEAD
-    host_ip = '192.168.2.112'
-    username = 'root'
-    password = 'oracle'
-    command = 'ls -l'
-    telnet_client = TelnetClient()
-    # 如果登录结果返加True，则执行命令，然后退出
-    result = telnet_client.execute_some_command(host_ip,username,password,command)
-    print(result)
-    telnet_client.logout_host()
-=======
+
     # 配置选项
     Host = '10.10.0.2'  # Telnet服务器IP
     username = 'root'  # 登录用户名
@@ -68,4 +58,3 @@ if __name__ == '__main__':
     finish = '~]# '  # 命令提示符
     commands = ['ls -l']
     do_telnet(Host, username, password, finish, commands)  
->>>>>>> 9d185ef5baca19f814048a1bb609757d1bf0353a

@@ -90,7 +90,8 @@ class BasePlugin(object):
                 command_result = self.tn.read_very_eager().decode('ascii')
                 # logging.info('命令执行结果：\n%s' % command_result)
                 result_dict['ERROR'] = ""
-                result_dict['RESULT'] = str(command_result.split("\r\n")[1:-1])
+                #多行字符串转换成列表，列表第二个到倒数第二个元素，再把列表中的字符串用\n 拼接成字符串
+                result_dict['RESULT'] = "\n".join(command_result.split("\r\n")[1:-1])
                 return result_dict
             else:
                 logging.warning('%s登录失败，用户名或密码错误' % self.ip)
@@ -147,8 +148,8 @@ class BasePlugin(object):
             output = self.telnet_login(cmd)
         return output
 
-# hosts = {'192.168.2.112': ['root', 'oracle', 23, 'scott', 'tiger','prod', 1521,1]}
+# hosts = {'10.10.0.2': ['root', 'oracle', 23, 'scott', 'tiger','prod', 1521,1]}
 # ssh = BasePlugin(**hosts)
-# a = ssh.exec_shell_cmd('df -h')
-# print(a)
+# a = ssh.exec_shell_cmd('uname -sn')
+# print(a['RESULT'].split())
 
