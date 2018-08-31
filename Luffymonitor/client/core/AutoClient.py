@@ -25,7 +25,7 @@ class ClientHandle(object):
         load the latest monitor configs from monitor server
         :return:
         '''
-        self.monitored_services = {}
+        # self.monitored_services = {}
         request_type = settings.configs['urls']['get_configs'][1]     #get
         url = settings.configs['urls']['get_configs'][0] #api/client/config/
         latest_configs = self.url_request(request_type,url)  #以get方式请求
@@ -48,7 +48,7 @@ class ClientHandle(object):
             for ip_k,host_val in self.monitored_services['host'].items():
                 host_message = {ip_k:host_val}
                 print('正在监控：',host_message)
-                for service_name,val in host_val[7]['services'].items():
+                for service_name,val in host_val[8]['services'].items():
 
                     # "services": {'LinuxCPU':['LinuxCpuPlugin',60],'LinuxLoad':['LinuxLoadPlugin',30],'LinuxMemory':['LinuxMemoryPlugin',90],'LinuxNetwork':['LinuxNetworkPlugin',60]}
                     # service_name:LinuxCPU

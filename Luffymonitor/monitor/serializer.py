@@ -30,7 +30,7 @@ class ClientHandler(object):
             for host in host_obj:
                 is_enable = host.enabled
                 if is_enable:
-                    host_li = [host.username, host.password, host.port,host.db_username,host.db_password,host.instance_name,host.db_port]
+                    host_li = [host.username, host.password, host.port,host.db_username,host.db_password,host.instance_name,host.db_port,host.host_conn_type]
                     service_dict = {'services': {}}
                     for temps in host.templates.select_related():
                         for service in temps.services.select_related():

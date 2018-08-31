@@ -61,9 +61,9 @@ def exec_cmd(cmd,ip,kwargs):
 
 
 
-if __name__ == '__main__':
-    kwargs={'10.10.0.2': ['root', 'oracle', 23, 'scott', 'tiger', 'prod', 1521,1]}
-    # kwargs={'10.10.0.2': ['root', 'oracle', 22, 'scott', 'tiger', 'prod', 1521],'192.168.2.128': ['root', 'qqq', 22, 'scott', 'tiger', 'prod', 1521]}
-    # kwargs={'192.168.2.128': ['root', 'oracle', 22, 'scott', 'tiger', 'prod', 1521],'192.168.2.129': ['root', 'oracle', 22, 'scott', 'tiger', 'prod', 1521],'10.10.0.2': ['root', 'oracle', 22, 'scott', 'tiger', 'prod', 1521]}
-    a=monitor(**kwargs)
-    print(a)
+# if __name__ == '__main__':
+#     kwargs={'192.168.2.112': ['root', 'oracle', 23, 'scott', 'tiger', 'prod', 1521,1]}
+#     # kwargs={'10.10.0.2': ['root', 'oracle', 22, 'scott', 'tiger', 'prod', 1521],'192.168.2.128': ['root', 'qqq', 22, 'scott', 'tiger', 'prod', 1521]}
+#     # kwargs={'192.168.2.128': ['root', 'oracle', 22, 'scott', 'tiger', 'prod', 1521],'192.168.2.129': ['root', 'oracle', 22, 'scott', 'tiger', 'prod', 1521],'10.10.0.2': ['root', 'oracle', 22, 'scott', 'tiger', 'prod', 1521]}
+#     a=monitor(**kwargs)
+#     print(a)
