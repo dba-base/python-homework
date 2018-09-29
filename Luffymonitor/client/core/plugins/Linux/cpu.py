@@ -39,8 +39,8 @@ def monitor(frist_invoke=1,**kwargs):
         }
     return value_dic
 
-# if __name__ == '__main__':
-#     for i in range(2):
-#         host_message = {'192.168.2.128': ['root', 'oracle', 22, 'scott', 'tiger','prod', 1521]}
-#         a = monitor(**host_message)
-#         print(a)
+if __name__ == '__main__':
+    for i in range(2):
+        host_message = {'192.168.2.112': ['root', 'oracle', 23, 'scott', 'tiger','prod', 1521,1]}
+        a = monitor(**host_message)
+        print(a)

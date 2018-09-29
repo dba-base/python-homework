@@ -1,0 +1,29 @@
+{% extends 'kingadmin/index.html' %}
+{% load admin_tags %}
+
+{% block page-title-text %}
+{{ table_obj.model_verbose_name }}
+{% endblock %}
+
+{% block searchbox %}{% endblock %}
+
+{% block breadcrumb %}
+    <ol class="breadcrumb">
+        <li><a href="{% url 'table_index'   %}">Home</a></li>
+        <li><a href="{% url 'app_tables'  app_name %}">{{ app_name|capfirst}}</a></li>
+
+        <li class="active"> {{ table_obj.model_verbose_name }}</li>
+    </ol>
+ {% endblock %}
+{% block page-content %}
+
+
+{% include "kingadmin/components/object_list_table.html" %}
+
+
+
+{% endblock %}
+
+{% block bottom-js %}
+    {% include 'kingadmin/components/object_list_table_editable_js.html' %}
+{% endblock %}

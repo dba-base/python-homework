@@ -1,0 +1,34 @@
+{% extends 'index.html' %}
+{% load custom_tags %}
+
+
+{% block breadcrumb %}
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<ol class="breadcrumb">
+    <li><a href="#">Home</a></li>
+    <li class="active"><a href="{% url 'customers' %}">客户库</a></li>
+</ol>
+{% endblock %}
+
+{% block page-title-text %}
+  客户信息库
+
+{% endblock %}
+
+{% block page-content %}
+    <div class="row">
+        <div class="col-md-12 ">
+            <!--Basic Panel-->
+            <!--===================================================-->
+            {% include "kingadmin/components/object_list_table.html" %}
+
+            <!--===================================================-->
+            <!--End Basic Panel-->
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block bottom-js %}
+    {% include 'kingadmin/components/object_list_table_editable_js.html' %}
+{% endblock %}
